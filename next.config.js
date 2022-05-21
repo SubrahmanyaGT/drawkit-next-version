@@ -1,6 +1,25 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-}
+// /** @type {import('next').NextConfig} */
+// const nextConfig = {
+//   reactStrictMode: true,
+// }
 
-module.exports = nextConfig
+// module.exports = nextConfig
+
+module.exports = {
+  async rewrites() {
+    return [
+      {
+        source: '/Home',
+        destination: 'https://drawkit-v2.webflow.io/',
+      },
+      {
+        source: '/:slug',
+        destination: 'https://drawkit-v2.webflow.io/:slug',
+      },
+      {
+        source: '/blog/:slug',
+        destination: 'https://drawkit-v2.webflow.io/blog/:slug',
+      },
+    ]
+  },
+}
