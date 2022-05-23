@@ -7,10 +7,8 @@ import React from "react";
 export default function Home(props) {
   return (
     <>
-    <Head>
       {parseHtml(props.headContent)}
 
-    </Head>
       {parseHtml(props.bodyContent)}
       {
         // parseHtml(props.navDrop)
@@ -19,11 +17,10 @@ export default function Home(props) {
   );
 }
 
-export async function getStaticProps({context}) {
-    // console.log(context,'ctx');
+export async function getStaticProps({ context }) {
+  // console.log(context,'ctx');
   const cheerio = await import(`cheerio`);
   const axios = (await import(`axios`)).default;
-
 
   let res = await axios("https://drawkit-v2.webflow.io/signin").catch((err) => {
     console.error(err);
@@ -32,15 +29,15 @@ export async function getStaticProps({context}) {
 
   const $ = cheerio.load(html);
 
-//   $('.navlink').addClass('title').html()
+  //   $('.navlink').addClass('title').html()
   const bodyContent = $(`body`).html();
-//   const navDrop=$('.nav-dropdown-wrapper').html();
+  //   const navDrop=$('.nav-dropdown-wrapper').html();
   const headContent = $(`head`).html();
   return {
     props: {
       bodyContent,
       headContent,
-    //   navDrop,
+      //   navDrop,
     },
     revalidate: 3,
   };
