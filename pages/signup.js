@@ -5,6 +5,7 @@ import get from "lodash/get";
 import React, { useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
+import Script from 'next/script'
 
 const supabaseSignUp = async (email, password) => {
   const { user, session, error } = await supabase.auth.signUp({
@@ -75,7 +76,7 @@ export default function Home(props) {
         {parseHtml(props.headContent)}
         {parseHtml(props.bodyContent)}
       </div>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
     </>
   );
 }

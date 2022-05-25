@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
 
+
 const supabaseSignIn = async (email, password) => {
   const { user, session, error } = await supabase.auth.signIn({
     email: email,

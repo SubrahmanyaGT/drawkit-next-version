@@ -6,6 +6,7 @@ import get from 'lodash/get';
 import Link from "next/link";
 import { supabase } from "../utils/supabaseClient";
 import Navbar from "./navbar";
+import Script from 'next/script'
 
 
 console.log(supabase.auth.session());
@@ -110,7 +111,7 @@ export async function getStaticProps() {
     .filter((src) => {
       if (src) return src;
     })
-    .map((m) => `<script type="text/javascript" src="${m}"></script>`)
+    .map((m) => `<Script type="text/javascript" src="${m}"></Script>`)
     .join("")
     .toString();
 
