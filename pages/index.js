@@ -4,7 +4,11 @@ import React,{ useState } from "react";
 import MainWrapper from "./mainwrapper";
 import get from 'lodash/get';
 import Link from "next/link";
+import { supabase } from "../utils/supabaseClient";
+import Navbar from "./navbar";
 
+
+console.log(supabase.auth.session());
 function isUrlInternal(link){
     if(
       !link ||
@@ -24,13 +28,12 @@ function isUrlInternal(link){
   
     // Replace links with Next links
     if(node.name === `a`  ){
-        console.log(node);
       const { href, style, ...props } = attribs
       if(props.class){
         props.className = props.class
         delete props.class
       }
-      if(!style || true ){
+      if(!style ){
         return (
           <Link href={href}>
             <a {...props}>
@@ -63,6 +66,14 @@ function isUrlInternal(link){
         )
       }
     }
+
+    if(supabase.auth.session()){
+      const { href, style, ...props } = attribs
+     if(props.class=='buttons-wrap'){
+       
+       return <div className="buttons" id="logout-button">Log Out</div>
+     }
+    }
   
   }
   const parseOptions = { replace }
@@ -70,11 +81,11 @@ function isUrlInternal(link){
 export default function Home(props) {
     let [navBar,setnavbar] = useState(props.navBar)
     let [headContent,setheadContent] = useState(props.headContent)
-    let [mainWrap,setmainWrap] = useState(props.mainWrap);
+    let [mainWrap,setmainWrap] = useState(props.mainWrap);  
   return (
     <>
       {parseHtml(headContent,parseOptions)}
-      {parseHtml(navBar,parseOptions)}
+      <Navbar navbarContent={parseHtml(navBar,parseOptions)}/>
       <MainWrapper mainWrap={mainWrap}/>
       {parseHtml(props.supportScripts,parseOptions)}
       

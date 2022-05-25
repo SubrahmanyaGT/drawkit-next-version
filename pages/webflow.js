@@ -1,5 +1,14 @@
-export default function WebflowScript(){
-  return(
-    <script src="https://rawgit.com/Drawkit-v1/drawkit-git/main/js/webflow.e14eb8a4c.js?token=GHSAT0AAAAAABUZSJBQWVF2ZIUZ3VRKUJF6YUIX7ZA">  </script>
-  )
+export default function WebflowScript() {
+  let myFunction = () => {
+    console.log("click");
+  };
+  return (
+    <script>
+      document
+        .getElementById("signup")
+        .addEventListener("click", function () {
+          console.log("runing function ")
+        })
+    </script>
+  );
 }

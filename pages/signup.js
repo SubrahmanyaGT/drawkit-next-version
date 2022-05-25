@@ -4,24 +4,78 @@ import parseHtml, { domToReact } from "html-react-parser";
 import get from "lodash/get";
 import React, { useState } from "react";
 import { supabase } from "../utils/supabaseClient";
+import { useRouter } from "next/router";
 
-const supabaseSignUp = async () => {
+const supabaseSignUp = async (email, password) => {
   const { user, session, error } = await supabase.auth.signUp({
-    email: "subrahmanyagt@gmail.com",
-    password: "example-password",
+    email: email,
+    password: password,
   });
   if (!error) {
-    alert("signup successful");
+    return true;
   }
+  else {
+    return false;
+  }
+  
 };
 
+async function signInWithGoogle() {
+  const { user, session, error } = await supabase.auth.signIn({
+    provider: "google",
+  });
+  if (!error) {
+    alert("google");
+  }
+}
 export default function Home(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
+
+  /**Functions */
+  async function wrapClickHandler(event) {
+    var $el = $(event.target);
+    if (!!$el.closest("#signup").get(0)) {
+      await supabaseSignUp(email, password).then((data) => {
+        if(data){
+          router.push('/')
+      }
+      })
+      
+    }
+    if (!!$el.closest("#d-signup-google").get(0)) {
+      signInWithGoogle();
+    }
+  }
+
+  function wrapChangeHandler(event) {
+    var $el = $(event.target);
+    if (!!$el.closest("#d-signup-email").get(0)) {
+      setEmail($el.closest("#d-signup-email").val());
+    }
+    if (!!$el.closest("#d-signup-pass").get(0)) {
+      setPassword($el.closest("#d-signup-pass").val());
+      console.log("password changed", password);
+    }
+
+    // signIn data changed
+    if (!!$el.closest("#d-signin-email").get(0)) {
+      setPassword($el.closest("#d-signin-email").val());
+      console.log("password changed", password);
+    }
+    if (!!$el.closest("#d-signin-pass").get(0)) {
+      setPassword($el.closest("#Password").val());
+      console.log("password changed", password);
+    }
+  }
   return (
     <>
-      {parseHtml(props.headContent)}
-      {parseHtml(props.bodyContent)}
+      <div onClick={wrapClickHandler} onChange={wrapChangeHandler}>
+        {parseHtml(props.headContent)}
+        {parseHtml(props.bodyContent)}
+      </div>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     </>
   );
 }
@@ -37,27 +91,9 @@ export async function getStaticProps({ context }) {
   const html = res.data;
 
   const $ = cheerio.load(html);
+  $("").replaceWith("<div onClick={myFunction}> connect</div>");
 
-   console.log( $("#d-signup-button"));
-      
-      
-
-//   console.log($('body').find('#d-signup-button').click(function(){console.log('working');}));
-
-    // $('#d-signup-button').each(function (element) {
-    //       console.log(element.);
-    //  })
-
-  //   $("#d-signup-email")
-  //     .html()
-  //     .addEventListener("change", (event) => {
-  //       setEmail(event.target.value);
-  //     });
-  //   $("#d-signup-pass")
-  //     .html()
-  //     .addEventListener("change", (event) => {
-  //       setPassword(event.target.value);
-  //     });
+  console.log($("#d-signup-button")[0]);
   const bodyContent = $(`.page-wrapper`).html();
   const headContent = $(`head`).html();
   return {
