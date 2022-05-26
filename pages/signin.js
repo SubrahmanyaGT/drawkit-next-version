@@ -5,6 +5,8 @@ import get from "lodash/get";
 import React, { useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
+import Script from 'next/script'
+
 
 
 const supabaseSignIn = async (email, password) => {
@@ -56,9 +58,7 @@ export default function Home(props) {
 
         {parseHtml(props.bodyContent)}
       </div>
-      {
-        // parseHtml(props.navDrop)
-      }
+      <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
     </>
   );
 }
@@ -76,7 +76,7 @@ export async function getStaticProps({ context }) {
   const $ = cheerio.load(html);
 
   //   $('.navlink').addClass('title').html()
-  const bodyContent = $(`body`).html();
+  const bodyContent = $(`.main-wrapper`).html();
   //   const navDrop=$('.nav-dropdown-wrapper').html();
   const headContent = $(`head`).html();
   return {
