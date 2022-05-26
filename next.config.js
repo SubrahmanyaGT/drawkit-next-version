@@ -9,10 +9,6 @@ module.exports = {
   async rewrites() {
     return [
       {
-        source: '/Home',
-        destination: 'https://drawkit-v2.webflow.io/',
-      },
-      {
         source: '/:slug',
         destination: 'https://drawkit-v2.webflow.io/:slug',
       },

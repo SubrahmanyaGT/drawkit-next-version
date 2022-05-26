@@ -5,17 +5,18 @@ import get from "lodash/get";
 import React, { useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
+import Router from 'next/router'
 
 const supabaseSignOut = async (email, password) => {
     const { error } = await supabase.auth.signOut()
     if (!error) {
-        location.reload
+        Router.reload();
     }
 };
 
 
 
-export default function Navbar(props) {
+export default function NavbarContent(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
