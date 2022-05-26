@@ -5,16 +5,14 @@ import get from "lodash/get";
 import React, { useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
-import Router from 'next/router'
+import Router from "next/router";
 
 const supabaseSignOut = async (email, password) => {
-    const { error } = await supabase.auth.signOut()
-    if (!error) {
-        Router.reload();
-    }
+  const { error } = await supabase.auth.signOut();
+  if (!error) {
+    Router.reload();
+  }
 };
-
-
 
 export default function NavbarContent(props) {
   const [email, setEmail] = useState("");
@@ -23,7 +21,16 @@ export default function NavbarContent(props) {
   function wrapClickHandler(event) {
     var $el = $(event.target);
     if (!!$el.closest("#logout-button").get(0)) {
-        supabaseSignOut();
+      supabaseSignOut();
+    }
+
+    if (!!$el.closest("#search-close").get(0)) {
+      $("#nav-search-input").val("");
+      $("#close").hide(); 
+    }
+    if (!!$el.closest("#search").get(0)) {
+      let params ="/search-results?search="+ $("#nav-search-input").val();
+       router.push(params)
     }
   }
 
@@ -38,9 +45,24 @@ export default function NavbarContent(props) {
       console.log("password changed", password);
     }
   }
+
+  function wrapKeyUpHandler(event) {
+    var $el = $(event.target);
+    if (!!$el.closest("#nav-search-input").get(0)) {
+      if ($("#nav-search-input").val().length > 0) {
+        $("#close").show();
+      } else {
+        $("#close").hide();
+      }
+    }
+  }
   return (
     <>
-      <div onClick={wrapClickHandler} onChange={wrapChangeHandler}>
+      <div
+        onClick={wrapClickHandler}
+        onChange={wrapChangeHandler}
+        onKeyUp={wrapKeyUpHandler}
+      >
         {props.navbarContent}
       </div>
       {

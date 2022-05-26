@@ -66,16 +66,16 @@ function replace(node) {
     }
   }
 
-  if (supabase.auth.session()) {
-    const { href, style, ...props } = attribs;
-    if (props.class == "buttons-wrap") {
-      return (
-        <div className="buttons" id="logout-button">
-          Log Out
-        </div>
-      );
-    }
-  }
+  // if (supabase.auth.session()) {
+  //   const { href, style, ...props } = attribs;
+  //   if (props.class == "buttons-wrap") {
+  //     return (
+  //       <div className="buttons" id="logout-button">
+  //         Log Out
+  //       </div>
+  //     );
+  //   }
+  // }
 }
 const parseOptions = { replace };
 
