@@ -9,6 +9,10 @@ module.exports = {
   async rewrites() {
     return [
       {
+        source: '/plans',
+        destination: '/membership/plans',
+      },
+      {
         source: '/:slug',
         destination: 'https://drawkit-v2.webflow.io/:slug',
       },
@@ -16,6 +20,13 @@ module.exports = {
         source: '/blog/:slug',
         destination: 'https://drawkit-v2.webflow.io/blog/:slug',
       },
+      
     ]
   },
+
+
+    eslint: {
+      ignoreDuringBuilds: true,
+    },
+  
 }

@@ -6,6 +6,8 @@ import React, { useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
 import Router from "next/router";
+import $ from "jquery";
+
 
 const supabaseSignOut = async (email, password) => {
   const { error } = await supabase.auth.signOut();
@@ -38,11 +40,9 @@ export default function NavbarContent(props) {
     var $el = $(event.target);
     if (!!$el.closest("#d-signin-email").get(0)) {
       setEmail($el.closest("#d-signin-email").val());
-      console.log("password changed", email);
     }
     if (!!$el.closest("#d-signin-pass").get(0)) {
       setPassword($el.closest("#d-signin-pass").val());
-      console.log("password changed", password);
     }
   }
 
@@ -65,9 +65,6 @@ export default function NavbarContent(props) {
       >
         {props.navbarContent}
       </div>
-      {
-        // parseHtml(props.navDrop)
-      }
     </>
   );
 }

@@ -7,8 +7,8 @@ import Link from "next/link";
 import { supabase } from "../utils/supabaseClient";
 import NavbarContent from "./navbar";
 import Script from "next/script";
+import $ from "jquery";
 
-console.log(supabase.auth.session());
 function isUrlInternal(link) {
   if (
     !link ||
@@ -25,6 +25,9 @@ function isUrlInternal(link) {
 // Replaces DOM nodes with React components
 function replace(node) {
   const attribs = node.attribs || {};
+  if (attribs.hasOwnProperty('class')) {
+    attribs['className'] = attribs['class'];
+    }
 
   // Replace links with Next links
   if (node.name === `a`) {
@@ -83,12 +86,13 @@ export default function Home(props) {
   let [navBar, setnavbar] = useState(props.navBar);
   let [headContent, setheadContent] = useState(props.headContent);
   let [mainWrap, setmainWrap] = useState(props.mainWrap);
+  let [supportScripts, setsupportScripts] = useState(props.supportScripts);
   return (
     <>
       {parseHtml(headContent, parseOptions)}
       <NavbarContent navbarContent={parseHtml(navBar, parseOptions)} />
       <MainWrapper mainWrap={mainWrap} />
-      {parseHtml(props.supportScripts, parseOptions)}
+      {parseHtml(supportScripts, parseOptions)}
     </>
   );
 }
@@ -113,7 +117,6 @@ export async function getStaticProps() {
     .map((m) => `<Script type="text/javascript" src="${m}"></Script>`)
     .join("")
     .toString();
-
   const navBar = $(`.navbar`).html();
   const mainWrap = $(`.main-wrapper`).html();
   const headContent = $(`head`).html();

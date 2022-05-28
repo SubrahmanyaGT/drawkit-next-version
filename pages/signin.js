@@ -44,11 +44,9 @@ export default function Home(props) {
     var $el = $(event.target);
     if (!!$el.closest("#d-signin-email").get(0)) {
       setEmail($el.closest("#d-signin-email").val());
-      console.log("password changed", email);
     }
     if (!!$el.closest("#d-signin-pass").get(0)) {
       setPassword($el.closest("#d-signin-pass").val());
-      console.log("password changed", password);
     }
   }
   return (
