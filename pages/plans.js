@@ -2,26 +2,29 @@ import Head from "next/head";
 import Link from "next/link";
 import parseHtml, { domToReact } from "html-react-parser";
 import get from "lodash/get";
-import React, { useState } from "react";
-import { supabase } from "../../utils/supabaseClient";
+import { supabase } from "../utils/supabaseClient";
 import Script from "next/script";
 import { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
-
+import { useRouter } from 'next/router'
+import NavbarContent from "./navbar";
 
 export default function Plans(props) {
+const router = useRouter()
 
   function wrapClickHandler(event) {
     var $el = $(event.target);
     if (!!$el.closest("#subscribe").get(0)) {
-     
+        fetch('/api/strip').then((response) => response.json()).then((data) => {router.push(data.session.url)})
+      console.log("subscribe");
+
     }
-    
   }
 
   return (
     <>
       <div onClick={wrapClickHandler}>
+        <NavbarContent navbarContent={parseHtml(props.navbarContent)}/>
         {parseHtml(props.headContent)}
 
         {parseHtml(props.bodyContent)}
@@ -45,13 +48,13 @@ export async function getStaticProps({ context }) {
 
   //   $('.navlink').addClass('title').html()
   const bodyContent = $(`.main-wrapper`).html();
-  //   const navDrop=$('.nav-dropdown-wrapper').html();
+    const navbarContent=$('.navbar').html();
   const headContent = $(`head`).html();
   return {
     props: {
       bodyContent,
       headContent,
-      //   navDrop,
+      navbarContent
     },
     revalidate: 3,
   };

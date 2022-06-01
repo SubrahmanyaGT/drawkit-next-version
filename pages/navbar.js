@@ -8,7 +8,6 @@ import { useRouter } from "next/router";
 import Router from "next/router";
 import $ from "jquery";
 
-
 const supabaseSignOut = async (email, password) => {
   const { error } = await supabase.auth.signOut();
   if (!error) {
@@ -22,17 +21,18 @@ export default function NavbarContent(props) {
   const router = useRouter();
   function wrapClickHandler(event) {
     var $el = $(event.target);
-    if (!!$el.closest("#logout-button").get(0)) {
+    if (!!$el.closest("#d-nav-signout").get(0)) {
+      event.preventDefault();
       supabaseSignOut();
     }
 
     if (!!$el.closest("#search-close").get(0)) {
       $("#nav-search-input").val("");
-      $("#close").hide(); 
+      $("#close").hide();
     }
     if (!!$el.closest("#search").get(0)) {
-      let params ="/search-results?search="+ $("#nav-search-input").val();
-       router.push(params)
+      let params = "/search-results?search=" + $("#nav-search-input").val();
+      router.push(params);
     }
   }
 
@@ -57,7 +57,7 @@ export default function NavbarContent(props) {
     }
   }
   return (
-    <>
+  
       <div
         onClick={wrapClickHandler}
         onChange={wrapChangeHandler}
@@ -65,6 +65,6 @@ export default function NavbarContent(props) {
       >
         {props.navbarContent}
       </div>
-    </>
+
   );
 }

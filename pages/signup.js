@@ -38,8 +38,9 @@ export default function Home(props) {
   async function wrapClickHandler(event) {
     var $el = $(event.target);
     if (!!$el.closest("#signup").get(0)) {
+      console.log(email, password);
       await supabaseSignUp(email, password).then((data) => {
-        if(data){
+        if(!data.error){
           router.push('/')
       }
       })
@@ -54,21 +55,15 @@ export default function Home(props) {
     var $el = $(event.target);
     if (!!$el.closest("#d-signup-email").get(0)) {
       setEmail($el.closest("#d-signup-email").val());
+      console.log('email',email);
     }
     if (!!$el.closest("#d-signup-pass").get(0)) {
       setPassword($el.closest("#d-signup-pass").val());
       console.log("password changed", password);
     }
 
-    // signIn data changed
-    if (!!$el.closest("#d-signin-email").get(0)) {
-      setPassword($el.closest("#d-signin-email").val());
-      console.log("password changed", password);
-    }
-    if (!!$el.closest("#d-signin-pass").get(0)) {
-      setPassword($el.closest("#Password").val());
-      console.log("password changed", password);
-    }
+   
+    
   }
   return (
     <>

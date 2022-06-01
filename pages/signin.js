@@ -10,11 +10,17 @@ import Script from 'next/script'
 
 
 const supabaseSignIn = async (email, password) => {
+  console.log(email, password);
   const { user, session, error } = await supabase.auth.signIn({
     email: email,
     password: password,
   });
-  return session;
+  if (!error) {
+    return true;
+  }
+  else {
+    return false;
+  }
 };
 
 async function signInWithGoogle() {
@@ -23,18 +29,19 @@ async function signInWithGoogle() {
   });
 }
 
-export default function Home(props) {
+export default  function Home(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-  function wrapClickHandler(event) {
+  async function wrapClickHandler(event) {
     var $el = $(event.target);
     if (!!$el.closest("#d-signin-google").get(0)) {
       signInWithGoogle();
     }
-    if (!!$el.closest("#d-signin-button").get(0)) {
+    if (!!$el.closest("#signin").get(0)) {
       event.preventDefault();
-      if (!!supabaseSignIn(email, password)) {
+      if (await supabaseSignIn(email, password)) {
+        console.log( await supabaseSignIn(email, password));
         router.push("/");
       }
     }

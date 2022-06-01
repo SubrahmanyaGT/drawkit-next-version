@@ -71,18 +71,14 @@ const session = await stripe.checkout.sessions.create({
     mode: 'subscription',
     line_items: [
       {
-        price: 'price_1KUTf8SE7JJDuv9XiNDADS1i',
-        // For metered billing, do not pass quantity
+        price: 'price_1L5DdySJgRJkBQqsN61ybzli',
         quantity: 1,
       },
     
     ],
-    customer:'cus_LmiJLr2we6I8Hn',
-    // {CHECKOUT_SESSION_ID} is a string literal; do not change it!
-    // the actual Session ID is returned in the query parameter when your customer
-    // is redirected to the success page.
-    success_url: 'https://example.com/success.html?session_id={CHECKOUT_SESSION_ID}',
-    cancel_url: 'https://example.com/canceled.html',
+    customer:'cus_Lmn872PgD8MR0t',
+    success_url: 'http://localhost/payment-successful',
+    cancel_url: 'http://localhost/plans',
   });
   res.status(200).json({ session })
 }

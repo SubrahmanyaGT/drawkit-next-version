@@ -90,8 +90,8 @@ const Illustrations = (props) => {
   
   return (
     <div>
-      ...slug
       {parseHtml(props.headContent,parseOptions)}
+      {parseHtml(props.navbarContent,parseOptions)}
 
       {parseHtml(props.bodyContent,parseOptions)}
      
@@ -106,6 +106,7 @@ export async function getStaticPaths() {
       { params: { slug:["illustration-types" ,"2d" ]} },
       { params: { slug:["illustration-types" ,"all" ]} },
       { params: { slug:["illustration-types" ,"3d" ]} },
+      { params: { slug:["illustration-types" ,"icons" ]} },
       { params: { slug:["illustration-types" ,"mockups" ]} },
     ],
     fallback: true, // false or 'blocking'
@@ -135,11 +136,12 @@ export const getStaticProps = async (paths) => {
 
   const bodyContent = $(`.main-wrapper`).html();
   const headContent = $(`head`).html();
+  const navbarContent = $(`.navbar`).html();
   return {
     props: {
       bodyContent,
       headContent,
-      //   navDrop,
+      navbarContent,
     },
     revalidate: 3,  
   };

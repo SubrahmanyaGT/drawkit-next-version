@@ -1,6 +1,6 @@
 // import { prop } from "cheerio/lib/api/attributes";
 import parseHtml, { domToReact } from "html-react-parser";
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import MainWrapper from "./mainwrapper";
 import get from "lodash/get";
 import Link from "next/link";
@@ -8,6 +8,8 @@ import { supabase } from "../utils/supabaseClient";
 import NavbarContent from "./navbar";
 import Script from "next/script";
 import $ from "jquery";
+import { Head } from "next/document";
+
 
 function isUrlInternal(link) {
   if (
@@ -33,7 +35,22 @@ function replace(node) {
   if (node.name === `a`) {
     const { href, style, ...props } = attribs;
     // 
-    if (!style) {
+    if (!style && href) {
+      if(props.class.includes("upgrade-plan-link")){
+        if(node.children[2])
+        // console.log(node.children[2].children[0].data);
+        return (
+          <Link href={href}>
+            <a {...props}>
+              {!!node.children &&
+                !!node.children.length &&
+                domToReact(node.children, parseOptions)}
+                {/* Download */}
+            </a>
+            
+          </Link>
+        );
+      }
       return (
         <Link href={href}>
           <a {...props}>
@@ -44,15 +61,9 @@ function replace(node) {
         </Link>
       );
     }
-    return (
-      <Link href={href}>
-        <a {...props} href={href} css={style}>
-          {!!node.children &&
-            !!node.children.length &&
-            domToReact(node.children, parseOptions)}
-        </a>
-      </Link>
-    );
+   if(href){
+
+   }
   }
 
   // Make Google Fonts scripts work
@@ -68,12 +79,13 @@ function replace(node) {
       );
     }
   }
-
-  // if (supabase.auth.session()) {
-  //   const { href, style, ...props } = attribs;
-  //   if (props.class == "buttons-wrap") {
+  const { href, style, ...props } = attribs;
+  // if (props.className) {
+    
+  //   console.log(props.className.includes('illustration-heading')?props.className:'');
+  //   if (props.class.includes('illustration-heading')) {
   //     return (
-  //       <div className="buttons" id="logout-button">
+  //       <div className="buttons" >
   //         Log Out
   //       </div>
   //     );
@@ -87,11 +99,21 @@ export default function Home(props) {
   let [headContent, setheadContent] = useState(props.headContent);
   let [mainWrap, setmainWrap] = useState(props.mainWrap);
   let [supportScripts, setsupportScripts] = useState(props.supportScripts);
+   console.log(props.supportScripts);
+  
+  useEffect(()=>{
+    if (supabase.auth.session()) {
+
+      setnavbar(props.LoggedinnavBar);
+      }
+  },[])
+  
   return (
     <>
+    
       {parseHtml(headContent, parseOptions)}
-      <NavbarContent navbarContent={parseHtml(navBar, parseOptions)} />
-      <MainWrapper mainWrap={mainWrap} />
+      <NavbarContent navbarContent={parseHtml(navBar, parseOptions) } scripts={parseHtml(supportScripts, parseOptions)}/>
+      <MainWrapper mainWrap={parseHtml(mainWrap,parseOptions)} />
       {parseHtml(supportScripts, parseOptions)}
     </>
   );
@@ -108,7 +130,7 @@ export async function getStaticProps() {
   const $ = cheerio.load(html);
 
   const supportScripts = Object.keys($(`script`))
-    .map((key) => {
+    .map((key) => { 
       if ($(`script`)[key].attribs) return $(`script`)[key].attribs.src;
     })
     .filter((src) => {
@@ -118,6 +140,7 @@ export async function getStaticProps() {
     .join("")
     .toString();
   const navBar = $(`.navbar`).html();
+  const LoggedinnavBar = $(`.logged-in-user-nav`).html();
   const mainWrap = $(`.main-wrapper`).html();
   const headContent = $(`head`).html();
 
@@ -127,6 +150,7 @@ export async function getStaticProps() {
       supportScripts: supportScripts,
       navBar: navBar,
       mainWrap: mainWrap,
+      LoggedinnavBar:LoggedinnavBar,
     },
   };
 }
