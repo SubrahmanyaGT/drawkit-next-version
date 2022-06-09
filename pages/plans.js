@@ -16,7 +16,7 @@ const router = useRouter()
     var $el = $(event.target);
     if (!!$el.closest("#subscribe").get(0)) {
         fetch('/api/strip').then((response) => response.json()).then((data) => {router.push(data.session.url)})
-      console.log("subscribe");
+      // console.log("subscribe");
 
     }
   }

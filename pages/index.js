@@ -1,6 +1,6 @@
 // import { prop } from "cheerio/lib/api/attributes";
 import parseHtml, { domToReact } from "html-react-parser";
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import MainWrapper from "./mainwrapper";
 import get from "lodash/get";
 import Link from "next/link";
@@ -9,7 +9,6 @@ import NavbarContent from "./navbar";
 import Script from "next/script";
 import $ from "jquery";
 import { Head } from "next/document";
-
 
 function isUrlInternal(link) {
   if (
@@ -27,30 +26,29 @@ function isUrlInternal(link) {
 // Replaces DOM nodes with React components
 function replace(node) {
   const attribs = node.attribs || {};
-  if (attribs.hasOwnProperty('class')) {
-    attribs['className'] = attribs['class'];
-    }
+  if (attribs.hasOwnProperty("class")) {
+    attribs["className"] = attribs["class"];
+  }
 
   // Replace links with Next links
   if (node.name === `a`) {
     const { href, style, ...props } = attribs;
-    // 
+    //
     if (!style && href) {
-      if(props.class.includes("upgrade-plan-link")){
-        if(node.children[2])
-        // console.log(node.children[2].children[0].data);
-        return (
-          <Link href={href}>
-            <a {...props}>
-              {!!node.children &&
-                !!node.children.length &&
-                domToReact(node.children, parseOptions)}
-                {/* Download */}
-            </a>
-            
-          </Link>
-        );
-      }
+      // if(props.class.includes("upgrade-plan-link")){
+      // if(node.children[2])
+      // console.log(node.children[2].children[0].data);
+      return (
+        <Link href={href}>
+          <a {...props}>
+            {!!node.children &&
+              !!node.children.length &&
+              domToReact(node.children, parseOptions)}
+            {/* Download */}
+          </a>
+        </Link>
+      );
+      // }
       return (
         <Link href={href}>
           <a {...props}>
@@ -61,9 +59,8 @@ function replace(node) {
         </Link>
       );
     }
-   if(href){
-
-   }
+    if (href) {
+    }
   }
 
   // Make Google Fonts scripts work
@@ -81,7 +78,7 @@ function replace(node) {
   }
   const { href, style, ...props } = attribs;
   // if (props.className) {
-    
+
   //   console.log(props.className.includes('illustration-heading')?props.className:'');
   //   if (props.class.includes('illustration-heading')) {
   //     return (
@@ -99,22 +96,26 @@ export default function Home(props) {
   let [headContent, setheadContent] = useState(props.headContent);
   let [mainWrap, setmainWrap] = useState(props.mainWrap);
   let [supportScripts, setsupportScripts] = useState(props.supportScripts);
-   console.log(props.supportScripts);
-  
-  useEffect(()=>{
-    if (supabase.auth.session()) {
+  //  console.log(props.supportScripts);
 
-      setnavbar(props.LoggedinnavBar);
-      }
-  },[])
-  
+  // useEffect(()=>{
+  //   if (supabase.auth.session()) {
+
+  //     setnavbar(props.LoggedinnavBar);
+  //     }
+  // },[])
+
   return (
     <>
-    
       {parseHtml(headContent, parseOptions)}
-      <NavbarContent navbarContent={parseHtml(navBar, parseOptions) } scripts={parseHtml(supportScripts, parseOptions)}/>
-      <MainWrapper mainWrap={parseHtml(mainWrap,parseOptions)} />
+      {parseHtml(props.globalStyles, parseOptions)}
+      <NavbarContent
+        navbarContent={parseHtml(navBar, parseOptions)}
+        scripts={parseHtml(supportScripts, parseOptions)}
+      />
+      <MainWrapper mainWrap={parseHtml(props.mainWrap, parseOptions)} />
       {parseHtml(supportScripts, parseOptions)}
+      {parseHtml(props.footer, parseOptions)}
     </>
   );
 }
@@ -130,7 +131,7 @@ export async function getStaticProps() {
   const $ = cheerio.load(html);
 
   const supportScripts = Object.keys($(`script`))
-    .map((key) => { 
+    .map((key) => {
       if ($(`script`)[key].attribs) return $(`script`)[key].attribs.src;
     })
     .filter((src) => {
@@ -139,18 +140,22 @@ export async function getStaticProps() {
     .map((m) => `<Script type="text/javascript" src="${m}"></Script>`)
     .join("")
     .toString();
-  const navBar = $(`.navbar`).html();
-  const LoggedinnavBar = $(`.logged-in-user-nav`).html();
+  const navBar = $(".navbar").html();
+  const globalStyles = $(".global-styles").html();
+  // const LoggedinnavBar = $(`.logged-in-user-nav`).html();
   const mainWrap = $(`.main-wrapper`).html();
   const headContent = $(`head`).html();
-
+  // const footer = $(`.footer`).html();
+  console.log("return");
   return {
     props: {
       headContent: headContent,
+      globalStyles: globalStyles,
       supportScripts: supportScripts,
       navBar: navBar,
       mainWrap: mainWrap,
-      LoggedinnavBar:LoggedinnavBar,
+      LoggedinnavBar: "LoggedinnavBar",
+      footer: "footer",
     },
   };
 }

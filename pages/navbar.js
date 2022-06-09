@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import parseHtml, { domToReact } from "html-react-parser";
 import get from "lodash/get";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
 import Router from "next/router";
@@ -18,6 +18,9 @@ const supabaseSignOut = async (email, password) => {
 export default function NavbarContent(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  useEffect(()=>{
+    console.log(document.querySelector('#navbar').classList.add('navbar','w-nav'))
+  },[])
   const router = useRouter();
   function wrapClickHandler(event) {
     var $el = $(event.target);
@@ -63,8 +66,11 @@ export default function NavbarContent(props) {
         onChange={wrapChangeHandler}
         onKeyUp={wrapKeyUpHandler}
       >
+        {/* <div data-w-id="e290c944-0e4b-a1b3-60d9-2699f5eb0c35" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar w-nav"> */}
+        <div data-w-id="e290c944-0e4b-a1b3-60d9-2699f5eb0c35" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" id="navbar"> 
         {props.navbarContent}
-      </div>
+        </div>
+       </div>
 
   );
 }

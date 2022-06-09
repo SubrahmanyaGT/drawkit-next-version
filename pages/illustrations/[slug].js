@@ -4,34 +4,45 @@ import Link from "next/link";
 import parseHtml, { domToReact } from "html-react-parser";
 import get from "lodash/get";
 import React from "react";
+import Script from "next/script";
+import { supabase } from "../../utils/supabaseClient";
 
-const Webflow = require('webflow-api')
-const webflow = new Webflow({ token: '900efc1ba158f8be74765be50e9e36de1cc980e13a5ce118a317ee80667f9d0c'})
-const items = webflow.items({ collectionId: '628c91a615d540211b2031aa' });
 
+const downloadSupabase=async ()=>{
+  const { data, error } = await supabase
+  .storage
+  .from('illustrations-small-png')
+  .download('test.jpeg')
+}
 
 const Illustrations = (props) => {
-  // const router = useRouter()
-  // const { slug } = router.query
+  async function wrapClickHandler(event) {
+    var $el = $(event.target);
+    
+    if (!!$el.closest(".upgrade-plan").get(0)) {
+      event.preventDefault();
+      if (await downloadSupabase()) {
+        // router.push("/");
+      }
+    }
+  }
+
   return (
-    <div>
+    <div onClick={wrapClickHandler}>
+      <span style={{fontSize:"10px", position: "fixed"}}>Illustrations/[slug]</span>
       {parseHtml(props.navBar)}
       {parseHtml(props.headContent)}
       {parseHtml(props.bodyContent)}
+      <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
     </div>
   );
 };
 export async function getStaticPaths() {
-  let it=await items.items;
-//  let A= await items.items.map(item =>({ params: { slug: item.slug } }))
+  // let it=await items.items;
+  //  let A= await items.items.map(item =>({ params: { slug: item.slug } }))
   return {
-    paths: [
-      { params: { slug: "love-family-illustrations" } },
-      { params: { slug: "food-delivery-illustrations-animations" } },
-      { params: { slug: "product-project-managers-illustrations" } },
-      { params: { slug: "fathers-family-illustrations" } },
-    ],
-    fallback: true, // false or 'blocking'
+    paths: [{ params: { slug: "love-family-illustrations" } }],
+    fallback: "blocking", // false or 'blocking'
   };
 }
 
@@ -40,12 +51,21 @@ export const getStaticProps = async (paths) => {
 
   const cheerio = await import(`cheerio`);
   const axios = (await import(`axios`)).default;
-
-  let res = await axios(
-    `https://drawkit-v2.webflow.io/illustrations/${paths.params.slug}`
-  ).catch((err) => {
-    console.error(err);
-  });
+  let illTypes = ["2d", "3d", "animations", "icons", "all", "mockups"];
+  let res;
+  if (illTypes.includes(paths.params.slug)) {
+    res = await axios(
+      `https://drawkit-v2.webflow.io/illustration-types/${paths.params.slug}`
+    ).catch((err) => {
+      console.error(err);
+    });
+  } else {
+    res = await axios(
+      `https://drawkit-v2.webflow.io/illustrations/${paths.params.slug}`
+    ).catch((err) => {
+      console.error(err);
+    });
+  }
   const html = res.data;
 
   const $ = cheerio.load(html);

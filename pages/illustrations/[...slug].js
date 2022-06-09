@@ -74,22 +74,12 @@ const Illustrations = (props) => {
         );
       }
     }
-  
-    // if (supabase.auth.session()) {
-    //   const { href, style, ...props } = attribs;
-    //   if (props.class == "buttons-wrap") {
-    //     return (
-    //       <div className="buttons" id="logout-button">
-    //         Log Out
-    //       </div>
-    //     );
-    //   }
-    // }
   }
   const parseOptions = { replace };
   
   return (
     <div>
+      ...slug
       {parseHtml(props.headContent,parseOptions)}
       {parseHtml(props.navbarContent,parseOptions)}
 
@@ -109,7 +99,7 @@ export async function getStaticPaths() {
       { params: { slug:["illustration-types" ,"icons" ]} },
       { params: { slug:["illustration-types" ,"mockups" ]} },
     ],
-    fallback: true, // false or 'blocking'
+    fallback: 'blocking', // false or 'blocking'
   };
 }
 

@@ -2,12 +2,10 @@ import Head from "next/head";
 import Link from "next/link";
 import parseHtml, { domToReact } from "html-react-parser";
 import get from "lodash/get";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
-import Script from 'next/script'
-
-
+import Script from "next/script";
 
 const supabaseSignIn = async (email, password) => {
   console.log(email, password);
@@ -17,8 +15,7 @@ const supabaseSignIn = async (email, password) => {
   });
   if (!error) {
     return true;
-  }
-  else {
+  } else {
     return false;
   }
 };
@@ -29,10 +26,27 @@ async function signInWithGoogle() {
   });
 }
 
-export default  function Home(props) {
+export default function Home(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [valEmail, setValEmail] = useState(false);
+  const [valPassword, setValPassword] = useState(false);
+
   const router = useRouter();
+
+  useEffect(() => {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      setValEmail(true);
+    } else {
+      setValEmail(false);
+    }
+    if (password.length >= 8) {
+      setValPassword(true);
+    } else {
+      setValPassword(false);
+    }
+  }, [email, password]);
+
   async function wrapClickHandler(event) {
     var $el = $(event.target);
     if (!!$el.closest("#d-signin-google").get(0)) {
@@ -40,9 +54,13 @@ export default  function Home(props) {
     }
     if (!!$el.closest("#signin").get(0)) {
       event.preventDefault();
-      if (await supabaseSignIn(email, password)) {
-        console.log( await supabaseSignIn(email, password));
+      // validateEmailPassword();
+      if ((await supabaseSignIn(email, password)) && valEmail && valPassword) {
+        console.log(await supabaseSignIn(email, password));
         router.push("/");
+      }
+      else{
+        $(".validator-message").text("Invalid Signin Attempt");
       }
     }
   }
@@ -51,9 +69,28 @@ export default  function Home(props) {
     var $el = $(event.target);
     if (!!$el.closest("#d-signin-email").get(0)) {
       setEmail($el.closest("#d-signin-email").val());
+      $(".validator-message").text("");
+
     }
     if (!!$el.closest("#d-signin-pass").get(0)) {
       setPassword($el.closest("#d-signin-pass").val());
+      $(".validator-message").text("");
+
+    }
+  }
+
+  function validateEmailPassword() {
+    if (valPassword) {
+      if (valEmail) $(".validator-message").text("");
+    } else {
+      $(".validator-message").text("Invalid input for Email or Password");
+    }
+    if (valEmail) {
+      $("#d-signin-email").parent().css("border", "1px solid #ccd1d6");
+      if (valPassword) $(".validator-message").text("");
+    } else {
+      $("#d-signin-email").parent().css("border", "1px solid red");
+      $(".validator-message").text("Invalid input for Email or Password");
     }
   }
   return (

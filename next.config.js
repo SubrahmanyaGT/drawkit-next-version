@@ -8,7 +8,10 @@
 module.exports = {
   async rewrites() {
     return [
-      
+      // {
+      //   source: '/:slug',
+      //   destination: '/illustrations/:slug',
+      // },
       {
         source: '/:slug',
         destination: 'https://drawkit-v2.webflow.io/:slug',
@@ -18,6 +21,15 @@ module.exports = {
         destination: 'https://drawkit-v2.webflow.io/blog/:slug',
       },
       
+    ]
+  },
+  async redirects() {
+    return [
+      {
+        source: '/illustration-types/:slug',
+        destination: '/illustrations/:slug',
+        permanent: false,
+      },
     ]
   },
 
