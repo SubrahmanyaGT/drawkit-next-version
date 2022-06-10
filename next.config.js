@@ -35,6 +35,11 @@ module.exports = {
         destination: '/illustrations/:slug',
         permanent: false,
       },
+      {
+        source: '/single-illustrations/:slug',
+        destination: '/illustrations/:slug',
+        permanent: false,
+      },
     ]
   },
 

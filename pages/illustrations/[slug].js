@@ -73,12 +73,22 @@ export const getServerSideProps = async (paths) => {
     ).catch((err) => {
       console.error(err);
     });
-  } else {
-    res = await axios(
-      `https://drawkit-v2.webflow.io/illustrations/${paths.params.slug}`
-    ).catch((err) => {
-      console.error(err);
-    });
+  }
+  else {
+    
+      res = await axios(
+        `https://drawkit-v2.webflow.io/illustrations/${paths.params.slug}`
+      ).catch((err) => {
+        console.error(err);
+      });
+    
+      if(!res){res = await axios(
+        `https://drawkit-v2.webflow.io/single-illustrations/${paths.params.slug}`
+      ).catch((err) => {
+        console.error(err);
+      });}
+    
+   
   }
   if (res) {
     const html = res.data;

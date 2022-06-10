@@ -31,7 +31,7 @@ const router = useRouter()
       </div>
       <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
     </>
-  );
+  );  
 }
 
 export async function getStaticProps({ context }) {

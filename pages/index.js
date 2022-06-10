@@ -10,7 +10,8 @@ import Script from "next/script";
 import $ from "jquery";
 import Head from "next/head";
 import { prop } from "cherio/lib/api/attributes";
-
+import dynamic from "next/dynamic";
+// const NavbarContent=dynamic(() => import("./navbar"), { ssr: false })
 function isUrlInternal(link) {
   if (
     !link ||
@@ -117,6 +118,7 @@ export default function Home(props) {
       <NavbarContent
         navbarContent={parseHtml(navBar, parseOptions)}
         scripts={parseHtml(supportScripts, parseOptions)}
+        
       />
 
       <MainWrapper mainWrap={parseHtml(hideLogin, parseOptions)} />
@@ -149,7 +151,7 @@ export async function getStaticProps() {
     .map((m) => `<Script type="text/javascript" src="${m}"></Script>`)
     .join("")
     .toString();
-  const navBar = $(".navbar").html();
+  const navBar = $(".nav-access").html();
   const globalStyles = $(".global-styles").html();
   const LoggedinnavBar = $(`.logged-in-user-nav`).html();
   const hideLogin = $(`.hide-login`).html();

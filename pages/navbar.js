@@ -18,9 +18,9 @@ const supabaseSignOut = async (email, password) => {
 export default function NavbarContent(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  useEffect(()=>{
-    console.log(document.querySelector('#navbar').classList.add('navbar','w-nav'))
-  },[])
+  useEffect(() => {
+    // console.log(document.querySelector('#navbar').classList.add('navbar','w-nav'))
+  }, []);
   const router = useRouter();
   function wrapClickHandler(event) {
     var $el = $(event.target);
@@ -60,17 +60,17 @@ export default function NavbarContent(props) {
     }
   }
   return (
-  
-      <div
-        onClick={wrapClickHandler}
-        onChange={wrapChangeHandler}
-        onKeyUp={wrapKeyUpHandler}
-      >
-        {/* <div data-w-id="e290c944-0e4b-a1b3-60d9-2699f5eb0c35" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar w-nav"> */}
-        <div data-w-id="e290c944-0e4b-a1b3-60d9-2699f5eb0c35" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" id="navbar"> 
-        {props.navbarContent}
-        </div>
-       </div>
-
+    <div
+      onClick={wrapClickHandler}
+      onChange={wrapChangeHandler}
+      onKeyUp={wrapKeyUpHandler}
+    >
+      {/* <div data-w-id="e290c944-0e4b-a1b3-60d9-2699f5eb0c35" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar w-nav"> */}
+      <div suppressHydrationWarning={true}>
+        
+          <div class="navwrapper">{props.navbarContent}</div>
+        
+      </div>
+    </div>
   );
 }
