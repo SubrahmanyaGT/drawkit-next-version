@@ -114,7 +114,11 @@ export default function Home(props) {
         {parseHtml(headContent, parseOptions)}
         {parseHtml(props.globalStyles, parseOptions)}
       </Head>
-      <NavbarContent
+      <div className="product-des" dangerouslySetInnerHTML={{ __html: navBar }}>
+    {
+        console.log(parseHtml(navBar, parseOptions))
+    }
+      {/* <NavbarContent
         navbarContent={parseHtml(navBar, parseOptions)}
         scripts={parseHtml(supportScripts, parseOptions)}
       />
@@ -124,7 +128,8 @@ export default function Home(props) {
       <MainWrapper mainWrap={parseHtml(props.premiumHide, parseOptions)} />
       <MainWrapper mainWrap={parseHtml(props.allShow, parseOptions)} />
       {parseHtml(props.footer, parseOptions)}
-      {parseHtml(supportScripts, parseOptions)}
+      {parseHtml(supportScripts, parseOptions)} */}
+      </div>
     </>
   );
 }
@@ -149,7 +154,7 @@ export async function getStaticProps() {
     .map((m) => `<Script type="text/javascript" src="${m}"></Script>`)
     .join("")
     .toString();
-  const navBar = $(".navbar").html();
+  const navBar = $("body").html();
   const globalStyles = $(".global-styles").html();
   const LoggedinnavBar = $(`.logged-in-user-nav`).html();
   const hideLogin = $(`.hide-login`).html();
