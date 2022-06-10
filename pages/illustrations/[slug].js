@@ -37,16 +37,16 @@ const Illustrations = (props) => {
     </div>
   );
 };
-export async function getStaticPaths() {
-  // let it=await items.items;
-  //  let A= await items.items.map(item =>({ params: { slug: item.slug } }))
-  return {
-    paths: [{ params: { slug: "" } }],
-    fallback: "blocking", // false or 'blocking'
-  };
-}
+// export async function getStaticPaths() {
+//   // let it=await items.items;
+//   //  let A= await items.items.map(item =>({ params: { slug: item.slug } }))
+//   return {
+//     paths: [{ params: { slug: "food-delivery-illustrations-animations" } }],
+//     fallback: true, // false or 'blocking'
+//   };
+// }
 
-export const getStaticProps = async (paths) => {
+export const getServerSideProps = async (paths) => {
   console.log(paths.params.slug);
 
   const cheerio = await import(`cheerio`);
@@ -92,11 +92,11 @@ export const getStaticProps = async (paths) => {
     const headContent = $(`head`).html();
     return {
       props: {
-        bodyContent,
-        headContent,
-        navBar,
+        bodyContent:bodyContent,
+        headContent:headContent,
+        navBar:navBar,
       },
-      revalidate: 3,
+      // revalidate: 3,
     };
   }
   else{
