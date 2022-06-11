@@ -89,6 +89,7 @@ const Illustrations = (props) => {
         <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
         {parseHtml(props.supportScripts, parseOptions)}
         {parseHtml(props.footer, parseOptions)}
+        {parseHtml(props.globalStyles, parseOptions)}
       </div>
     </>
   );
@@ -147,6 +148,7 @@ export const getServerSideProps = async (paths) => {
     //   const navDrop=$('.nav-dropdown-wrapper').html();
     const headContent = $(`head`).html();
     const footer = $(`.footer`).html();
+  const globalStyles = $(".global-styles").html();
 
     const supportScripts = Object.keys($(`script`))
       .map((key) => {
@@ -165,6 +167,7 @@ export const getServerSideProps = async (paths) => {
         navBar: navBar,
         supportScripts: supportScripts,
         footer: footer,
+        globalStyles:globalStyles,
       },
       // revalidate: 3,
     };

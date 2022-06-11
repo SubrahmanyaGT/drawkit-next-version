@@ -17,110 +17,6 @@ const myLoader = ({ src, width, quality }) => {
   return `${src}?w=${width}&q=${quality || 75}`;
 };
 // const NavbarContent=dynamic(() => import("./navbar"), { ssr: false })
-function isUrlInternal(link) {
-  if (
-    !link ||
-    link.indexOf(`https:`) === 0 ||
-    link.indexOf(`#`) === 0 ||
-    link.indexOf(`http`) === 0 ||
-    link.indexOf(`://`) === 0
-  ) {
-    return false;
-  }
-  return true;
-}
-
-// Replaces DOM nodes with React components
-function replace(node) {
-  const attribs = node.attribs || {};
-  if (attribs.hasOwnProperty("class")) {
-    attribs["className"] = attribs["class"];
-  }
-
-  // Replace links with Next links
-  if (node.name === `a`) {
-    const { href, style, ...props } = attribs;
-    //
-    if (!style && href) {
-      // if(props.class.includes("upgrade-plan-link")){
-      // if(node.children[2])
-      // console.log(node.children[2].children[0].data);
-      return (
-        <Link href={href}>
-          <a {...props}>
-            {!!node.children &&
-              !!node.children.length &&
-              domToReact(node.children, parseOptions)}
-            {/* Download */}
-          </a>
-        </Link>
-      );
-      // }
-      return (
-        <Link href={href}>
-          <a {...props}>
-            {!!node.children &&
-              !!node.children.length &&
-              domToReact(node.children, parseOptions)}
-          </a>
-        </Link>
-      );
-    }
-    if (href) {
-    }
-  }
-
-  // Make Google Fonts scripts work
-  if (node.name === `script`) {
-    let content = get(node, `children.0.data`, ``);
-
-    if (content && content.trim().indexOf(`WebFont.load(`) === 0) {
-      content = `setTimeout(function(){${content}}, 1)`;
-      return (
-        <script
-          {...attribs}
-          dangerouslySetInnerHTML={{ __html: content }}
-        ></script>
-      );
-    } else {
-      <Script
-        {...attribs}
-        dangerouslySetInnerHTML={{ __html: content }}
-        strategy="lazyOnload"
-      ></Script>;
-    }
-  }
-  const { href, style, ...props } = attribs;
-  // if (props.className) {
-
-  //   console.log(props.className.includes('illustration-heading')?props.className:'');
-  //   if (props.class.includes('illustration-heading')) {
-  //     return (
-  //       <div className="buttons" >
-  //         Log Out
-  //       </div>
-  //     );
-  //   }
-  // }
-
-  // if (node.name == "img") {
-  //   const { href, style, ...props } = attribs;
-  //   console.log(node);
-  //   return (
-  //     <div style={{position:"relative"}}  {...props}>
-  //       <Image
-  //         {...props}
-  //         loader={myLoader}
-  //         src={props.src}
-  //         alt={props.alt}
-  //         layout="fill"
-  //         objectFit="cover"
-  //       />
-  //     </div>
-  //   );
-  // }
-}
-const parseOptions = { replace };
 
 export default function Home(props) {
   let [headContent, setheadContent] = useState(props.headContent);
@@ -129,11 +25,151 @@ export default function Home(props) {
   let [blog, setBlog] = useState(props.showBlog);
   let [illusHead, setIllusHead] = useState(props.illustrationHead);
   let [illusHeadLogin, setIllusHeadLogin] = useState("");
-  let [showFree, setShowfree] = useState(props.showFree)
-  let [PremiumUser,setPremiumUser] = useState(true);
+  let [showFree, setShowfree] = useState(props.showFree);
+  let [PremiumUser, setPremiumUser] = useState(true);
   let [hideLogin, setHideLogin] = useState(props.hideLogin);
   let [supportScripts, setsupportScripts] = useState(props.supportScripts);
   //  console.log(props.supportScripts);
+  //................................................................................................................................//
+
+  function isUrlInternal(link) {
+    if (
+      !link ||
+      link.indexOf(`https:`) === 0 ||
+      link.indexOf(`#`) === 0 ||
+      link.indexOf(`http`) === 0 ||
+      link.indexOf(`://`) === 0
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  // Replaces DOM nodes with React components
+  function replace(node) {
+    const attribs = node.attribs || {};
+    if (attribs.hasOwnProperty("class")) {
+      attribs["className"] = attribs["class"];
+      delete attribs.class;
+    }
+
+    // Replace links with Next links
+    
+    if (node.name === `a`) {
+      const { href, style, ...props } = attribs;
+      if (!style && href) {
+        if (props.className) {
+          if (props.className.includes("upgrade-plan-link")) {
+            console.log(node.children[2].children[0].data);
+            
+            if (!supabase.auth.session() && false) {
+              // not sigedin user
+              return (
+                <Link href='/plans'>
+                  <a {...props}>
+                  <div className="upgrade-download">Upgrade Your Plan</div>
+                    {!!node.children &&
+                      !!node.children.length &&
+                      domToReact([node.children[1]], parseOptions)}
+                  </a>
+                </Link>
+              );
+            } else if (node.children[2].children[0].data=='Premium') {
+              return (
+                <Link href='/plans'>
+                  <a {...props}>
+                    <div className="upgrade-download">Upgrade Your Plan</div>
+                    {!!node.children &&
+                      !!node.children.length &&
+                      domToReact([node.children[1]], parseOptions)}
+                  </a>
+                </Link>
+              );
+            } else {
+              return (
+                <Link href={href}>
+                  <a {...props}>
+                    {!!node.children &&
+                      !!node.children.length &&
+                      domToReact(node.children, parseOptions)}
+                  </a>
+                </Link>
+              );
+            }        
+          }
+        }
+        // if(props.class.includes("upgrade-plan-link")){}
+        // if(node.children[2])
+        // console.log(node.children[2].children[0].data);
+        return (
+          <Link href={href}>
+            <a {...props}>
+              {!!node.children &&
+                !!node.children.length &&
+                domToReact(node.children, parseOptions)}
+              {/* Download */}
+            </a>
+          </Link>
+        );
+        // }
+      }
+      if (href) {
+      }
+    }
+
+    // Make Google Fonts scripts work
+    if (node.name === `script`) {
+      let content = get(node, `children.0.data`, ``);
+
+      if (content && content.trim().indexOf(`WebFont.load(`) === 0) {
+        content = `setTimeout(function(){${content}}, 1)`;
+        return (
+          <script
+            {...attribs}
+            dangerouslySetInnerHTML={{ __html: content }}
+          ></script>
+        );
+      } else {
+        <Script
+          {...attribs}
+          dangerouslySetInnerHTML={{ __html: content }}
+          strategy="lazyOnload"
+        ></Script>;
+      }
+    }
+    const { href, style, ...props } = attribs;
+    // if (props.className) {
+
+    //   console.log(props.className.includes('illustration-heading')?props.className:'');
+    //   if (props.class.includes('illustration-heading')) {
+    //     return (
+    //       <div className="buttons" >
+    //         Log Out
+    //       </div>
+    //     );
+    //   }
+    // }
+
+    // if (node.name == "img") {
+    //   const { href, style, ...props } = attribs;
+    //   console.log(node);
+    //   return (
+    //     <div style={{position:"relative"}}  {...props}>
+    //       <Image
+    //         {...props}
+    //         loader={myLoader}
+    //         src={props.src}
+    //         alt={props.alt}
+    //         layout="fill"
+    //         objectFit="cover"
+    //       />
+    //     </div>
+    //   );
+    // }
+  }
+  const parseOptions = { replace };
+
+  //..................................................................................................................................//
 
   useEffect(() => {
     window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8";
@@ -148,33 +184,32 @@ export default function Home(props) {
     if (!supabase.auth.session()) {
       console.log(supabase.auth.session());
       setHideLogin(props.hideLogin);
-      setBlog("")
+      setBlog("");
     } else {
       setHideLogin("");
       setBlog(props.showBlog);
       setIllusHead("");
       setnavbar(props.LoggedinnavBar);
       setIllusHeadLogin(props.illustrationHeadLogin);
-      if(PremiumUser==true) 
-      { setShowfree("");
-      
-    console.log("free user");
-    }
-    
-    }
+      if (PremiumUser == true) {
+        setShowfree("");
 
+        console.log("free user");
+      }
+    }
   }, []);
   return (
     <>
       <Head>
         {parseHtml(headContent, parseOptions)}
-      
+
         {parseHtml(supportScripts, parseOptions)}
       </Head>
-      <NavbarContent
-        navbarContent={parseHtml(navBar, parseOptions)}
-        scripts={parseHtml(supportScripts, parseOptions)}
-      />  
+      {/* <NavbarContent */}
+      {/* navbarContent= */}
+      {parseHtml(navBar, parseOptions)}
+      {/* scripts={parseHtml(supportScripts, parseOptions)}
+      />   */}
       <MainWrapper mainWrap={parseHtml(hideLogin, parseOptions)} />
       <MainWrapper mainWrap={parseHtml(illusHeadLogin, parseOptions)} />
       <MainWrapper mainWrap={parseHtml(illusHead, parseOptions)} />
@@ -222,12 +257,11 @@ export async function getServerSideProps() {
   const showFree = $(`.show-free`).html();
   const showcase = $(`.showcase`).html();
   const illustrationHeadLogin = $(`.after-login-heading`).html();
-  const illustrationHead = $('.before-login-heading').html();
-  const showBlog = $(`.show-blogs-login`).html()
+  const illustrationHead = $(".before-login-heading").html();
+  const showBlog = $(`.show-blogs-login`).html();
   const allShow = $(`.show-all`).html();
   const headContent = $(`head`).html();
   const footer = $(`.footer-access`).html();
-
 
   return {
     props: {
@@ -246,7 +280,6 @@ export async function getServerSideProps() {
       HomeIllustration: homeIllustration,
       showFree: showFree,
       allShow: allShow,
-
     },
   };
 }
