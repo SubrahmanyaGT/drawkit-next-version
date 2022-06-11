@@ -126,7 +126,11 @@ export default function Home(props) {
   let [headContent, setheadContent] = useState(props.headContent);
   let [navBar, setnavbar] = useState(props.navBar);
   let [auth, setAuth] = useState(supabase.auth.user());
-  let[blog,setBlog]=useState(props.showBlog)
+  let [blog, setBlog] = useState(props.showBlog);
+  let [illusHead, setIllusHead] = useState(props.illustrationHead);
+  let [illusHeadLogin, setIllusHeadLogin] = useState("");
+  let [showFree, setShowfree] = useState(props.showFree)
+  let [PremiumUser,setPremiumUser] = useState(true);
   let [hideLogin, setHideLogin] = useState(props.hideLogin);
   let [supportScripts, setsupportScripts] = useState(props.supportScripts);
   //  console.log(props.supportScripts);
@@ -140,6 +144,7 @@ export default function Home(props) {
       d.getElementsByTagName("head")[0].appendChild(s);
     })(document);
     console.log("in index");
+
     if (!supabase.auth.session()) {
       console.log(supabase.auth.session());
       setHideLogin(props.hideLogin);
@@ -147,32 +152,44 @@ export default function Home(props) {
     } else {
       setHideLogin("");
       setBlog(props.showBlog);
+      setIllusHead("");
+      setnavbar(props.LoggedinnavBar);
+      setIllusHeadLogin(props.illustrationHeadLogin);
+      if(PremiumUser==true) 
+      { setShowfree("");
       
+    console.log("free user");
     }
+    
+    }
+
   }, []);
   return (
     <>
       <Head>
         {parseHtml(headContent, parseOptions)}
-        {parseHtml(props.globalStyles, parseOptions)}
+      
         {parseHtml(supportScripts, parseOptions)}
       </Head>
       <NavbarContent
         navbarContent={parseHtml(navBar, parseOptions)}
         scripts={parseHtml(supportScripts, parseOptions)}
-      />
-      {<MainWrapper mainWrap={parseHtml(hideLogin, parseOptions)} />}
+      />  
+      <MainWrapper mainWrap={parseHtml(hideLogin, parseOptions)} />
+      <MainWrapper mainWrap={parseHtml(illusHeadLogin, parseOptions)} />
+      <MainWrapper mainWrap={parseHtml(illusHead, parseOptions)} />
       <MainWrapper mainWrap={parseHtml(props.HomeIllustration, parseOptions)} />
-      {/* <MainWrapper mainWrap={parseHtml(props.showFree, parseOptions)} /> */}
+      <MainWrapper mainWrap={parseHtml(showFree, parseOptions)} />
       <MainWrapper mainWrap={parseHtml(props.showcase, parseOptions)} />
-     <MainWrapper mainWrap={parseHtml(blog, parseOptions)} /> 
+      <MainWrapper mainWrap={parseHtml(blog, parseOptions)} />
       <MainWrapper mainWrap={parseHtml(props.allShow, parseOptions)} />
-     
+
       {parseHtml(props.footer, parseOptions)}
       {/* <div dangerouslySetInnerHTML={{__html:`<script id="jetboost-script" type="text/javascript"> window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8"; (function(d) { var s = d.createElement("script"); s.src = "https://cdn.jetboost.io/jetboost.js"; s.async = 1; d.getElementsByTagName("head")[0].appendChild(s); })(document); </script>`}}>
 
       </div> */}
       {/* {parseHtml(supportScripts, parseOptions)} */}
+      {parseHtml(props.globalStyles, parseOptions)}
     </>
   );
 }
@@ -204,11 +221,14 @@ export async function getServerSideProps() {
   const homeIllustration = $(`.show-all-illustration`).html();
   const showFree = $(`.show-free`).html();
   const showcase = $(`.showcase`).html();
-  const showBlog=$(`.show-blogs-login`).html()
+  const illustrationHeadLogin = $(`.after-login-heading`).html();
+  const illustrationHead = $('.before-login-heading').html();
+  const showBlog = $(`.show-blogs-login`).html()
   const allShow = $(`.show-all`).html();
   const headContent = $(`head`).html();
   const footer = $(`.footer-access`).html();
-  
+
+
   return {
     props: {
       headContent: headContent,
@@ -218,13 +238,15 @@ export async function getServerSideProps() {
       hideLogin: hideLogin,
       LoggedinnavBar: LoggedinnavBar,
       footer: footer,
-      showFree:showFree,
-      showcase:showcase,
-      showBlog:showBlog,
+      showFree: showFree,
+      showcase: showcase,
+      showBlog: showBlog,
+      illustrationHeadLogin: illustrationHeadLogin,
+      illustrationHead: illustrationHead,
       HomeIllustration: homeIllustration,
       showFree: showFree,
       allShow: allShow,
-     
+
     },
   };
 }
