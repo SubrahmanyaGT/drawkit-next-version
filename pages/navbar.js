@@ -67,9 +67,7 @@ export default function NavbarContent(props) {
     >
       {/* <div data-w-id="e290c944-0e4b-a1b3-60d9-2699f5eb0c35" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar w-nav"> */}
       <div suppressHydrationWarning={true}>
-        
           <div class="navwrapper">{props.navbarContent}</div>
-        
       </div>
     </div>
   );

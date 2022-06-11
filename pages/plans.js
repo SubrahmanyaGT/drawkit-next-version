@@ -15,6 +15,7 @@ const router = useRouter()
   function wrapClickHandler(event) {
     var $el = $(event.target);
     if (!!$el.closest("#subscribe").get(0)) {
+      //strip payment
         fetch('/api/strip').then((response) => response.json()).then((data) => {router.push(data.session.url)})
       // console.log("subscribe");
 

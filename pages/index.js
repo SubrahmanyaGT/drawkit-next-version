@@ -11,6 +11,11 @@ import $ from "jquery";
 import Head from "next/head";
 import { prop } from "cherio/lib/api/attributes";
 import dynamic from "next/dynamic";
+import Image from "next/image";
+
+const myLoader = ({ src, width, quality }) => {
+  return `${src}?w=${width}&q=${quality || 75}`;
+};
 // const NavbarContent=dynamic(() => import("./navbar"), { ssr: false })
 function isUrlInternal(link) {
   if (
@@ -68,6 +73,7 @@ function replace(node) {
   // Make Google Fonts scripts work
   if (node.name === `script`) {
     let content = get(node, `children.0.data`, ``);
+
     if (content && content.trim().indexOf(`WebFont.load(`) === 0) {
       content = `setTimeout(function(){${content}}, 1)`;
       return (
@@ -76,6 +82,12 @@ function replace(node) {
           dangerouslySetInnerHTML={{ __html: content }}
         ></script>
       );
+    } else {
+      <Script
+        {...attribs}
+        dangerouslySetInnerHTML={{ __html: content }}
+        strategy="lazyOnload"
+      ></Script>;
     }
   }
   const { href, style, ...props } = attribs;
@@ -90,6 +102,23 @@ function replace(node) {
   //     );
   //   }
   // }
+
+  // if (node.name == "img") {
+  //   const { href, style, ...props } = attribs;
+  //   console.log(node);
+  //   return (
+  //     <div style={{position:"relative"}}  {...props}>
+  //       <Image
+  //         {...props}
+  //         loader={myLoader}
+  //         src={props.src}
+  //         alt={props.alt}
+  //         layout="fill"
+  //         objectFit="cover"
+  //       />
+  //     </div>
+  //   );
+  // }
 }
 const parseOptions = { replace };
 
@@ -102,37 +131,43 @@ export default function Home(props) {
   let [supportScripts, setsupportScripts] = useState(props.supportScripts);
   //  console.log(props.supportScripts);
 
-  // useEffect(()=>{
-  //   if (supabase.auth.session()) {
-
-  //     setnavbar(props.LoggedinnavBar);
-  //     }
-  // },[])
-
+  useEffect(() => {
+    console.log("in index");
+    if (!supabase.auth.session()) {
+      console.log(supabase.auth.session());
+      setHideLogin(props.hideLogin);
+    } else {
+      setHideLogin("");
+    }
+  }, []);
   return (
     <>
       <Head>
         {parseHtml(headContent, parseOptions)}
         {parseHtml(props.globalStyles, parseOptions)}
+        {parseHtml(supportScripts, parseOptions)}
       </Head>
       <NavbarContent
         navbarContent={parseHtml(navBar, parseOptions)}
         scripts={parseHtml(supportScripts, parseOptions)}
-        
       />
+      {<MainWrapper mainWrap={parseHtml(hideLogin, parseOptions)} />}
 
-      <MainWrapper mainWrap={parseHtml(hideLogin, parseOptions)} />
       <MainWrapper mainWrap={parseHtml(props.HomeIllustration, parseOptions)} />
       <MainWrapper mainWrap={parseHtml(props.premiumHide, parseOptions)} />
-      <MainWrapper mainWrap={parseHtml(props.allShow, parseOptions)} />
+      {/* <MainWrapper mainWrap={parseHtml(props.allShow, parseOptions)} /> */}
+      <MainWrapper mainWrap={parseHtml(props.Homecategories, parseOptions)} />
       {parseHtml(props.footer, parseOptions)}
-      {parseHtml(supportScripts, parseOptions)}
+      {/* <div dangerouslySetInnerHTML={{__html:`<script id="jetboost-script" type="text/javascript"> window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8"; (function(d) { var s = d.createElement("script"); s.src = "https://cdn.jetboost.io/jetboost.js"; s.async = 1; d.getElementsByTagName("head")[0].appendChild(s); })(document); </script>`}}>
+
+      </div> */}
+      {/* {parseHtml(supportScripts, parseOptions)} */}
     </>
   );
 }
 
 /** data fetching  from w-drawkit site*/
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const cheerio = require("cheerio");
   const axios = require("axios");
 
@@ -151,7 +186,7 @@ export async function getStaticProps() {
     .map((m) => `<Script type="text/javascript" src="${m}"></Script>`)
     .join("")
     .toString();
-  const navBar = $(".nav-access").html();
+  const navBar = $(".navbar").html();
   const globalStyles = $(".global-styles").html();
   const LoggedinnavBar = $(`.logged-in-user-nav`).html();
   const hideLogin = $(`.hide-login`).html();
@@ -159,8 +194,8 @@ export async function getStaticProps() {
   const premiumHide = $(`.show-showcase`).html();
   const allShow = $(`.show-all`).html();
   const headContent = $(`head`).html();
-  const footer = $(`.footer`).html();
-  console.log("return");
+  const footer = $(`.footer-access`).html();
+  const Homecategories = $(`.section-home_categories`).html();
   return {
     props: {
       headContent: headContent,
@@ -171,8 +206,9 @@ export async function getStaticProps() {
       LoggedinnavBar: LoggedinnavBar,
       footer: footer,
       HomeIllustration: homeIllustration,
-      premiumHide: "premiumHide",
+      premiumHide: premiumHide,
       allShow: allShow,
+      Homecategories: Homecategories,
     },
   };
 }

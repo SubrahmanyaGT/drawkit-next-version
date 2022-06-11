@@ -80,8 +80,8 @@ export default function Home(props) {
 
   function wrapChangeHandler(event) {
     var $el = $(event.target);
-    if (!!$el.closest("#d-signup-email").get(0)) {
-      setEmail($el.closest("#d-signup-email").val());
+    if (!!$el.closest("#field").get(0)) { 
+      setEmail($el.closest("#field").val());
     }
     if (!!$el.closest("#d-signup-pass").get(0)) {
       setPassword($el.closest("#d-signup-pass").val());
