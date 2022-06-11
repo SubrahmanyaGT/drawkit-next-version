@@ -126,18 +126,28 @@ export default function Home(props) {
   let [headContent, setheadContent] = useState(props.headContent);
   let [navBar, setnavbar] = useState(props.navBar);
   let [auth, setAuth] = useState(supabase.auth.user());
-
+  let[blog,setBlog]=useState(props.showBlog)
   let [hideLogin, setHideLogin] = useState(props.hideLogin);
   let [supportScripts, setsupportScripts] = useState(props.supportScripts);
   //  console.log(props.supportScripts);
 
   useEffect(() => {
+    window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8";
+    (function (d) {
+      var s = d.createElement("script");
+      s.src = "https://cdn.jetboost.io/jetboost.js";
+      s.async = 1;
+      d.getElementsByTagName("head")[0].appendChild(s);
+    })(document);
     console.log("in index");
     if (!supabase.auth.session()) {
       console.log(supabase.auth.session());
       setHideLogin(props.hideLogin);
+      setBlog("")
     } else {
       setHideLogin("");
+      setBlog(props.showBlog);
+      
     }
   }, []);
   return (
@@ -152,11 +162,12 @@ export default function Home(props) {
         scripts={parseHtml(supportScripts, parseOptions)}
       />
       {<MainWrapper mainWrap={parseHtml(hideLogin, parseOptions)} />}
-
       <MainWrapper mainWrap={parseHtml(props.HomeIllustration, parseOptions)} />
-      <MainWrapper mainWrap={parseHtml(props.premiumHide, parseOptions)} />
-      {/* <MainWrapper mainWrap={parseHtml(props.allShow, parseOptions)} /> */}
-      <MainWrapper mainWrap={parseHtml(props.Homecategories, parseOptions)} />
+      {/* <MainWrapper mainWrap={parseHtml(props.showFree, parseOptions)} /> */}
+      <MainWrapper mainWrap={parseHtml(props.showcase, parseOptions)} />
+     <MainWrapper mainWrap={parseHtml(blog, parseOptions)} /> 
+      <MainWrapper mainWrap={parseHtml(props.allShow, parseOptions)} />
+     
       {parseHtml(props.footer, parseOptions)}
       {/* <div dangerouslySetInnerHTML={{__html:`<script id="jetboost-script" type="text/javascript"> window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8"; (function(d) { var s = d.createElement("script"); s.src = "https://cdn.jetboost.io/jetboost.js"; s.async = 1; d.getElementsByTagName("head")[0].appendChild(s); })(document); </script>`}}>
 
@@ -191,11 +202,13 @@ export async function getServerSideProps() {
   const LoggedinnavBar = $(`.logged-in-user-nav`).html();
   const hideLogin = $(`.hide-login`).html();
   const homeIllustration = $(`.show-all-illustration`).html();
-  const premiumHide = $(`.show-showcase`).html();
+  const showFree = $(`.show-free`).html();
+  const showcase = $(`.showcase`).html();
+  const showBlog=$(`.show-blogs-login`).html()
   const allShow = $(`.show-all`).html();
   const headContent = $(`head`).html();
   const footer = $(`.footer-access`).html();
-  const Homecategories = $(`.section-home_categories`).html();
+  
   return {
     props: {
       headContent: headContent,
@@ -205,10 +218,13 @@ export async function getServerSideProps() {
       hideLogin: hideLogin,
       LoggedinnavBar: LoggedinnavBar,
       footer: footer,
+      showFree:showFree,
+      showcase:showcase,
+      showBlog:showBlog,
       HomeIllustration: homeIllustration,
-      premiumHide: premiumHide,
+      showFree: showFree,
       allShow: allShow,
-      Homecategories: Homecategories,
+     
     },
   };
 }
