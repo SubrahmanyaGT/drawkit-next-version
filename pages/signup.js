@@ -8,15 +8,24 @@ import { useRouter } from "next/router";
 import Script from "next/script";
 
 const supabaseSignUp = async (email, password) => {
-  const { user, session, error } = await supabase.auth.signUp({
-    email: email,
-    password: password,
+  let createStripCust = await fetch("api/createStripCust", {
+    method: "POST",
+    headers: {
+      contentType: "application/json",
+    },
+    body: JSON.stringify({ email: email, name: email }),
   });
-  if (!error) {
-    return true;
-  } else {
-    return false;
-  }
+  let custDetails = await createStripCust.json();
+  console.log(custDetails);
+  // const { user, session, error } = await supabase.auth.signUp({
+  //   email: email,
+  //   password: password,
+  // });
+  // if (this) {
+  //   return false;
+  // } else {
+  //   return false;
+  // }
 };
 
 async function signInWithGoogle() {
@@ -80,7 +89,7 @@ export default function Home(props) {
 
   function wrapChangeHandler(event) {
     var $el = $(event.target);
-    if (!!$el.closest("#field").get(0)) { 
+    if (!!$el.closest("#field").get(0)) {
       setEmail($el.closest("#field").val());
     }
     if (!!$el.closest("#d-signup-pass").get(0)) {

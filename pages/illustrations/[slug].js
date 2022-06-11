@@ -127,7 +127,7 @@ export const getServerSideProps = async (paths) => {
     ).catch((err) => {
       console.error(err);
     });
-
+    console.log("res",res);
     if (!res) {
       res = await axios(
         `https://drawkit-v2.webflow.io/single-illustrations/${paths.params.slug}`
