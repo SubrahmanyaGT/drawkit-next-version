@@ -134,7 +134,7 @@ export default function Home(props) {
   );
 }
 
-export async function getStaticProps({ context }) {
+export async function getServerSideProps({ context }) {
   // console.log(context,'ctx');
   const cheerio = await import(`cheerio`);
   const axios = (await import(`axios`)).default;
@@ -162,10 +162,10 @@ export async function getStaticProps({ context }) {
   const headContent = $(`head`).html();
   return {
     props: {
-      bodyContent,
-      headContent,
+      bodyContent:bodyContent,
+      headContent:headContent,
       supportScripts: supportScripts,
     },
-    revalidate: 3,
+    
   };
 }
