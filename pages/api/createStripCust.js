@@ -1,15 +1,7 @@
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-// async function checkCustomers() {
-//   const customers = await stripe.customers.list({
-//     email:userdetails.email,
-//   });
-//   console.log(customers);
-//   return true;
-// }
 
 export default async function handler(req, res) {
   let userdetails = JSON.parse(req.body);
-
   let custCheck = await stripe.customers.list({
     email: userdetails.email,
   });

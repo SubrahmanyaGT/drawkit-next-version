@@ -1,10 +1,21 @@
-export default async function handler(req, res) {
-  const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-  const subscription = await stripe.subscriptions.create({
-    customer: "cus_LmiJLr2we6I8Hn",
-    items: [{ price: "price_1KUTf8SE7JJDuv9XiNDADS1i" }],
+export default async function handler(req, res) {
+  let subsdetails = JSON.parse(req.body);
+  let subsCheck = await stripe.customers.list({
+    active: subsdetails.active,
   });
 
-  res.status(200).json({ subscription });
+  let subscustomer = {};
+  if (subsCheck.data.length <= 0) {
+    subscustomer = await stripe.subscriptions.list({
+      customer: subsdetails.data.customer,
+      status: subsdetails.data.status,
+      price: subsdetails.data.price
+    });
+  }
+
+  res.status(200).json({ subscriptions: subscustomer.data })
 }
+
+

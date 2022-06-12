@@ -17,6 +17,15 @@ const supabaseSignUp = async (email, password) => {
   });
   let custDetails = await createStripCust.json();
   console.log(custDetails);
+
+  await supabase
+    .from('stripe_users')
+    .insert([
+      { 'stripe_user_id': custDetails.customer.id, 'stripe_user_email': custDetails.customer.email }
+    ]).then((data) => {
+      console.log(data);
+    })
+
   // const { user, session, error } = await supabase.auth.signUp({
   //   email: email,
   //   password: password,
