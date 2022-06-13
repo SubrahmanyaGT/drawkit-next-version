@@ -26,15 +26,15 @@ const supabaseSignUp = async (email, password) => {
       console.log(data);
     })
 
-  // const { user, session, error } = await supabase.auth.signUp({
-  //   email: email,
-  //   password: password,
-  // });
-  // if (this) {
-  //   return false;
-  // } else {
-  //   return false;
-  // }
+  const { user, session, error } = await supabase.auth.signUp({
+    email: email,
+    password: password,
+  });
+  if (!error) { 
+    return false;
+  } else {
+    return false;
+  }
 };
 
 async function signInWithGoogle() {

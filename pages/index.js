@@ -54,29 +54,54 @@ export default function Home(props) {
     }
 
     // Replace links with Next links
-    
+
     if (node.name === `a`) {
-      const { href, style, ...props } = attribs;
+      let { href, style, ...props } = attribs;
       if (!style && href) {
+        if (
+          href.includes("/illustration-types/") ||
+          href.includes("/illustration-categories/") ||
+          href.includes("/single-illustrations/")
+        ) {
+          console.log(href.slice(href.lastIndexOf("/"), href.length));
+          href = "/illustrations/unlock-colour";
+
+          return (
+            <Link
+              href={
+                "/illustrations" +
+                href.slice(href.lastIndexOf("/"), href.length)
+              }
+            >
+              <a {...props}>
+                {!!node.children &&
+                  !!node.children.length &&
+                  domToReact(node.children, parseOptions)}
+                {/* Download */}
+              </a>
+            </Link>
+          );
+        }
+        console.log(href);
         if (props.className) {
           if (props.className.includes("upgrade-plan-link")) {
             console.log(node.children[2].children[0].data);
-            
+
             if (!supabase.auth.session() && false) {
               // not sigedin user
               return (
-                <Link href='/plans'>
+                <Link href="/plans">
                   <a {...props}>
-                  <div className="upgrade-download">Upgrade Your Plan</div>
+                    <div className="upgrade-download">Upgrade Your Plan</div>
                     {!!node.children &&
                       !!node.children.length &&
                       domToReact([node.children[1]], parseOptions)}
                   </a>
                 </Link>
               );
-            } else if (node.children[2].children[0].data=='Premium') {
+            } else if (node.children[2].children[0].data == "Premium") {
               return (
-                <Link href='/plans'>
+                <Link href="/plans">
                   <a {...props}>
                     <div className="upgrade-download">Upgrade Your Plan</div>
                     {!!node.children &&
@@ -95,12 +120,9 @@ export default function Home(props) {
                   </a>
                 </Link>
               );
-            }        
+            }
           }
         }
-        // if(props.class.includes("upgrade-plan-link")){}
-        // if(node.children[2])
-        // console.log(node.children[2].children[0].data);
         return (
           <Link href={href}>
             <a {...props}>
@@ -113,10 +135,7 @@ export default function Home(props) {
         );
         // }
       }
-      if (href) {
-      }
     }
-
     // Make Google Fonts scripts work
     if (node.name === `script`) {
       let content = get(node, `children.0.data`, ``);

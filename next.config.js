@@ -13,39 +13,35 @@ module.exports = {
       //   destination: '/illustrations/:slug',
       // },
       {
-        source: '/:slug',
-        destination: 'https://drawkit-v2.webflow.io/:slug',
+        source: "/:slug",
+        destination: "https://drawkit-v2.webflow.io/:slug",
       },
       {
-        source: '/blog/:slug',
-        destination: 'https://drawkit-v2.webflow.io/blog/:slug',
+        source: "/blog/:slug",
+        destination: "https://drawkit-v2.webflow.io/blog/:slug",
       },
-      
-    ]
+    ];
   },
   async redirects() {
     return [
       {
-        source: '/illustration-types/:slug',
-        destination: '/illustrations/:slug',
-        permanent: false,
+        source: "/illustration-types/:slug",
+        destination: "/illustrations/:slug",
+        permanent: true,
       },
       {
-        source: '/illustration-categories/:slug',
-        destination: '/illustrations/:slug',
-        permanent: false,
+        source: "/illustration-categories/:slug",
+        destination: "/illustrations/:slug",
+        permanent: true,
       },
       {
-        source: '/single-illustrations/:slug',
-        destination: '/illustrations/:slug',
-        permanent: false,
+        source: "/single-illustrations/:slug",
+        destination: "/illustrations/:slug",
+        permanent: true,
       },
-    ]
+    ];
   },
-
-
-    eslint: {
-      ignoreDuringBuilds: true,
-    },
-  
-}
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+};

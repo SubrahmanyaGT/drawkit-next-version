@@ -28,7 +28,9 @@ function replace(node) {
   if (node.name === `a`) {
     const { href, style, ...props } = attribs;
     if (!style && href) {
+      console.log(href)
       return (
+      
         <Link href={href} >
           <a {...props} data={"converted"}>
             {!!node.children &&
