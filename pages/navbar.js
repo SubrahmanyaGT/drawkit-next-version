@@ -7,8 +7,8 @@ import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
 import Router from "next/router";
 import $ from "jquery";
-import useSWR from 'swr'
-
+import useSWR from "swr";
+import Script from "next/script";
 
 const supabaseSignOut = async (email, password) => {
   const { error } = await supabase.auth.signOut();
@@ -19,17 +19,16 @@ const supabaseSignOut = async (email, password) => {
 
 // let script = ()=>{
 //   let scriptsapi=fetch('api/navbar').then(function (response ){return response.json()}).then( ({supportScripts})=>{return (supportScripts.map((sc)=>{return `<Script src=${sc}></Script>`}));});
-// return scriptsapi; 
+// return scriptsapi;
 // }
-const fetcher = () => fetch('api/navbar').then((res) => res.json())
+const fetcher = () => fetch("api/navbar").then((res) => res.json());
 
-
-export default   function NavbarContent(props) {
+export default function NavbarContent(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  useEffect(() => {
-    // console.log(document.querySelector('#navbar').classList.add('navbar','w-nav'))
-  }, []);
+
+  useEffect(() => {}, []);
+
   const router = useRouter();
   function wrapClickHandler(event) {
     var $el = $(event.target);
@@ -45,6 +44,12 @@ export default   function NavbarContent(props) {
     if (!!$el.closest("#search").get(0)) {
       let params = "/search-results?search=" + $("#nav-search-input").val();
       router.push(params);
+    }
+    //
+    if (!!$el.closest("#user-name").get(0)) {
+      $(".my-profile-wrap").show();
+    } else {
+      $(".my-profile-wrap").hide();
     }
   }
 
@@ -68,11 +73,16 @@ export default   function NavbarContent(props) {
       }
     }
   }
-  const { data, error } = useSWR('/api/profile-data', fetcher)
-  if (error) return <div>Failed to load</div>
-  if (!data) return <div>Loading...</div>
-  console.log(data);
-return (
+  const { data = {}, error } = useSWR("/api/profile-data", fetcher);
+
+  console.log(typeof data.supportScripts, data.supportScripts);
+  if (data.supportScripts) {
+    data.supportScripts.map((src) => {
+      return <Script src={src}></Script>;
+    });
+  }
+  // console.log(data.map((src)=>{returnn` <Script src=${src}></script>`}));
+  return (
     <div
       onClick={wrapClickHandler}
       onChange={wrapChangeHandler}
@@ -80,7 +90,17 @@ return (
     >
       {/* <div data-w-id="e290c944-0e4b-a1b3-60d9-2699f5eb0c35" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar w-nav"> */}
       <div suppressHydrationWarning={true}>
-        <div style={{ border: "none", position:"fixed", zIndex:999, backgroundColor:'white', width: "100%", }} class="navwrapper">
+        <div
+          style={{
+            border: "none",
+            position: "fixed",
+            zIndex: 999,
+            backgroundColor: "white",
+            width: "100%",
+            top: "0",
+          }}
+          class="navwrapper"
+        >
           {props.navbarContent}
         </div>
       </div>
