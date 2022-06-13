@@ -9,9 +9,7 @@ import NavbarContent from "./navbar";
 import Script from "next/script";
 import $ from "jquery";
 import Head from "next/head";
-import { prop } from "cherio/lib/api/attributes";
-import dynamic from "next/dynamic";
-import Image from "next/image";
+
 
 const myLoader = ({ src, width, quality }) => {
   return `${src}?w=${width}&q=${quality || 75}`;
@@ -66,7 +64,7 @@ export default function Home(props) {
           // console.log(href.slice(href.lastIndexOf("/"), href.length));
           return (
             <Link
-              prefetch={true}
+              prefetch={false}
               href={
                 "/illustrations" +
                 href.slice(href.lastIndexOf("/"), href.length)
@@ -88,7 +86,7 @@ export default function Home(props) {
             if (!supabase.auth.session()) {
               // not sigedin user
               return (
-                <Link href="/plans" prefetch={true}>
+                <Link href="/plans" prefetch={false}>
                   <a {...props}>
                     <div className="upgradedownload">Upgrade Your Plan</div>
                     {!!node.children &&
@@ -99,7 +97,7 @@ export default function Home(props) {
               );
             } else if (node.children[2].children[0].data == "Premium") {
               return (
-                <Link href="/plans" prefetch={true}>
+                <Link href="/plans" prefetch={false}>
                   <a {...props}>
                     <div className="upgradedownload">Upgrade Your Plan</div>
                     {!!node.children &&
@@ -110,7 +108,7 @@ export default function Home(props) {
               );
             } else {
               return (
-                <Link href={href} prefetch={true}>
+                <Link href={href} prefetch={false}>
                   <a {...props}>
                     {!!node.children &&
                       !!node.children.length &&
@@ -122,7 +120,7 @@ export default function Home(props) {
           }
         }
         return (
-          <Link href={href} prefetch={true}>
+          <Link href={href} prefetch={false}>
             <a {...props}>
               {!!node.children &&
                 !!node.children.length &&
