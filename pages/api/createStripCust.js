@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   let customer = {};
   if (custCheck.data.length <= 0) {
     customer = await stripe.customers.create({
-      name: "stripe test customer",
+      name: userdetails.email,
       email: userdetails.email,
     });
   }

@@ -7,6 +7,8 @@ import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
 import Router from "next/router";
 import $ from "jquery";
+import useSWR from 'swr'
+
 
 const supabaseSignOut = async (email, password) => {
   const { error } = await supabase.auth.signOut();
@@ -15,7 +17,14 @@ const supabaseSignOut = async (email, password) => {
   }
 };
 
-export default function NavbarContent(props) {
+// let script = ()=>{
+//   let scriptsapi=fetch('api/navbar').then(function (response ){return response.json()}).then( ({supportScripts})=>{return (supportScripts.map((sc)=>{return `<Script src=${sc}></Script>`}));});
+// return scriptsapi; 
+// }
+const fetcher = () => fetch('api/navbar').then((res) => res.json())
+
+
+export default   function NavbarContent(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   useEffect(() => {
@@ -59,7 +68,11 @@ export default function NavbarContent(props) {
       }
     }
   }
-  return (
+  const { data, error } = useSWR('/api/profile-data', fetcher)
+  if (error) return <div>Failed to load</div>
+  if (!data) return <div>Loading...</div>
+  console.log(data);
+return (
     <div
       onClick={wrapClickHandler}
       onChange={wrapChangeHandler}
@@ -67,7 +80,9 @@ export default function NavbarContent(props) {
     >
       {/* <div data-w-id="e290c944-0e4b-a1b3-60d9-2699f5eb0c35" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar w-nav"> */}
       <div suppressHydrationWarning={true}>
-          <div class="navwrapper">{props.navbarContent}</div>
+        <div style={{ border: "none", position:"fixed", zIndex:999, backgroundColor:'white', width: "100%", }} class="navwrapper">
+          {props.navbarContent}
+        </div>
       </div>
     </div>
   );

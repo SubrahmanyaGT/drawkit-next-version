@@ -17,7 +17,6 @@ const supabaseSignUp = async (email, password) => {
   // });
   // let custDetails = await createStripCust.json();
   // console.log(custDetails);
-
   // await supabase
   //   .from('stripe_users')
   //   .insert([

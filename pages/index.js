@@ -55,7 +55,7 @@ export default function Home(props) {
 
     // Replace links with Next links
 
-    if (node.name === `a`) {
+    if (node.name == `a`) {
       let { href, style, ...props } = attribs;
       if (!style && href) {
         if (
@@ -63,11 +63,10 @@ export default function Home(props) {
           href.includes("/illustration-categories/") ||
           href.includes("/single-illustrations/")
         ) {
-          console.log(href.slice(href.lastIndexOf("/"), href.length));
-          href = "/illustrations/unlock-colour";
-
+          // console.log(href.slice(href.lastIndexOf("/"), href.length));
           return (
             <Link
+              prefetch={true}
               href={
                 "/illustrations" +
                 href.slice(href.lastIndexOf("/"), href.length)
@@ -77,22 +76,21 @@ export default function Home(props) {
                 {!!node.children &&
                   !!node.children.length &&
                   domToReact(node.children, parseOptions)}
-                {/* Download */}
               </a>
             </Link>
           );
         }
-        console.log(href);
+
         if (props.className) {
           if (props.className.includes("upgrade-plan-link")) {
-            console.log(node.children[2].children[0].data);
+            // console.log(node.children[2].children[0].data);
 
-            if (!supabase.auth.session() && false) {
+            if (!supabase.auth.session()) {
               // not sigedin user
               return (
-                <Link href="/plans">
+                <Link href="/plans" prefetch={true}>
                   <a {...props}>
-                    <div className="upgrade-download">Upgrade Your Plan</div>
+                    <div className="upgradedownload">Upgrade Your Plan</div>
                     {!!node.children &&
                       !!node.children.length &&
                       domToReact([node.children[1]], parseOptions)}
@@ -101,9 +99,9 @@ export default function Home(props) {
               );
             } else if (node.children[2].children[0].data == "Premium") {
               return (
-                <Link href="/plans">
+                <Link href="/plans" prefetch={true}>
                   <a {...props}>
-                    <div className="upgrade-download">Upgrade Your Plan</div>
+                    <div className="upgradedownload">Upgrade Your Plan</div>
                     {!!node.children &&
                       !!node.children.length &&
                       domToReact([node.children[1]], parseOptions)}
@@ -112,7 +110,7 @@ export default function Home(props) {
               );
             } else {
               return (
-                <Link href={href}>
+                <Link href={href} prefetch={true}>
                   <a {...props}>
                     {!!node.children &&
                       !!node.children.length &&
@@ -124,16 +122,14 @@ export default function Home(props) {
           }
         }
         return (
-          <Link href={href}>
+          <Link href={href} prefetch={true}>
             <a {...props}>
               {!!node.children &&
                 !!node.children.length &&
                 domToReact(node.children, parseOptions)}
-              {/* Download */}
             </a>
           </Link>
         );
-        // }
       }
     }
     // Make Google Fonts scripts work
@@ -191,6 +187,27 @@ export default function Home(props) {
   //..................................................................................................................................//
 
   useEffect(() => {
+    $(".request").click(function () {
+      $(".request-popup").show();
+      setTimeout(function () {
+        $("#loader").hide();
+        $(".iframe-holder").show();
+      }, 3000);
+    });
+    $(".cancel,.request-popup").click(function () {
+      $(".request-popup").hide();
+      $("#loader").show();
+      $(".iframe-holder").hide();
+    });
+
+    $("input:not([type=checkbox],[type=submit]),textarea")
+      .focus(function () {
+        $(this).parent().css({ border: "1px solid #1aa1e5" });
+      })
+      .blur(function () {
+        $(this).parent().css({ border: "1px solid #ccd1d6" });
+      });
+
     window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8";
     (function (d) {
       var s = d.createElement("script");
@@ -198,10 +215,8 @@ export default function Home(props) {
       s.async = 1;
       d.getElementsByTagName("head")[0].appendChild(s);
     })(document);
-    console.log("in index");
 
     if (!supabase.auth.session()) {
-      console.log(supabase.auth.session());
       setHideLogin(props.hideLogin);
       setBlog("");
     } else {
@@ -212,8 +227,6 @@ export default function Home(props) {
       setIllusHeadLogin(props.illustrationHeadLogin);
       if (PremiumUser == true) {
         setShowfree("");
-
-        console.log("free user");
       }
     }
   }, []);
@@ -224,11 +237,10 @@ export default function Home(props) {
 
         {parseHtml(supportScripts, parseOptions)}
       </Head>
-      {/* <NavbarContent */}
-      {/* navbarContent= */}
-      {parseHtml(navBar, parseOptions)}
-      {/* scripts={parseHtml(supportScripts, parseOptions)}
-      />   */}
+      <NavbarContent
+        navbarContent={parseHtml(navBar, parseOptions)}
+        scripts={parseHtml(supportScripts, parseOptions)}
+      />
       <MainWrapper mainWrap={parseHtml(hideLogin, parseOptions)} />
       <MainWrapper mainWrap={parseHtml(illusHeadLogin, parseOptions)} />
       <MainWrapper mainWrap={parseHtml(illusHead, parseOptions)} />

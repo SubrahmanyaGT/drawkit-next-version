@@ -76,7 +76,7 @@ const session = await stripe.checkout.sessions.create({
       },
     
     ],
-    customer:'cus_Lmn872PgD8MR0t',
+    customer:'cus_LrpPvxukVAoTYP',
     success_url: 'http://localhost/payment-successful',
     cancel_url: 'http://localhost/plans',
   });
