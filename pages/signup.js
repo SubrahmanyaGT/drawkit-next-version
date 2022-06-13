@@ -8,30 +8,30 @@ import { useRouter } from "next/router";
 import Script from "next/script";
 
 const supabaseSignUp = async (email, password) => {
-  let createStripCust = await fetch("api/createStripCust", {
-    method: "POST",
-    headers: {
-      contentType: "application/json",
-    },
-    body: JSON.stringify({ email: email, name: email }),
-  });
-  let custDetails = await createStripCust.json();
-  console.log(custDetails);
+  // let createStripCust = await fetch("api/createStripCust", {
+  //   method: "POST",
+  //   headers: {
+  //     contentType: "application/json",
+  //   },
+  //   body: JSON.stringify({ email: email, name: email }),
+  // });
+  // let custDetails = await createStripCust.json();
+  // console.log(custDetails);
 
-  await supabase
-    .from('stripe_users')
-    .insert([
-      { 'stripe_user_id': custDetails.customer.id, 'stripe_user_email': custDetails.customer.email }
-    ]).then((data) => {
-      console.log(data);
-    })
+  // await supabase
+  //   .from('stripe_users')
+  //   .insert([
+  //     { 'stripe_user_id': custDetails.customer.id, 'stripe_user_email': custDetails.customer.email }
+  //   ]).then((data) => {
+  //     console.log(data);
+  //   })
 
   const { user, session, error } = await supabase.auth.signUp({
     email: email,
     password: password,
   });
   if (!error) { 
-    return false;
+    return true;
   } else {
     return false;
   }
