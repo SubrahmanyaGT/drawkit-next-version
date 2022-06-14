@@ -149,7 +149,7 @@ export const getServerSideProps = async (paths) => {
     const bodyContent = $(`.main-wrapper`).html();
     //   const navDrop=$('.nav-dropdown-wrapper').html();
     const headContent = $(`head`).html();
-    const footer = $(`.footer`).html();
+    const footer = $(`.footer-access`).html();
   const globalStyles = $(".global-styles").html();
 
     const supportScripts = Object.keys($(`script`))

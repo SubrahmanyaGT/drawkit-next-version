@@ -348,19 +348,21 @@ export default function Home(props) {
         ) {
           // console.log(href.slice(href.lastIndexOf("/"), href.length));
           return (
-            <Link
-              
-              href={
+            // <Link
+            //   href={
+            //     "/illustrations" +
+            //     href.slice(href.lastIndexOf("/"), href.length)
+            //   }
+            // >
+              <a href={
                 "/illustrations" +
                 href.slice(href.lastIndexOf("/"), href.length)
-              }
-            >
-              <a {...props}>
+              } {...props}>
                 {!!node.children &&
                   !!node.children.length &&
                   domToReact(node.children, parseOptions)}
               </a>
-            </Link>
+            // </Link>
           );
         }
 
@@ -371,61 +373,63 @@ export default function Home(props) {
             if (!supabase.auth.session()) {
               // not sigedin user
               return (
-                <Link href="/plans" >
-                  <a {...props}>
+                // <Link href="/plans">
+                  <a href="/plans" {...props}>
                     <div className="upgradedownload">Upgrade Your Plan</div>
                     {!!node.children &&
                       !!node.children.length &&
                       domToReact([node.children[1]], parseOptions)}
                   </a>
-                </Link>
+                // </Link>
               );
             } else {
               if (node.children[2].children[0].data === "Premium") {
                 return (
-                  <Link href="/plans" >
-                    <a {...props}>
+                  // <Link href="/plans">
+                    <a href="/plans" {...props}>
                       <div className="upgradedownload">Upgrade Your Plan</div>
                       {!!node.children &&
                         !!node.children.length &&
                         domToReact([node.children[1]], parseOptions)}
                     </a>
-                  </Link>
+                  // </Link>
                 );
               } else {
                 return (
-                  <Link href={href} >
-                    <a {...props}>
-                      <div className="upgradedownload">Downlod Now</div>
+                  //download
+                  // <Link href={href}>
+                    <a href={href}  {...props}>
+                      <div className="upgradedownload">Download Now</div>
                       {!!node.children &&
                         !!node.children.length &&
                         domToReact([node.children[1]], parseOptions)}
                     </a>
-                  </Link>
+                  // </Link>
                 );
               }
             }
-          }
-          else {
+          } else {
+            console.log(href);
             return (
-              <Link href={href} >
-                <a {...props}>
+         
+                <a href={href} {...props}>
                   {!!node.children &&
                     !!node.children.length &&
                     domToReact(node.children, parseOptions)}
                 </a>
-              </Link>
+              
             );
           }
         }
+
         return (
-          <Link href={href} >
-            <a {...props}>
+          // <Link href={href} >
+            <a href={href} {...props}>
               {!!node.children &&
                 !!node.children.length &&
                 domToReact(node.children, parseOptions)}
             </a>
-          </Link>
+          // </Link>
         );
       }
     }
@@ -455,7 +459,7 @@ export default function Home(props) {
 
   //..................................................................................................................................//
 
-  useEffect( () => {
+  useEffect(() => {
     $(".request").click(function () {
       $(".request-popup").show();
       setTimeout(function () {
@@ -484,7 +488,6 @@ export default function Home(props) {
       s.async = 1;
       d.getElementsByTagName("head")[0].appendChild(s);
     })(document);
-    
 
     // supabase.from('stripe_users').select('')
 
@@ -512,7 +515,6 @@ export default function Home(props) {
       </Head>
       <NavbarContent
         navbarContent={parseHtml(navBar, parseOptions)}
-        scripts={parseHtml(supportScripts, parseOptions)}
       />
       <MainWrapper mainWrap={parseHtml(hideLogin, parseOptions)} />
       <MainWrapper mainWrap={parseHtml(illusHeadLogin, parseOptions)} />
@@ -522,7 +524,6 @@ export default function Home(props) {
       <MainWrapper mainWrap={parseHtml(props.showcase, parseOptions)} />
       <MainWrapper mainWrap={parseHtml(blog, parseOptions)} />
       <MainWrapper mainWrap={parseHtml(props.allShow, parseOptions)} />
-
       {parseHtml(props.footer, parseOptions)}
       {/* <div dangerouslySetInnerHTML={{__html:`<script id="jetboost-script" type="text/javascript"> window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8"; (function(d) { var s = d.createElement("script"); s.src = "https://cdn.jetboost.io/jetboost.js"; s.async = 1; d.getElementsByTagName("head")[0].appendChild(s); })(document); </script>`}}>
 
