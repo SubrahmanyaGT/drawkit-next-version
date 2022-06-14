@@ -339,6 +339,182 @@ export function replace(node) {
           ></div>
         );
       }
+      
+      if (props.className.includes("contact-page-form")) {
+        return (
+          <div
+            {...props}
+            dangerouslySetInnerHTML={{
+              __html: 
+              `<form
+              id="wf-form-contact-form"
+              name="wf-form-contact-form"
+              data-name="contact-form"
+              method="get"
+              class="input-form"
+              aria-label="contact-form"
+            >
+              <div
+                data-delay="0"
+                data-hover="false"
+                fs-selectcustom-element="dropdown"
+                class="dropdown w-dropdown"
+                style=""
+              >
+                <div
+                  class="field select w-dropdown-toggle"
+                  id="w-dropdown-toggle-4"
+                  aria-controls="w-dropdown-list-4"
+                  aria-haspopup="listbox"
+                  aria-expanded="false"
+                  role="button"
+                  tabindex="0"
+                >
+                  <img
+                    loading="eager"
+                    src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/626f5d0ae6c15c9ff42dd664_info-S.svg"
+                    alt="Question icon
+              "
+                    class="icons-contact-form"
+                  />
+                  <div class="text-size-regular text-color-black break">
+                    Please choose your Reason for contact
+                  </div>
+                  <div class="w-icon-dropdown-toggle" aria-hidden="true"></div>
+                </div>
+                <nav
+                  class="dropdown-list w-dropdown-list"
+                  id="w-dropdown-list-4"
+                  aria-labelledby="w-dropdown-toggle-4"
+                  role="listbox"
+                  aria-multiselectable="false"
+                >
+                  <select
+                    id="field-2"
+                    name="field-2"
+                    data-name="Field 2"
+                    required=""
+                    class="select-options hide w-select"
+                  >
+                    <option value="">Please choose your Reason for contact</option>
+                    <option value="First">First choice</option>
+                    <option value="Second">Second choice</option>
+                    <option value="Third">Third choice</option></select
+                  ><a
+                    href="#"
+                    class="select-option-link text-size-regular w-dropdown-link w--current"
+                    tabindex="0"
+                    role="option"
+                    aria-selected="true"
+                    >Please choose your Reason for contact</a
+                  ><a
+                    href="#"
+                    class="select-option-link text-size-regular w-dropdown-link"
+                    tabindex="-1"
+                    role="option"
+                    aria-selected="false"
+                    >First choice</a
+                  ><a
+                    href="#"
+                    class="select-option-link text-size-regular w-dropdown-link"
+                    tabindex="-1"
+                    role="option"
+                    aria-selected="false"
+                    >Second choice</a
+                  ><a
+                    href="#"
+                    class="select-option-link text-size-regular w-dropdown-link"
+                    tabindex="-1"
+                    role="option"
+                    aria-selected="false"
+                    >Third choice</a
+                  >
+                </nav>
+              </div>
+              <div class="field">
+                <img
+                  loading="eager"
+                  src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/626f5d0ae6c15c07172dd663_Profile.svg"
+                  alt="profile"
+                  class="icons-contact-form"
+                /><input
+                  type="text"
+                  class="form-input-field w-input"
+                  maxlength="256"
+                  name="Name"
+                  data-name="Name"
+                  placeholder="Enter your full name"
+                  id="Name-5"
+                  required=""
+                />
+              </div>
+              <div class="field">
+                <img
+                  loading="eager"
+                  src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/626f5d0ae6c15c74572dd666_Email.svg"
+                  alt="Email"
+                  class="icons-contact-form"
+                /><input
+                  type="email"
+                  class="form-input-field w-input"
+                  maxlength="256"
+                  name="Email"
+                  data-name="Email"
+                  placeholder="Email"
+                  id="Email-5"
+                  required=""
+                />
+              </div>
+              <div class="field full-message">
+                <img
+                  loading="eager"
+                  src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/626f5d0ae6c15c67cd2dd665_Message.svg"
+                  alt="Message icon"
+                  class="icons-contact-form"
+                /><textarea
+                  id="field"
+                  name="field"
+                  maxlength="5000"
+                  data-name="field"
+                  placeholder="Enter your full message"
+                  required=""
+                  class="form-input-field textarea w-input"
+                ></textarea>
+              </div>
+              <div class="recaptcha-sent-wrap">
+                <div>
+                  <div class="text-size-tiny text-color-grey">
+                    Please tick the box to continue
+                  </div>
+                  <div
+                    data-sitekey="6LcU1DogAAAAAGmn7QwLkyipWNQDOftM-QpwdEtG"
+                    class="w-form-formrecaptcha recaptcha g-recaptcha g-recaptcha-error g-recaptcha-disabled"
+                  ></div>
+                </div>
+                <div class="button-wrap">
+                  <div class="btn-primary">
+                    <input
+                      type="submit"
+                      value="Sent"
+                      data-wait="Please wait..."
+                      class="submit-button w-button"
+                    />
+                    <div>Sent</div>
+                    <img
+                      loading="lazy"
+                      src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/626f5d0ae6c15c2bb32dd5f5_Arrows.svg"
+                      alt=""
+                      class="button-icon"
+                    />
+                  </div>
+                  <div class="btn-overlay"></div>
+                </div>
+              </div>
+            </form>`,
+            }}
+          ></div>
+        );
+      }
 
       if (props.className.includes("free-plan") ) {
         if( supabase.auth.session() && premiumUser != "active")
