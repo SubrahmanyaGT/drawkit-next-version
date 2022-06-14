@@ -349,7 +349,7 @@ export default function Home(props) {
           // console.log(href.slice(href.lastIndexOf("/"), href.length));
           return (
             <Link
-              prefetch={false}
+              
               href={
                 "/illustrations" +
                 href.slice(href.lastIndexOf("/"), href.length)
@@ -371,7 +371,7 @@ export default function Home(props) {
             if (!supabase.auth.session()) {
               // not sigedin user
               return (
-                <Link href="/plans" prefetch={false}>
+                <Link href="/plans" >
                   <a {...props}>
                     <div className="upgradedownload">Upgrade Your Plan</div>
                     {!!node.children &&
@@ -383,7 +383,7 @@ export default function Home(props) {
             } else {
               if (node.children[2].children[0].data === "Premium") {
                 return (
-                  <Link href="/plans" prefetch={false}>
+                  <Link href="/plans" >
                     <a {...props}>
                       <div className="upgradedownload">Upgrade Your Plan</div>
                       {!!node.children &&
@@ -394,7 +394,7 @@ export default function Home(props) {
                 );
               } else {
                 return (
-                  <Link href={href} prefetch={false}>
+                  <Link href={href} >
                     <a {...props}>
                       <div className="upgradedownload">Downlod Now</div>
                       {!!node.children &&
@@ -406,9 +406,20 @@ export default function Home(props) {
               }
             }
           }
+          else {
+            return (
+              <Link href={href} >
+                <a {...props}>
+                  {!!node.children &&
+                    !!node.children.length &&
+                    domToReact(node.children, parseOptions)}
+                </a>
+              </Link>
+            );
+          }
         }
         return (
-          <Link href={href} prefetch={false}>
+          <Link href={href} >
             <a {...props}>
               {!!node.children &&
                 !!node.children.length &&
@@ -444,7 +455,7 @@ export default function Home(props) {
 
   //..................................................................................................................................//
 
-  useEffect(() => {
+  useEffect(async () => {
     $(".request").click(function () {
       $(".request-popup").show();
       setTimeout(function () {
@@ -473,6 +484,24 @@ export default function Home(props) {
       s.async = 1;
       d.getElementsByTagName("head")[0].appendChild(s);
     })(document);
+    if (supabase.auth.session()) {
+      let uid = supabase.auth.session().user.id;
+      // setPremiumUser
+      const { data, error } = await supabase
+        .from("stripe_users")
+        .select("stripe_user_id")
+        .eq("user_id", uid);
+      let subscription = await fetch("api/check-active-status", {
+        method: "POST",
+        headers: {
+          contentType: "application/json",
+        },
+        body: JSON.stringify({ customer: data.stripe_user_id }),
+      });
+      console.log(await subscription.json());
+    }
+
+    // supabase.from('stripe_users').select('')
 
     if (!supabase.auth.session()) {
       setHideLogin(props.hideLogin);

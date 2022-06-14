@@ -8,32 +8,56 @@ import { useRouter } from "next/router";
 import Script from "next/script";
 
 const supabaseSignUp = async (email, password) => {
-  // let createStripCust = await fetch("api/createStripCust", {
-  //   method: "POST",
-  //   headers: {
-  //     contentType: "application/json",
-  //   },
-  //   body: JSON.stringify({ email: email, name: email }),
-  // });
-  // let custDetails = await createStripCust.json();
-  // console.log(custDetails);
-  // await supabase
-  //   .from('stripe_users')
-  //   .insert([
-  //     { 'stripe_user_id': custDetails.customer.id, 'stripe_user_email': custDetails.customer.email }
-  //   ]).then((data) => {
-  //     console.log(data);
-  //   })
+  let stripeCreate = await (async () => {
+    const response = await fetch("api/createStripCust", {
+      method: "POST",
+      headers: {
+        contentType: "application/json",
+      },
+      body: JSON.stringify({ email: email, name: email }),
+    });
+    if (response.ok) {
+      const { data } = await response.json();
+      return data;
+    } else {
+      return false;
+    }
+  })();
+  let supabaseCreate = await (async () => {
+    let supabaseuser = new Promise(async function (resolve, reject) {
+      if (!stripeCreate.errors && !!stripeCreate.customer) {
+        let supabaseuserPromise = await supabase.auth.signUp({
+          email: email,
+          password: password,
+        });
 
-  const { user, session, error } = await supabase.auth.signUp({
-    email: email,
-    password: password,
-  });
-  if (!error) { 
-    return true;
-  } else {
-    return false;
-  }
+        if (!supabaseuserPromise.error) {
+          resolve(supabaseuserPromise);
+        } else {
+          reject(false);
+        }
+      }
+    });
+
+    return await supabaseuser;
+  })();
+  let storeUser = await (async () => {
+    if (supabaseCreate.user) {
+      let stripeuser = await supabase.from("stripe_users").insert([
+        {
+          stripe_user_id: stripeCreate.customer.id,
+          stripe_user_email: stripeCreate.customer.email,
+          user_id: supabaseCreate.user.id,
+        },
+      ]);
+      return stripeuser;
+    } else {
+      return false;
+    }
+  })();
+  return !storeUser.error && !supabaseCreate.error && !stripeCreate.errors
+    ? true
+    : false;
 };
 
 async function signInWithGoogle() {
@@ -74,8 +98,12 @@ export default function Home(props) {
 
       if (valEmail && valPassword) {
         if ($(".w-checkbox-input").hasClass("w--redirected-checked")) {
-          if (await supabaseSignUp(email, password)) {
+          let data = await supabaseSignUp(email, password);
+          console.log("data", data);
+          if (data) {
             router.push("/");
+          } else {
+            console.log("asdfadf");
           }
         } else {
           $(".w-checkbox-input").css("border", "1px solid red");
@@ -161,10 +189,9 @@ export async function getServerSideProps({ context }) {
   const headContent = $(`head`).html();
   return {
     props: {
-      bodyContent:bodyContent,
-      headContent:headContent,
+      bodyContent: bodyContent,
+      headContent: headContent,
       supportScripts: supportScripts,
     },
-    
   };
 }

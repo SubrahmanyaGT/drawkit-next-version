@@ -139,7 +139,24 @@ export default function Plans(props) {
 
   //..................................................................................................................................//
 
-  useEffect(() => {
+  // useEffect(() => {
+
+  // }, []);
+
+  function wrapClickHandler(event) {
+    var $el = $(event.target);
+    if (!!$el.closest("#subscribe").get(0)) {
+      //strip payment
+      fetch("/api/strip")
+        .then((response) => response.json())
+        .then((data) => {
+          router.push(data.session.url);
+        });
+      // console.log("subscribe");
+    }
+  }
+
+  function runSwiper() {
     var mySwiper = new Swiper("#basic-swiper", {
       slidesPerView: 3,
       slidesPerGroup: 1,
@@ -153,7 +170,7 @@ export default function Plans(props) {
       },
       pagination: {
         el: ".swiper-pagination",
-        clickable:true
+        clickable: true,
       },
       breakpoints: {
         0: {
@@ -180,26 +197,14 @@ export default function Plans(props) {
         },
       },
     });
-  }, []);
-
-  function wrapClickHandler(event) {
-    var $el = $(event.target);
-    if (!!$el.closest("#subscribe").get(0)) {
-      //strip payment
-      fetch("/api/strip")
-        .then((response) => response.json())
-        .then((data) => {
-          router.push(data.session.url);
-        });
-      // console.log("subscribe");
-    }
   }
 
   return (
     <>
       <Head>
         {parseHtml(props.headContent, parseOptions)}
-        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+        {parseHtml(props.supportScripts, parseOptions)}
+      
       </Head>
       <div onClick={wrapClickHandler}>
         <NavbarContent
@@ -212,7 +217,11 @@ export default function Plans(props) {
       {parseHtml(props.footer, parseOptions)}
 
       <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
-      {/* {parseHtml(props.supportScripts, parseOptions)} */}
+      <Script
+          src="https://unpkg.com/swiper/swiper-bundle.min.js"
+          onLoad={runSwiper}
+        ></Script>
+
       {parseHtml(props.globalStyles, parseOptions)}
     </>
   );
