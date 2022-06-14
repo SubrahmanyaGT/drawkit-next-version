@@ -455,7 +455,7 @@ export default function Home(props) {
 
   //..................................................................................................................................//
 
-  useEffect(async () => {
+  useEffect( () => {
     $(".request").click(function () {
       $(".request-popup").show();
       setTimeout(function () {
@@ -484,22 +484,7 @@ export default function Home(props) {
       s.async = 1;
       d.getElementsByTagName("head")[0].appendChild(s);
     })(document);
-    if (supabase.auth.session()) {
-      let uid = supabase.auth.session().user.id;
-      // setPremiumUser
-      const { data, error } = await supabase
-        .from("stripe_users")
-        .select("stripe_user_id")
-        .eq("user_id", uid);
-      let subscription = await fetch("api/check-active-status", {
-        method: "POST",
-        headers: {
-          contentType: "application/json",
-        },
-        body: JSON.stringify({ customer: data.stripe_user_id }),
-      });
-      console.log(await subscription.json());
-    }
+    
 
     // supabase.from('stripe_users').select('')
 

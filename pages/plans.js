@@ -139,9 +139,7 @@ export default function Plans(props) {
 
   //..................................................................................................................................//
 
-  // useEffect(() => {
 
-  // }, []);
 
   function wrapClickHandler(event) {
     var $el = $(event.target);
