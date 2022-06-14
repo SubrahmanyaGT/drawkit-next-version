@@ -10,5 +10,5 @@ export default async function handler(req, res) {
     customer: userdetails.customer,
   });
 
-  res.status(200).json(subscriptions);
+  res.status(200).json(subscriptions.data[0]);
 }

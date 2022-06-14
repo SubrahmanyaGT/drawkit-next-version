@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { useRouter } from "next/router";
 import NavbarContent from "./navbar";
+import { replace } from "../utils/replace-node";
+
 
 export default function Plans(props) {
   const router = useRouter();
@@ -28,118 +30,120 @@ export default function Plans(props) {
   }
 
   // Replaces DOM nodes with React components
-  function replace(node) {
-    const attribs = node.attribs || {};
-    if (attribs.hasOwnProperty("class")) {
-      attribs["className"] = attribs["class"];
-      delete attribs.class;
-    }
+//  function replace(node) {
+//     const attribs = node.attribs || {};
+//     if (attribs.hasOwnProperty("class")) {
+//       attribs["className"] = attribs["class"];
+//       delete attribs.class;
+//     }
 
-    // Replace links with Next links
+//     // Replace links with Next links
 
-    if (node.name == `a`) {
-      let { href, style, ...props } = attribs;
-      if (!style && href) {
-        if (
-          href.includes("/illustration-types/") ||
-          href.includes("/illustration-categories/") ||
-          href.includes("/single-illustrations/")
-        ) {
-          console.log(href.slice(href.lastIndexOf("/"), href.length));
-          // href = "/illustrations/unlock-colour";
-          return (
-            <Link
-              href={
-                "/illustrations" +
-                href.slice(href.lastIndexOf("/"), href.length)
-              }
-            >
-              <a {...props}>
-                {!!node.children &&
-                  !!node.children.length &&
-                  domToReact(node.children, parseOptions)}
-              </a>
-            </Link>
-          );
-        }
-        console.log(href);
-        if (props.className) {
-          if (props.className.includes("upgrade-plan-link")) {
-            console.log(node.children[2].children[0].data);
+//     if (node.name == `a`) {
+//       let { href, style, ...props } = attribs;
+//       if (!style && href) {
+//         if (
+//           href.includes("/illustration-types/") ||
+//           href.includes("/illustration-categories/") ||
+//           href.includes("/single-illustrations/")
+//         ) {
+//           console.log(href.slice(href.lastIndexOf("/"), href.length));
+//           // href = "/illustrations/unlock-colour";
+//           return (
+//             <Link
+//               href={
+//                 "/illustrations" +
+//                 href.slice(href.lastIndexOf("/"), href.length)
+//               }
+//             >
+//               <a {...props}>
+//                 {!!node.children &&
+//                   !!node.children.length &&
+//                   domToReact(node.children, parseOptions)}
+//               </a>
+//             </Link>
+//           );
+//         }
+//         console.log(href);
+//         if (props.className) {
+//           if (props.className.includes("upgrade-plan-link")) {
+//             console.log(node.children[2].children[0].data);
 
-            if (!supabase.auth.session()) {
-              // not sigedin user
-              return (
-                <Link href="/plans">
-                  <a {...props}>
-                    <div className="upgrade-download">Upgrade Your Plan</div>
-                    {!!node.children &&
-                      !!node.children.length &&
-                      domToReact([node.children[1]], parseOptions)}
-                  </a>
-                </Link>
-              );
-            } else if (node.children[2].children[0].data == "Premium") {
-              return (
-                <Link href="/plans">
-                  <a {...props}>
-                    <div className="upgrade-download">Upgrade Your Plan</div>
-                    {!!node.children &&
-                      !!node.children.length &&
-                      domToReact([node.children[1]], parseOptions)}
-                  </a>
-                </Link>
-              );
-            } else {
-              return (
-                <Link href={href}>
-                  <a {...props}>
-                    {!!node.children &&
-                      !!node.children.length &&
-                      domToReact(node.children, parseOptions)}
-                  </a>
-                </Link>
-              );
-            }
-          }
-        }
-        return (
-          <Link href={href}>
-            <a {...props}>
-              {!!node.children &&
-                !!node.children.length &&
-                domToReact(node.children, parseOptions)}
-            </a>
-          </Link>
-        );
-      }
-    }
-    // Make Google Fonts scripts work
-    if (node.name === `script`) {
-      let content = get(node, `children.0.data`, ``);
+//             if (!supabase.auth.session()) {
+//               // not sigedin user
+//               return (
+//                 <Link href="/plans">
+//                   <a {...props}>
+//                     <div className="upgrade-download">Upgrade Your Plan</div>
+//                     {!!node.children &&
+//                       !!node.children.length &&
+//                       domToReact([node.children[1]], parseOptions)}
+//                   </a>
+//                 </Link>
+//               );
+//             } else if (node.children[2].children[0].data == "Premium") {
+//               return (
+//                 <Link href="/plans">
+//                   <a {...props}>
+//                     <div className="upgrade-download">Upgrade Your Plan</div>
+//                     {!!node.children &&
+//                       !!node.children.length &&
+//                       domToReact([node.children[1]], parseOptions)}
+//                   </a>
+//                 </Link>
+//               );
+//             } else {
+//               return (
+//                 <Link href={href}>
+//                   <a {...props}>
+//                     {!!node.children &&
+//                       !!node.children.length &&
+//                       domToReact(node.children, parseOptions)}
+//                   </a>
+//                 </Link>
+//               );
+//             }
+//           }
+//         }
+//         return (
+//           <Link href={href}>
+//             <a {...props}>
+//               {!!node.children &&
+//                 !!node.children.length &&
+//                 domToReact(node.children, parseOptions)}
+//             </a>
+//           </Link>
+//         );
+//       }
+//     }
+//     // Make Google Fonts scripts work
+//     if (node.name === `script`) {
+//       let content = get(node, `children.0.data`, ``);
 
-      if (content && content.trim().indexOf(`WebFont.load(`) === 0) {
-        content = `setTimeout(function(){${content}}, 1)`;
-        return (
-          <script
-            {...attribs}
-            dangerouslySetInnerHTML={{ __html: content }}
-          ></script>
-        );
-      } else {
-        <Script
-          {...attribs}
-          dangerouslySetInnerHTML={{ __html: content }}
-          strategy="lazyOnload"
-        ></Script>;
-      }
-    }
-  }
+//       if (content && content.trim().indexOf(`WebFont.load(`) === 0) {
+//         content = `setTimeout(function(){${content}}, 1)`;
+//         return (
+//           <script
+//             {...attribs}
+//             dangerouslySetInnerHTML={{ __html: content }}
+//           ></script>
+//         );
+//       } else {
+//         <Script
+//           {...attribs}
+//           dangerouslySetInnerHTML={{ __html: content }}
+//           strategy="lazyOnload"
+//         ></Script>;
+//       }
+//     }
+//   } 
   const parseOptions = { replace };
 
   //..................................................................................................................................//
 
+  // useEffect(() => {
 
+  // }, []);
 
   function wrapClickHandler(event) {
     var $el = $(event.target);

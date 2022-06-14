@@ -6,67 +6,70 @@ import get from "lodash/get";
 import React from "react";
 import Script from "next/script";
 import { supabase } from "../../utils/supabaseClient";
+import { replace } from "../../utils/replace-node";
 
 /**................................................................ */
-function isUrlInternal(link) {
-  if (
-    !link ||
-    link.indexOf(`https:`) === 0 ||
-    link.indexOf(`#`) === 0 ||
-    link.indexOf(`http`) === 0 ||
-    link.indexOf(`://`) === 0
-  ) {
-    return false;
-  }
-  return true;
-}
-function replace(node) {
-  const attribs = node.attribs || {};
-  if (attribs.hasOwnProperty("class")) {
-    attribs["className"] = attribs["class"];
-  }
-  if (node.name === `a`) {
-    const { href, style, ...props } = attribs;
-    if (!style && href) {
-      console.log(href)
-      return (
-      
-        <Link href={href} >
-          <a {...props} data={"converted"}>
-            {!!node.children &&
-              !!node.children.length &&
-              domToReact(node.children, parseOptions)}
-          </a>
-        </Link>
-      );
-    }
-    if (href) {
-    }
-  }
-  if (node.name === `script`) {
-    let content = get(node, `children.0.data`, ``);
-    if (content && content.trim().indexOf(`WebFont.load(`) === 0) {
-      content = `setTimeout(function(){${content}}, 1)`;
-      return (
-        <script
-          {...attribs}
-          dangerouslySetInnerHTML={{ __html: content }}
-        ></script>
-      );
-    }
-  }
-  const { href, style, ...props } = attribs;
-}
-const parseOptions = { replace };
+// function isUrlInternal(link) {
+//   if (
+//     !link ||
+//     link.indexOf(`https:`) === 0 ||
+//     link.indexOf(`#`) === 0 ||
+//     link.indexOf(`http`) === 0 ||
+//     link.indexOf(`://`) === 0
+//   ) {
+//     return false;
+//   }
+//   return true;
+// }
+// function replace(node) {
+//   const attribs = node.attribs || {};
+//   if (attribs.hasOwnProperty("class")) {
+//     attribs["className"] = attribs["class"];
+//   }
+//   if (node.name === `a`) {
+//     const { href, style, ...props } = attribs;
+//     if (!style && href) {
+//       return (
+//         <Link href={href}>
+//           <a {...props} data={"converted"}>
+//             {!!node.children &&
+//               !!node.children.length &&
+//               domToReact(node.children, parseOptions)}
+//           </a>
+//         </Link>
+//       );
+//     }
+//     if (href) {
+//     }
+//   }
+//   if (node.name === `script`) {
+//     let content = get(node, `children.0.data`, ``);
+//     if (content && content.trim().indexOf(`WebFont.load(`) === 0) {
+//       content = `setTimeout(function(){${content}}, 1)`;
+//       return (
+//         <script
+//           {...attribs}
+//           dangerouslySetInnerHTML={{ __html: content }}
+//         ></script>
+//       );
+//     }
+//   }
+//   const { href, style, ...props } = attribs;
+// }
 /**................................................................ */
 
 const downloadSupabase = async () => {
   const { data, error } = await supabase.storage
     .from("illustrations-small-png")
     .download("test.jpeg");
-};
+};  
 
-const Illustrations = (props) => {
+export default function Illustration(props) {
+
+
+  
+const parseOptions = { replace };
+
   async function wrapClickHandler(event) {
     var $el = $(event.target);
 
@@ -98,8 +101,6 @@ const Illustrations = (props) => {
 };
 
 export const getServerSideProps = async (paths) => {
-  console.log(paths.params.slug);
-
   const cheerio = await import(`cheerio`);
   const axios = (await import(`axios`)).default;
   let illTypes = ["2d", "3d", "animations", "icons", "all", "mockups"];
@@ -130,7 +131,7 @@ export const getServerSideProps = async (paths) => {
     ).catch((err) => {
       console.error(err);
     });
-    console.log("res",res);
+
     if (!res) {
       res = await axios(
         `https://drawkit-v2.webflow.io/single-illustrations/${paths.params.slug}`
@@ -150,7 +151,7 @@ export const getServerSideProps = async (paths) => {
     //   const navDrop=$('.nav-dropdown-wrapper').html();
     const headContent = $(`head`).html();
     const footer = $(`.footer-access`).html();
-  const globalStyles = $(".global-styles").html();
+    const globalStyles = $(".global-styles").html();
 
     const supportScripts = Object.keys($(`script`))
       .map((key) => {
@@ -169,7 +170,7 @@ export const getServerSideProps = async (paths) => {
         navBar: navBar,
         supportScripts: supportScripts,
         footer: footer,
-        globalStyles:globalStyles,
+        globalStyles: globalStyles,
       },
       // revalidate: 3,
     };
@@ -183,4 +184,4 @@ export const getServerSideProps = async (paths) => {
   }
 };
 
-export default Illustrations;
+
