@@ -6,15 +6,14 @@ export default async function handler(req, res) {
     email: userdetails.email,
   });
 
-  let data = {customer:null,errors:null};
+  let data = { customer: null, errors: null };
   if (custCheck.data.length <= 0) {
     data.customer = await stripe.customers.create({
       name: userdetails.email,
       email: userdetails.email,
     });
-  }
-  else{
-    data.errors = 'Email' + userdetails.email + 'already exists';
+  } else {
+    data.errors = "Email" + userdetails.email + "already exists";
   }
   res.status(200).json({ data });
 }

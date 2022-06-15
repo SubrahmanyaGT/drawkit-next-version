@@ -84,7 +84,7 @@ export default function Home(props) {
       setHideLogin("");
       setBlog(props.showBlog);
       setIllusHead("");
-      setnavbar(props.LoggedinnavBar);
+      // setnavbar(props.LoggedinnavBar);
       setIllusHeadLogin(props.illustrationHeadLogin);
       if (PremiumUser == "active") {
         setShowfree("");

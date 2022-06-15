@@ -16,10 +16,10 @@ module.exports = {
       //   source: "/:slug",
       //   destination: "https://drawkit-v2.webflow.io/:slug",
       // },
-      {
-        source: "/blog/:slug",
-        destination: "https://drawkit-v2.webflow.io/blog/:slug",
-      },
+      // {
+      //   source: "/blog/:slug",
+      //   destination: "https://drawkit-v2.webflow.io/blog/:slug",
+      // },
     ];
   },
   async redirects() {

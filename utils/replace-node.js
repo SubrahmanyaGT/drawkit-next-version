@@ -5,30 +5,30 @@ import parseHtml, { domToReact } from "html-react-parser";
 import { supabase } from "../utils/supabaseClient";
 
 let premiumUser = "active";
-let pcheck = () => {
-  if (supabase.auth.session()) {
-    let uid = supabase.auth.session().user.id;
-    supabase
-      .from("stripe_users")
-      .select("stripe_user_id")
-      .eq("user_id", uid)
-      .then(({ data, error }) => {
-        fetch("api/check-active-status", {
-          method: "POST",
-          headers: {
-            contentType: "application/json",
-          },
-          body: JSON.stringify({ customer: data[0].stripe_user_id }),
-        })
-          .then(function (response) {
-            return response.json();
-          })
-          .then(function (data) {
-            premiumUser = data.status;
-          });
-      });
-  }
-};
+// let pcheck = () => {
+//   if (supabase.auth.session()) {
+//     let uid = supabase.auth.session().user.id;
+//     supabase
+//       .from("stripe_users")
+//       .select("stripe_user_id")
+//       .eq("user_id", uid)
+//       .then(({ data, error }) => {
+//         fetch("api/check-active-status", {
+//           method: "POST",
+//           headers: {
+//             contentType: "application/json",
+//           },
+//           body: JSON.stringify({ customer: data[0].stripe_user_id }),
+//         })
+//           .then(function (response) {
+//             return response.json();
+//           })
+//           .then(function (data) {
+//             premiumUser = data.status;
+//           });
+//       });
+//   }
+// };
 
 
 
@@ -48,7 +48,7 @@ function isUrlInternal(link) {
 
 // Replaces DOM nodes with React components
 export function replace(node) {
-  pcheck();
+  // pcheck();
   const attribs = node.attribs || {};
   if (attribs.hasOwnProperty("class")) {
     attribs["className"] = attribs["class"];
