@@ -3,11 +3,13 @@ import Head from "next/head";
 import Link from "next/link";
 import parseHtml, { domToReact } from "html-react-parser";
 import get from "lodash/get";
-import React from "react";
+import React, { useState } from "react";
 import Script from "next/script";
 import { supabase } from "../../utils/supabaseClient";
 import { replace } from "../../utils/replace-node";
-
+import JSZip  from "jszip";
+import FileSaver from 'file-saver';
+import NavbarContent from "../navbar";
 /**................................................................ */
 // function isUrlInternal(link) {
 //   if (
@@ -58,17 +60,31 @@ import { replace } from "../../utils/replace-node";
 // }
 /**................................................................ */
 
-const downloadSupabase = async () => {
-  const { data, error } = await supabase.storage
-    .from("illustrations-small-png")
-    .download("test.jpeg");
-};  
-
 export default function Illustration(props) {
+  const parseOptions = { replace };
 
+  const [file, setFile] = useState([]);
+  const downloadSupabase = async (folderName) => {
+    const { data, error } = await supabase.storage
+      .from("illustration-downloadable")
+      .list(folderName);
+    setFile(data);
 
-  
-const parseOptions = { replace };
+    for (let i = 0; i < file.length; i++) {
+      console.log(file[i]);
+      const { data, error } = await supabase.storage
+        .from("public/illustration-downloadable")
+        .download(`illustrationid2/${file[i].name}`);
+
+      console.log(data);
+
+      const zip = new JSZip();
+      zip.file(`${file[i].name}`, data);
+      zip.generateAsync({ type: "blob" }).then(function (content) {
+        FileSaver.saveAs(content, `illustrationid2.zip`);
+      });
+    }
+  };
 
   async function wrapClickHandler(event) {
     var $el = $(event.target);
@@ -77,6 +93,12 @@ const parseOptions = { replace };
       event.preventDefault();
       if (await downloadSupabase()) {
         // router.push("/");
+      }
+    }
+    if (!!$el.closest("#sb-download").get(0)) {
+      let folderName = $("#sb-download").children().get(2).innerText;
+      if (await downloadSupabase(folderName)) {
+        // router.push("/")
       }
     }
   }
@@ -88,7 +110,9 @@ const parseOptions = { replace };
         <span style={{ fontSize: "10px", position: "fixed" }}>
           Illustrations/[slug]
         </span>
-        {parseHtml(props.navBar, parseOptions)}
+        <NavbarContent navbarContent=
+      {parseHtml(props.navBar, parseOptions)}
+       />
 
         {parseHtml(props.bodyContent, parseOptions)}
         <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
@@ -98,7 +122,7 @@ const parseOptions = { replace };
       </div>
     </>
   );
-};
+}
 
 export const getServerSideProps = async (paths) => {
   const cheerio = await import(`cheerio`);
@@ -183,5 +207,3 @@ export const getServerSideProps = async (paths) => {
     };
   }
 };
-
-

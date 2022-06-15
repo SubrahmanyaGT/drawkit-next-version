@@ -95,11 +95,11 @@ export default function Home(props) {
   return (
     <>
       <Head>
-        {parseHtml(headContent, parseOptions)}
-
-        {parseHtml(supportScripts, parseOptions)}
+        {parseHtml(headContent, parseOptions)}    
       </Head>
-      <NavbarContent navbarContent={parseHtml(navBar, parseOptions)} />
+      <NavbarContent navbarContent=
+      {parseHtml(navBar, parseOptions)}
+       />
       <MainWrapper mainWrap={parseHtml(hideLogin, parseOptions)} />
       <MainWrapper mainWrap={parseHtml(illusHeadLogin, parseOptions)} />
       <MainWrapper mainWrap={parseHtml(illusHead, parseOptions)} />
@@ -110,6 +110,8 @@ export default function Home(props) {
       <MainWrapper mainWrap={parseHtml(props.allShow, parseOptions)} />
       {parseHtml(props.footer, parseOptions)}
       {parseHtml(props.globalStyles, parseOptions)}
+      {parseHtml(supportScripts, parseOptions)}
+
     </>
   );
 }

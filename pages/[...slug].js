@@ -7,18 +7,23 @@ import React from "react";
 import Script from "next/script";
 import { supabase } from "../utils/supabaseClient";
 import { replace } from "../utils/replace-node";
+import NavbarContent from "./navbar";
 export default function slug(props) {
   const parseOptions = { replace };
   return (
     <>
-      <Head>{parseHtml(props.headContent, parseOptions)}
-      <script defer src="https://cdn.jsdelivr.net/npm/@finsweet/attributes-selectcustom@1/selectcustom.js"></script>
+      <Head>
+        {parseHtml(props.headContent, parseOptions)}
+        <script
+          defer
+          src="https://cdn.jsdelivr.net/npm/@finsweet/attributes-selectcustom@1/selectcustom.js"
+        ></script>
       </Head>
       <div>
         <span style={{ fontSize: "10px", position: "fixed" }}>
           Illustrations/[slug]
         </span>
-        {parseHtml(props.navBar, parseOptions)}
+        <NavbarContent navbarContent={parseHtml(props.navBar, parseOptions)} />
 
         {parseHtml(props.bodyContent, parseOptions)}
         <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
@@ -26,8 +31,6 @@ export default function slug(props) {
         {parseHtml(props.footer, parseOptions)}
         {parseHtml(props.globalStyles, parseOptions)}
       </div>
-
-      
     </>
   );
 }

@@ -87,23 +87,18 @@ export default function NavbarContent(props) {
       onClick={wrapClickHandler}
       onChange={wrapChangeHandler}
       onKeyUp={wrapKeyUpHandler}
+      suppressHydrationWarning={true}
+      style={{
+        border: "none",
+        position: "fixed",
+        zIndex: 999,
+        backgroundColor: "white",
+        width: "100%",
+        top: "0",
+      }}
+      class="navwrapper"
     >
-      {/* <div data-w-id="e290c944-0e4b-a1b3-60d9-2699f5eb0c35" data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" className="navbar w-nav"> */}
-      <div suppressHydrationWarning={true}>
-        <div
-          style={{
-            border: "none",
-            position: "fixed",
-            zIndex: 999,
-            backgroundColor: "white",
-            width: "100%",
-            top: "0",
-          }}
-          class="navwrapper"
-        >
-          {props.navbarContent}
-        </div>
-      </div>
+      <>{props.navbarContent}</>
     </div>
   );
 }

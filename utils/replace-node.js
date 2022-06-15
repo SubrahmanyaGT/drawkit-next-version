@@ -4,7 +4,7 @@ import Script from "next/script";
 import parseHtml, { domToReact } from "html-react-parser";
 import { supabase } from "../utils/supabaseClient";
 
-let premiumUser = "inactive ";
+let premiumUser = "active";
 let pcheck = () => {
   if (supabase.auth.session()) {
     let uid = supabase.auth.session().user.id;
@@ -30,7 +30,7 @@ let pcheck = () => {
   }
 };
 
-pcheck();
+
 
 console.log(premiumUser, supabase.auth.session());
 function isUrlInternal(link) {
@@ -48,6 +48,7 @@ function isUrlInternal(link) {
 
 // Replaces DOM nodes with React components
 export function replace(node) {
+  pcheck();
   const attribs = node.attribs || {};
   if (attribs.hasOwnProperty("class")) {
     attribs["className"] = attribs["class"];
