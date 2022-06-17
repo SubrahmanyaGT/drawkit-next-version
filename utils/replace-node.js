@@ -510,28 +510,38 @@ export function replace(node) {
           ></div>
         );
       }
-      if(props.className.includes('username-letters')){
-        if(supabase.auth.session()){
-          return(
-          <div class="username-letters big">{supabase.auth
-            .session()
-            .user.email.slice(0, 1).toUpperCase()}</div>
-        )
+      if (props.className.includes('username-letters-big')) {
+        if (supabase.auth.session()) {
+          return (
+            <div class="username-letters-big big">
+              {supabase.auth.session().user.email.slice(0, 1).toUpperCase()}
+            </div>
+          );
         }
-        
       }
-      if(props.className.match(/^user$/)){
-        if(supabase.auth.session()){
-          return(
-          <div class="user">{supabase.auth
-            .session()
-            .user.email.slice(
-              0,
-              supabase.auth.session().user.email.indexOf("@")
-            ).toUpperCase()}</div>
-        )
+      if (props.className.includes('username-letters')) {
+        if (supabase.auth.session()) {
+          return (
+            <div class="username-letters small">
+              {supabase.auth.session().user.email.slice(0, 1).toUpperCase()}
+            </div>
+          );
         }
-        
+      }
+      
+      if (props.className.match(/^user$/)) {
+        if (supabase.auth.session()) {
+          return (
+            <div class="user">
+              {supabase.auth
+                .session()
+                .user.email.slice(
+                  0,
+                  supabase.auth.session().user.email.indexOf("@")
+                )}
+            </div>
+          );
+        }
       }
 
       // if (props.className.includes("free-plan")) {
@@ -552,12 +562,12 @@ export function replace(node) {
         if (supabase.auth.session()) {
           console.log(supabase.auth.session(), "supabase.auth.session()");
           return (
-            <div class="user-profile">
+            <div class="user-profile" id="user-name">
               <div class="user-name-wrap">
                 <div class="letter-avatar">
                   {supabase.auth.session().user.email.slice(0, 1)}
                 </div>
-                <div id="user-name" class="user-name">
+                <div  class="user-name">
                   {supabase.auth
                     .session()
                     .user.email.slice(

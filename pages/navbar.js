@@ -27,8 +27,6 @@ export default function NavbarContent(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-
-
   const router = useRouter();
   function wrapClickHandler(event) {
     var $el = $(event.target);
@@ -73,6 +71,17 @@ export default function NavbarContent(props) {
       }
     }
   }
+
+  function wrapBlurHandler(event) {
+    var $el = $(event.target);
+    $(".my-profile-wrap").hide();
+  }
+  function wrapFocusHandler(event) {
+    var $el = $(event.target);
+    if (!!$el.closest("#user-name").get(0)) {
+      $(".my-profile-wrap").show();
+    }
+  }
   const { data = {}, error } = useSWR("/api/profile-data", fetcher);
 
   console.log(typeof data.supportScripts, data.supportScripts);
@@ -84,9 +93,12 @@ export default function NavbarContent(props) {
   // console.log(data.map((src)=>{returnn` <Script src=${src}></script>`}));
   return (
     <div
+      tabindex="100"
       onClick={wrapClickHandler}
       onChange={wrapChangeHandler}
       onKeyUp={wrapKeyUpHandler}
+      onBlur={wrapBlurHandler}
+      onFocus={wrapFocusHandler}
       suppressHydrationWarning={true}
       style={{
         border: "none",
@@ -96,7 +108,7 @@ export default function NavbarContent(props) {
         width: "100%",
         top: "0",
       }}
-      class="navwrapper"
+   
     >
       <>{props.navbarContent}</>
     </div>

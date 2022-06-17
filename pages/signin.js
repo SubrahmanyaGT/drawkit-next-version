@@ -90,6 +90,27 @@ export default function Home(props) {
     }
   }
 
+  async function wrapKeyUpHandler(event) {
+    if (event.keyCode === 13) {
+      var $el = $(event.target);
+      if (!!$el.closest("#d-signin-email").get(0)) {
+        $("#d-signin-pass").focus();
+      }
+      if (!!$el.closest("#d-signin-pass").get(0)) {
+        if (
+          (await supabaseSignIn(email, password)) &&
+          valEmail &&
+          valPassword
+        ) {
+          console.log(await supabaseSignIn(email, password));
+          router.push("/");
+        } else {
+          $(".validator-message").text("Invalid Signin Attempt");
+        }
+      }
+    }
+  }
+
   function validateEmailPassword() {
     if (valPassword) {
       if (valEmail) $(".validator-message").text("");
@@ -106,7 +127,11 @@ export default function Home(props) {
   }
   return (
     <>
-      <div onClick={wrapClickHandler} onChange={wrapChangeHandler}>
+      <div
+        onClick={wrapClickHandler}
+        onChange={wrapChangeHandler}
+        onKeyUp={wrapKeyUpHandler}
+      >
         {parseHtml(props.headContent)}
 
         {parseHtml(props.bodyContent)}

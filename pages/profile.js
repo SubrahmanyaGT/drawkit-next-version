@@ -15,6 +15,8 @@ export default function Illustration(props) {
   const parseOptions = { replace };
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [savefName, setsavefName] = useState("");
+  const [savelName, setsavelName] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -27,14 +29,16 @@ export default function Illustration(props) {
           if (data.length > 0) {
             setFirstName(data[0].first_name);
             setLastName(data[0].last_name);
+            setsavefName(data[0].first_name);
+            setsavelName(data[0].last_name);
           }
         });
     }
   }, []);
   useEffect(() => {
     if (supabase.auth.session() != null) {
-    document.getElementById("first-name").value = firstName;
-    document.getElementById("last-name").value = lastName;
+      document.getElementById("first-name").value = firstName;
+      document.getElementById("last-name").value = lastName;
     }
   }, [firstName, lastName]);
   console.log(firstName, lastName);
@@ -42,7 +46,11 @@ export default function Illustration(props) {
     var $el = $(event.target);
 
     if (!!$el.closest("#save-changes").get(0)) {
-      if (!!firstName && !!lastName) {
+      if (
+        !!firstName &&
+        !!lastName &&
+        (firstName != savefName || lastName != savelName)
+      ) {
         supabase
           .from("user_profile")
           .upsert(
@@ -57,6 +65,8 @@ export default function Illustration(props) {
             if (error) {
               alert(error.message);
             } else {
+              setsavefName(firstName);
+              setsavelName(lastName);
               alert("Changes has been successfully updated");
             }
           });

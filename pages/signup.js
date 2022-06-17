@@ -121,6 +121,20 @@ export default function Home(props) {
         $(".w-checkbox-input").css("border", "1px solid #ccc");
       }
     }
+    if (!!$el.closest(".reveal-pw").get(0)) {
+      let signin_input=$("#d-signup-pass")
+       signin_input.attr('type','text');
+                $(".reveal-pw").hide();
+                $(".hide-pw").show();
+      }
+    if (!!$el.closest(".hide-pw").get(0)) {
+      
+     
+      let signin_input=$("#d-signup-pass")
+       signin_input.attr('type','password');
+                $(".reveal-pw").show();
+                $(".hide-pw").hide();
+      }
   }
 
   function wrapChangeHandler(event) {
@@ -130,6 +144,33 @@ export default function Home(props) {
     }
     if (!!$el.closest("#d-signup-pass").get(0)) {
       setPassword($el.closest("#d-signup-pass").val());
+    }
+  }
+
+  async function wrapKeyUpHandler(event) {
+    if (event.keyCode === 13) {
+      var $el = $(event.target);
+      if (!!$el.closest("#field").get(0)) {
+        $("#d-signup-pass").focus();
+      }
+      if (!!$el.closest("#d-signup-pass").get(0)) {
+        validateEmailPassword();
+      console.log(email, password);
+
+      if (valEmail && valPassword) {
+        if ($(".w-checkbox-input").hasClass("w--redirected-checked")) {
+          let data = await supabaseSignUp(email, password);
+          console.log("data", data);
+          if (data) {
+            router.push("/");
+          } else {
+            console.log("asdfadf");
+          }
+        } else {
+          $(".w-checkbox-input").css("border", "1px solid red");
+        }
+      }
+      }
     }
   }
 
@@ -151,7 +192,7 @@ export default function Home(props) {
   }
   return (
     <>
-      <div onClick={wrapClickHandler} onChange={wrapChangeHandler}>
+      <div onClick={wrapClickHandler} onChange={wrapChangeHandler} onKeyUp={wrapKeyUpHandler}>
         {parseHtml(props.headContent)}
         {parseHtml(props.bodyContent)}
         {parseHtml(props.supportScripts)}

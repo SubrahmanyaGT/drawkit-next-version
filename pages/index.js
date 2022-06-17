@@ -22,8 +22,9 @@ export default function Home(props) {
   let [supportScripts, setsupportScripts] = useState(props.supportScripts);
 
   /** ..................................................................................................................................*/
-  const parseOptions = { 
-    replace };
+  const parseOptions = {
+    replace,
+  };
   /** ..................................................................................................................................*/
   if (supabase.auth.session()) {
     let uid = supabase.auth.session().user.id;
@@ -49,7 +50,7 @@ export default function Home(props) {
   }
   console.log(PremiumUser);
 
-  useEffect(() => { 
+  useEffect(() => {
     $(".request").click(function () {
       $(".request-popup").show();
       setTimeout(function () {
@@ -79,7 +80,6 @@ export default function Home(props) {
     //   d.getElementsByTagName("head")[0].appendChild(s);
     // })(document);
 
-
     // if (!supabase.auth.session()) {
     //   setHideLogin(props.hideLogin);
     //   setBlog("");
@@ -94,27 +94,21 @@ export default function Home(props) {
     //   }
     // }
 
-
     //my profile dropdown
   }, []);
-
 
   return (
     <>
       <Head>
-        {parseHtml(headContent, parseOptions)}    
-      {parseHtml(supportScripts, parseOptions)}
-      
-
+        {parseHtml(headContent, parseOptions)}
+        {parseHtml(supportScripts, parseOptions)}
       </Head>
-      
-      <NavbarContent navbarContent=
-      {parseHtml(navBar, parseOptions)}
-       />
+
+      <NavbarContent navbarContent={parseHtml(navBar, parseOptions)} />
       {/* <NavbarContent navbarContent=
       {parseHtml(props.LoggedinnavBar, parseOptions)}
        /> */}
-    
+
       <MainWrapper mainWrap={parseHtml(hideLogin, parseOptions)} />
       <MainWrapper mainWrap={parseHtml(illusHeadLogin, parseOptions)} />
       <MainWrapper mainWrap={parseHtml(illusHead, parseOptions)} />
@@ -125,9 +119,6 @@ export default function Home(props) {
       <MainWrapper mainWrap={parseHtml(props.allShow, parseOptions)} />
       {parseHtml(props.globalStyles, parseOptions)}
       {parseHtml(props.footer, parseOptions)}
-     
-
-
     </>
   );
 }
@@ -152,7 +143,7 @@ export async function getServerSideProps() {
     .map((m) => `<Script type="text/javascript" src="${m}"></Script>`)
     .join("")
     .toString();
-  const navBar = $(".navbar").html();
+  const navBar = $(".nav-access").html();
   const globalStyles = $(".global-styles").html();
   const LoggedinnavBar = $(`.logged-in-user-nav`).html();
   const hideLogin = $(`.hide-login`).html();
