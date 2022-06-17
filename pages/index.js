@@ -10,9 +10,9 @@ import Head from "next/head";
 import { replace } from "../utils/replace-node";
 
 export default function Home(props) {
+  let [auth, setAuth] = useState(supabase.auth.session());
   let [headContent, setheadContent] = useState(props.headContent);
   let [navBar, setnavbar] = useState(props.navBar);
-  let [auth, setAuth] = useState(supabase.auth.user());
   let [blog, setBlog] = useState(props.showBlog);
   let [illusHead, setIllusHead] = useState(props.illustrationHead);
   let [illusHeadLogin, setIllusHeadLogin] = useState("");
@@ -22,7 +22,8 @@ export default function Home(props) {
   let [supportScripts, setsupportScripts] = useState(props.supportScripts);
 
   /** ..................................................................................................................................*/
-  const parseOptions = { replace };
+  const parseOptions = { 
+    replace };
   /** ..................................................................................................................................*/
   if (supabase.auth.session()) {
     let uid = supabase.auth.session().user.id;
@@ -48,7 +49,7 @@ export default function Home(props) {
   }
   console.log(PremiumUser);
 
-  useEffect(() => {
+  useEffect(() => { 
     $(".request").click(function () {
       $(".request-popup").show();
       setTimeout(function () {
@@ -70,36 +71,50 @@ export default function Home(props) {
         $(this).parent().css({ border: "1px solid #ccd1d6" });
       });
 
-    window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8";
-    (function (d) {
-      var s = d.createElement("script");
-      s.src = "https://cdn.jetboost.io/jetboost.js";
-      s.async = 1;
-      d.getElementsByTagName("head")[0].appendChild(s);
-    })(document);
-    if (!supabase.auth.session()) {
-      setHideLogin(props.hideLogin);
-      setBlog("");
-    } else {
-      setHideLogin("");
-      setBlog(props.showBlog);
-      setIllusHead("");
-      // setnavbar(props.LoggedinnavBar);
-      setIllusHeadLogin(props.illustrationHeadLogin);
-      if (PremiumUser == "active") {
-        setShowfree("");
-      }
-    }
+    // window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8";
+    // (function (d) {
+    //   var s = d.createElement("script");
+    //   s.src = "https://cdn.jetboost.io/jetboost.js";
+    //   s.async = 1;
+    //   d.getElementsByTagName("head")[0].appendChild(s);
+    // })(document);
+
+
+    // if (!supabase.auth.session()) {
+    //   setHideLogin(props.hideLogin);
+    //   setBlog("");
+    // } else {
+    //   setHideLogin("");
+    //   setBlog(props.showBlog);
+    //   setIllusHead("");
+    //   // setnavbar(props.LoggedinnavBar);
+    //   setIllusHeadLogin(props.illustrationHeadLogin);
+    //   if (PremiumUser == "active") {
+    //     setShowfree("");
+    //   }
+    // }
+
+
     //my profile dropdown
   }, []);
+
+
   return (
     <>
       <Head>
         {parseHtml(headContent, parseOptions)}    
+      {parseHtml(supportScripts, parseOptions)}
+      
+
       </Head>
+      
       <NavbarContent navbarContent=
       {parseHtml(navBar, parseOptions)}
        />
+      {/* <NavbarContent navbarContent=
+      {parseHtml(props.LoggedinnavBar, parseOptions)}
+       /> */}
+    
       <MainWrapper mainWrap={parseHtml(hideLogin, parseOptions)} />
       <MainWrapper mainWrap={parseHtml(illusHeadLogin, parseOptions)} />
       <MainWrapper mainWrap={parseHtml(illusHead, parseOptions)} />
@@ -108,9 +123,10 @@ export default function Home(props) {
       <MainWrapper mainWrap={parseHtml(props.showcase, parseOptions)} />
       <MainWrapper mainWrap={parseHtml(blog, parseOptions)} />
       <MainWrapper mainWrap={parseHtml(props.allShow, parseOptions)} />
-      {parseHtml(props.footer, parseOptions)}
       {parseHtml(props.globalStyles, parseOptions)}
-      {parseHtml(supportScripts, parseOptions)}
+      {parseHtml(props.footer, parseOptions)}
+     
+
 
     </>
   );

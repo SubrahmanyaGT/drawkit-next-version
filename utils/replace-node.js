@@ -30,8 +30,6 @@ let premiumUser = "active";
 //   }
 // };
 
-
-
 console.log(premiumUser, supabase.auth.session());
 function isUrlInternal(link) {
   if (
@@ -46,9 +44,7 @@ function isUrlInternal(link) {
   return true;
 }
 
-// Replaces DOM nodes with React components
 export function replace(node) {
-  // pcheck();
   const attribs = node.attribs || {};
   if (attribs.hasOwnProperty("class")) {
     attribs["className"] = attribs["class"];
@@ -340,14 +336,12 @@ export function replace(node) {
           ></div>
         );
       }
-      
       if (props.className.includes("contact-page-form")) {
         return (
           <div
             {...props}
             dangerouslySetInnerHTML={{
-              __html: 
-              `<form
+              __html: `<form
               id="wf-form-contact-form"
               name="wf-form-contact-form"
               data-name="contact-form"
@@ -516,20 +510,126 @@ export function replace(node) {
           ></div>
         );
       }
+      if(props.className.includes('username-letters')){
+        if(supabase.auth.session()){
+          return(
+          <div class="username-letters big">{supabase.auth
+            .session()
+            .user.email.slice(0, 1).toUpperCase()}</div>
+        )
+        }
+        
+      }
+      if(props.className.match(/^user$/)){
+        if(supabase.auth.session()){
+          return(
+          <div class="user">{supabase.auth
+            .session()
+            .user.email.slice(
+              0,
+              supabase.auth.session().user.email.indexOf("@")
+            ).toUpperCase()}</div>
+        )
+        }
+        
+      }
 
-      if (props.className.includes("free-plan") ) {
-        if( supabase.auth.session() && premiumUser != "active")
-        return <div className="free-plan">Current</div>;
-        else{
-            return <div ></div>;
+      // if (props.className.includes("free-plan")) {
+      //   if (supabase.auth.session() && premiumUser != "active")
+      //     return <div className="free-plan">Current</div>;
+      //   else {
+      //     return <div></div>;
+      //   }
+      // }
+      if (props.className.includes("premium-plan")) {
+        if (premiumUser == "active") {
+          return <div className="premium-plan">Current</div>;
+        } else {
+          return <div></div>;
         }
       }
-      if (props.className.includes("premium-plan")) {
-        if(premiumUser == "active"){
-            return <div className="premium-plan">Current</div>; 
+      if (props.className.includes("navbar-button-wrap")) {
+        if (supabase.auth.session()) {
+          console.log(supabase.auth.session(), "supabase.auth.session()");
+          return (
+            <div class="user-profile">
+              <div class="user-name-wrap">
+                <div class="letter-avatar">
+                  {supabase.auth.session().user.email.slice(0, 1)}
+                </div>
+                <div id="user-name" class="user-name">
+                  {supabase.auth
+                    .session()
+                    .user.email.slice(
+                      0,
+                      supabase.auth.session().user.email.indexOf("@")
+                    )}
+                </div>
+              </div>
+              <div class="my-profile-wrap">
+                <div class="my-profile-options">
+                  <a
+                    id="account"
+                    href="/profile"
+                    aria-current="page"
+                    class="my-profile-links w-inline-block w--current"
+                  >
+                    <div>My Account</div>
+                    <img
+                      src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/62909c7c81a99984fbd1304b_Chevrons5.svg"
+                      loading="lazy"
+                      alt="chevron"
+                      class="right-chevron"
+                    />
+                  </a>
+                  <div id="d-nav-signout" class="my-profile-links">
+                    <div>Logout</div>
+                    <img
+                      src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/62909c7c81a99984fbd1304b_Chevrons5.svg"
+                      loading="lazy"
+                      alt="chevron"
+                      class="right-chevron"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        } else {
+          return (
+            <div
+              className="buttons-wrap"
+              dangerouslySetInnerHTML={{
+                __html: ` <a id="d-nav-signin" href="/signin" class="sign-in-button w-inline-block"
+        ><div>Sign In</div></a
+      ><a id="d-nav-signup" href="/signup" class="button-wrap w-inline-block"
+        ><div class="btn-primary nav-signup"><div>Sign Up</div></div>
+        <div class="btn-overlay"></div
+      ></a>`,
+              }}
+            ></div>
+          );
         }
-        else{
-            return <div></div>;
+      }
+      // if (props.className.includes("navwrapper")) {
+      //   if (supabase.auth.session()) {
+      //     return <div></div>
+      //   }
+      // }
+    }
+  }
+
+  if (node.name == "section") {
+    const { ...props } = attribs;
+    if (props.className) {
+      if (props.className.includes("section-home_hero")) {
+        if (supabase.auth.session()) {
+          return <div></div>;
+        }
+      }
+      if (props.className.includes("section-brands")) {
+        if (supabase.auth.session()) {
+          return <div></div>;
         }
       }
     }

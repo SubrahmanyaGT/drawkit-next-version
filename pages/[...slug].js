@@ -20,9 +20,7 @@ export default function slug(props) {
         ></script>
       </Head>
       <div>
-        <span style={{ fontSize: "10px", position: "fixed" }}>
-          Illustrations/[slug]
-        </span>
+      
         <NavbarContent navbarContent={parseHtml(props.navBar, parseOptions)} />
 
         {parseHtml(props.bodyContent, parseOptions)}
@@ -36,7 +34,6 @@ export default function slug(props) {
 }
 
 export async function getServerSideProps(props) {
-  console.log(props.query.slug.join("/"));
   const cheerio = await import(`cheerio`);
   const axios = (await import(`axios`)).default;
 

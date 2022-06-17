@@ -1,148 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <form
-              id="wf-form-contact-form"
-              name="wf-form-contact-form"
-              data-name="contact-form"
-              method="get"
-              class="input-form"
-              aria-label="contact-form"
-            >
-              <div
-                data-delay="0"
-                data-hover="false"
-                fs-selectcustom-element="dropdown"
-                class="dropdown w-dropdown"
-                style=""
-              >
-                <div
-                  class="field select w-dropdown-toggle"
-                  id="w-dropdown-toggle-4"
-                  aria-controls="w-dropdown-list-4"
-                  aria-haspopup="listbox"
-                  aria-expanded="false"
-                  role="button"
-                  tabindex="0"
-                >
-                  <img
-                    loading="eager"
-                    src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/626f5d0ae6c15c9ff42dd664_info-S.svg"
-                    alt="Question icon
-              "
-                    class="icons-contact-form"
-                  />
-                  <div class="text-size-regular text-color-black break">
-                    Please choose your Reason for contact
-                  </div>
-                  <div class="w-icon-dropdown-toggle" aria-hidden="true"></div>
-                </div>
-                <nav
-                  class="dropdown-list w-dropdown-list"
-                  id="w-dropdown-list-4"
-                  aria-labelledby="w-dropdown-toggle-4"
-                  role="listbox"
-                  aria-multiselectable="false"
-                >
-                  <select
-                    id="field-2"
-                    name="field-2"
-                    data-name="Field 2"
-                    required=""
-                    class="select-options hide w-select"
-                  >
-                    <option value="">Please choose your Reason for contact</option>
-                    <option value="First">First choice</option>
-                    <option value="Second">Second choice</option>
-                    <option value="Third">Third choice</option></select
-                  >
-                </nav>
-              </div>
-              <div class="field">
-                <img
-                  loading="eager"
-                  src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/626f5d0ae6c15c07172dd663_Profile.svg"
-                  alt="profile"
-                  class="icons-contact-form"
-                /><input
-                  type="text"
-                  class="form-input-field w-input"
-                  maxlength="256"
-                  name="Name"
-                  data-name="Name"
-                  placeholder="Enter your full name"
-                  id="Name-5"
-                  required=""
-                />
-              </div>
-              <div class="field">
-                <img
-                  loading="eager"
-                  src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/626f5d0ae6c15c74572dd666_Email.svg"
-                  alt="Email"
-                  class="icons-contact-form"
-                /><input
-                  type="email"
-                  class="form-input-field w-input"
-                  maxlength="256"
-                  name="Email"
-                  data-name="Email"
-                  placeholder="Email"
-                  id="Email-5"
-                  required=""
-                />
-              </div>
-              <div class="field full-message">
-                <img
-                  loading="eager"
-                  src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/626f5d0ae6c15c67cd2dd665_Message.svg"
-                  alt="Message icon"
-                  class="icons-contact-form"
-                /><textarea
-                  id="field"
-                  name="field"
-                  maxlength="5000"
-                  data-name="field"
-                  placeholder="Enter your full message"
-                  required=""
-                  class="form-input-field textarea w-input"
-                ></textarea>
-              </div>
-              <div class="recaptcha-sent-wrap">
-                <div>
-                  <div class="text-size-tiny text-color-grey">
-                    Please tick the box to continue
-                  </div>
-                  <div
-                    data-sitekey="6LcU1DogAAAAAGmn7QwLkyipWNQDOftM-QpwdEtG"
-                    class="w-form-formrecaptcha recaptcha g-recaptcha g-recaptcha-error g-recaptcha-disabled"
-                  ></div>
-                </div>
-                <div class="button-wrap">
-                  <div class="btn-primary">
-                    <input
-                      type="submit"
-                      value="Sent"
-                      data-wait="Please wait..."
-                      class="submit-button w-button"
-                    />
-                    <div>Sent</div>
-                    <img
-                      loading="lazy"
-                      src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/626f5d0ae6c15c2bb32dd5f5_Arrows.svg"
-                      alt=""
-                      class="button-icon"
-                    />
-                  </div>
-                  <div class="btn-overlay"></div>
-                </div>
-              </div>
-            </form>
-  </body>
-</html>
+if (supabase.auth.session()) {
+  console.log(supabase.auth.session(), "supabase.auth.session()");
+  return (
+  
+      <div
+        className="button-wrap"
+        dangerouslySetInnerHTML={{
+          __html: ` <div class="user-profile">
+        <div class="user-name-wrap">
+          <div class="letter-avatar">${supabase.auth
+            .session()
+            .user.email.slice(0, 1)}</div>
+          <div id="user-name" class="user-name .text-style-10ch">${supabase.auth
+            .session()
+            .user.email.slice(
+              0,
+              supabase.auth.session().user.email.indexOf("@")
+            )}</div>
+        </div>
+        <div class="my-profile-wrap">
+          <div class="my-profile-options">
+            <a
+              id="account"
+              href="/profile"
+              class="my-profile-links w-inline-block"
+              ><div>My Account</div>
+              <img
+                src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/62909c7c81a99984fbd1304b_Chevrons5.svg"
+                loading="lazy"
+                alt="chevron"
+                class="right-chevron"
+            /></a>
+            <div id="d-nav-signout" class="my-profile-links">
+              <div>Logout</div>
+              <img
+                src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/62909c7c81a99984fbd1304b_Chevrons5.svg"
+                loading="lazy"
+                alt="chevron"
+                class="right-chevron"
+              />
+            </div>
+          </div>
+        </div>
+      </div>`,
+        }}
+      ></div>
+   
+  );
+} else {
+  return (
+    <div className="navbar-button-wrap">
+      <div
+        className="buttons-wrap"
+        dangerouslySetInnerHTML={{
+          __html: ` <a id="d-nav-signin" href="/signin" class="sign-in-button w-inline-block"
+    ><div>Sign In</div></a
+  ><a id="d-nav-signup" href="/signup" class="button-wrap w-inline-block"
+    ><div class="btn-primary nav-signup"><div>Sign Up</div></div>
+    <div class="btn-overlay"></div
+  ></a>`,
+        }}
+      ></div>
+    </div>
+  );
+}

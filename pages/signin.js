@@ -6,6 +6,7 @@ import React, { useState, useEffect } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
 import Script from "next/script";
+import { replace } from "../utils/replace-node";
 
 const supabaseSignIn = async (email, password) => {
   console.log(email, password);
@@ -58,10 +59,22 @@ export default function Home(props) {
       if ((await supabaseSignIn(email, password)) && valEmail && valPassword) {
         console.log(await supabaseSignIn(email, password));
         router.push("/");
-      }
-      else{
+      } else {
         $(".validator-message").text("Invalid Signin Attempt");
       }
+    }
+
+    if (!!$el.closest(".reveal-pw").get(0)) {
+      let signin_input = $("#d-signin-pass");
+      signin_input.attr("type", "text");
+      $(".reveal-pw").hide();
+      $(".hide-pw").show();
+    }
+    if (!!$el.closest(".hide-pw").get(0)) {
+      let signin_input = $("#d-signin-pass");
+      signin_input.attr("type", "password");
+      $(".reveal-pw").show();
+      $(".hide-pw").hide();
     }
   }
 
@@ -70,12 +83,10 @@ export default function Home(props) {
     if (!!$el.closest("#d-signin-email").get(0)) {
       setEmail($el.closest("#d-signin-email").val());
       $(".validator-message").text("");
-
     }
     if (!!$el.closest("#d-signin-pass").get(0)) {
       setPassword($el.closest("#d-signin-pass").val());
       $(".validator-message").text("");
-
     }
   }
 
@@ -117,15 +128,14 @@ export async function getStaticProps({ context }) {
 
   const $ = cheerio.load(html);
 
-  //   $('.navlink').addClass('title').html()
   const bodyContent = $(`.main-wrapper`).html();
-  //   const navDrop=$('.nav-dropdown-wrapper').html();
   const headContent = $(`head`).html();
+  // const globalStyles = $(".global-styles").html();
+
   return {
     props: {
       bodyContent,
       headContent,
-      //   navDrop,
     },
     revalidate: 3,
   };

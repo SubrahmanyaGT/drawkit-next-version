@@ -27,7 +27,7 @@ export default function NavbarContent(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  useEffect(() => {}, []);
+
 
   const router = useRouter();
   function wrapClickHandler(event) {
