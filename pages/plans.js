@@ -242,7 +242,7 @@ export async function getServerSideProps({ context }) {
   //   $('.navlink').addClass('title').html()
   const globalStyles = $(".global-styles").html();
   const bodyContent = $(`.main-wrapper`).html();
-  const navbarContent = $(".navbar").html();
+  const navbarContent = $(".nav-access").html();
   const headContent = $(`head`).html();
   const supportScripts = Object.keys($(`script`))
     .map((key) => {

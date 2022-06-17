@@ -5,32 +5,33 @@ import parseHtml, { domToReact } from "html-react-parser";
 import { supabase } from "../utils/supabaseClient";
 
 let premiumUser = "active";
-// let pcheck = () => {
-//   if (supabase.auth.session()) {
-//     let uid = supabase.auth.session().user.id;
-//     supabase
-//       .from("stripe_users")
-//       .select("stripe_user_id")
-//       .eq("user_id", uid)
-//       .then(({ data, error }) => {
-//         fetch("api/check-active-status", {
-//           method: "POST",
-//           headers: {
-//             contentType: "application/json",
-//           },
-//           body: JSON.stringify({ customer: data[0].stripe_user_id }),
-//         })
-//           .then(function (response) {
-//             return response.json();
-//           })
-//           .then(function (data) {
-//             premiumUser = data.status;
-//           });
-//       });
-//   }
-// };
+let pcheck = () => {
+  if (supabase.auth.session()) {
+    let uid = supabase.auth.session().user.id;
+    supabase
+      .from("stripe_users")
+      .select("stripe_user_id")
+      .eq("user_id", uid)
+      .then(({ data, error }) => {
+        fetch("api/check-active-status", {
+          method: "POST",
+          headers: {
+            contentType: "application/json",
+          },
+          body: JSON.stringify({ customer: data[0].stripe_user_id }),
+        })
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (data) {
+            premiumUser = data.status;
+          });
+      });
+  }
+};
 
 console.log(premiumUser, supabase.auth.session());
+// pcheck()
 function isUrlInternal(link) {
   if (
     !link ||
@@ -510,7 +511,7 @@ export function replace(node) {
           ></div>
         );
       }
-      if (props.className.includes('username-letters-big')) {
+      if (props.className.includes("username-letters-big")) {
         if (supabase.auth.session()) {
           return (
             <div class="username-letters-big big">
@@ -519,7 +520,7 @@ export function replace(node) {
           );
         }
       }
-      if (props.className.includes('username-letters')) {
+      if (props.className.includes("username-letters")) {
         if (supabase.auth.session()) {
           return (
             <div class="username-letters small">
@@ -528,7 +529,7 @@ export function replace(node) {
           );
         }
       }
-      
+
       if (props.className.match(/^user$/)) {
         if (supabase.auth.session()) {
           return (
@@ -567,7 +568,7 @@ export function replace(node) {
                 <div class="letter-avatar">
                   {supabase.auth.session().user.email.slice(0, 1)}
                 </div>
-                <div  class="user-name">
+                <div class="user-name">
                   {supabase.auth
                     .session()
                     .user.email.slice(

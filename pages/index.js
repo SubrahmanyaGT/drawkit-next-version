@@ -41,10 +41,10 @@ export default function Home(props) {
           body: JSON.stringify({ customer: data[0].stripe_user_id }),
         })
           .then(function (response) {
-            return response.json();
+             return response.json();
           })
           .then(function (data) {
-            setPremiumUser(data.status);
+             setPremiumUser(data.status);
           });
       });
   }

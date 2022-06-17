@@ -14,6 +14,8 @@ export default function slug(props) {
     <>
       <Head>
         {parseHtml(props.headContent, parseOptions)}
+        {parseHtml(props.supportScripts, parseOptions)}
+
         <script
           defer
           src="https://cdn.jsdelivr.net/npm/@finsweet/attributes-selectcustom@1/selectcustom.js"
@@ -25,7 +27,6 @@ export default function slug(props) {
 
         {parseHtml(props.bodyContent, parseOptions)}
         <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
-        {parseHtml(props.supportScripts, parseOptions)}
         {parseHtml(props.footer, parseOptions)}
         {parseHtml(props.globalStyles, parseOptions)}
       </div>
@@ -50,7 +51,7 @@ export async function getServerSideProps(props) {
     const $ = cheerio.load(html);
 
     //   $('.navlink').addClass('title').html()
-    const navBar = $(`.navbar`).html();
+    const navBar = $(`.nav-access`).html();
     const bodyContent = $(`.main-wrapper`).html();
     //   const navDrop=$('.nav-dropdown-wrapper').html();
     const headContent = $(`head`).html();
