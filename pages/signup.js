@@ -9,6 +9,7 @@ import Script from "next/script";
 import { replace } from "../utils/replace-node";
 
 const supabaseSignUp = async (email, password) => {
+  console.log(email, password);
   let stripeCreate = await (async () => {
     const response = await fetch("api/createStripCust", {
       method: "POST",
@@ -93,6 +94,31 @@ export default function Home(props) {
   }, [email, password]);
 
   /**Functions */
+
+  useEffect(() => {
+    document
+      .getElementById("signup-div")
+      .addEventListener("change", wrapChangeHandler);
+
+    function wrapChangeHandler(event) {
+      var $el = $(event.target);
+      if (!!$el.closest("#signup-name").get(0)) {
+        setEmail($el.closest("#signup-name").val());
+      }
+      if (!!$el.closest("#d-signup-pass").get(0)) {
+        setPassword($el.closest("#d-signup-pass").val());
+      }
+      if (!!$el.closest("#d-signup-checkbox").get(0)) {
+        if ($("#d-signup-checkbox").is(":checked")) {
+          $(".w-checkbox-input").addClass("w--redirected-checked");
+          $(".w-checkbox-input").css("box-shadow", "0 0 3px 1px #3898ec");
+
+        } else {
+          $(".w-checkbox-input").removeClass("w--redirected-checked");
+        }
+      }
+    }
+  }, []);
   async function wrapClickHandler(event) {
     var $el = $(event.target);
 
@@ -101,7 +127,7 @@ export default function Home(props) {
       console.log(email, password);
 
       if (valEmail && valPassword) {
-        if ($(".w-checkbox-input").hasClass("w--redirected-checked")) {
+        if ($("#d-signup-checkbox").is(":checked")) {
           let data = await supabaseSignUp(email, password);
           console.log("data", data);
           if (data) {
@@ -110,7 +136,7 @@ export default function Home(props) {
             console.log("asdfadf");
           }
         } else {
-          $(".w-checkbox-input").css("border", "1px solid red");
+          $(".w-checkbox-input").css("box-shadow", "0 0 3px 1px red");
         }
       }
     }
@@ -126,54 +152,42 @@ export default function Home(props) {
       }
     }
     if (!!$el.closest(".reveal-pw").get(0)) {
-      let signin_input=$("#d-signup-pass")
-       signin_input.attr('type','text');
-                $(".reveal-pw").hide();
-                $(".hide-pw").show();
-      }
-    if (!!$el.closest(".hide-pw").get(0)) {
-      
-     
-      let signin_input=$("#d-signup-pass")
-       signin_input.attr('type','password');
-                $(".reveal-pw").show();
-                $(".hide-pw").hide();
-      }
-  }
-
-  function wrapChangeHandler(event) {
-    var $el = $(event.target);
-    if (!!$el.closest("#field").get(0)) {
-      setEmail($el.closest("#field").val());
+      let signin_input = $("#d-signup-pass");
+      signin_input.attr("type", "text");
+      $(".reveal-pw").hide();
+      $(".hide-pw").show();
     }
-    if (!!$el.closest("#d-signup-pass").get(0)) {
-      setPassword($el.closest("#d-signup-pass").val());
+    if (!!$el.closest(".hide-pw").get(0)) {
+      let signin_input = $("#d-signup-pass");
+      signin_input.attr("type", "password");
+      $(".reveal-pw").show();
+      $(".hide-pw").hide();
     }
   }
 
   async function wrapKeyUpHandler(event) {
     if (event.keyCode === 13) {
       var $el = $(event.target);
-      if (!!$el.closest("#field").get(0)) {
+      if (!!$el.closest("#signup-name").get(0)) {
         $("#d-signup-pass").focus();
       }
       if (!!$el.closest("#d-signup-pass").get(0)) {
         validateEmailPassword();
-      console.log(email, password);
+        console.log(email, password);
 
-      if (valEmail && valPassword) {
-        if ($(".w-checkbox-input").hasClass("w--redirected-checked")) {
-          let data = await supabaseSignUp(email, password);
-          console.log("data", data);
-          if (data) {
-            router.push("/");
+        if (valEmail && valPassword) {
+          if ($(".w-checkbox-input").hasClass("w--redirected-checked")) {
+            let data = await supabaseSignUp(email, password);
+            console.log("data", data);
+            if (data) {
+              router.push("/");
+            } else {
+              console.log("asdfadf");
+            }
           } else {
-            console.log("asdfadf");
+            $(".w-checkbox-input").css("border", "1px solid red");
           }
-        } else {
-          $(".w-checkbox-input").css("border", "1px solid red");
         }
-      }
       }
     }
   }
@@ -196,9 +210,13 @@ export default function Home(props) {
   }
   return (
     <>
-      <div onClick={wrapClickHandler} onChange={wrapChangeHandler} onKeyUp={wrapKeyUpHandler}>
-        {parseHtml(props.headContent,parseOptions)}
-        {parseHtml(props.bodyContent,parseOptions)}
+      <div
+        id="signup-div"
+        onClick={wrapClickHandler}
+        onKeyUp={wrapKeyUpHandler}
+      >
+        {parseHtml(props.headContent, parseOptions)}
+        {parseHtml(props.bodyContent, parseOptions)}
         {parseHtml(props.supportScripts)}
       </div>
       <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>

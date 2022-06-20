@@ -49,7 +49,7 @@ export default function Home(props) {
       setValPassword(false);
     }
   }, [email, password]);
-
+  
   async function wrapClickHandler(event) {
     var $el = $(event.target);
     if (!!$el.closest("#d-signin-google").get(0)) {
@@ -80,17 +80,7 @@ export default function Home(props) {
     }
   }
 
-  function wrapChangeHandler(event) {
-    var $el = $(event.target);
-    if (!!$el.closest("#d-signin-email").get(0)) {
-      setEmail($el.closest("#d-signin-email").val());
-      $(".validator-message").text("");
-    }
-    if (!!$el.closest("#d-signin-pass").get(0)) {
-      setPassword($el.closest("#d-signin-pass").val());
-      $(".validator-message").text("");
-    }
-  }
+ 
 
   async function wrapKeyUpHandler(event) {
     if (event.keyCode === 13) {
@@ -113,28 +103,34 @@ export default function Home(props) {
     }
   }
 
-  function validateEmailPassword() {
-    if (valPassword) {
-      if (valEmail) $(".validator-message").text("");
-    } else {
-      $(".validator-message").text("Invalid input for Email or Password");
+  useEffect(() => {
+
+    document.getElementById('signin-div').addEventListener('change',wrapChangeHandler)
+    function wrapChangeHandler(event) {
+      console.log('change');
+      var $el = $(event.target);
+      if (!!$el.closest("#d-signin-email").get(0)) {
+        setEmail($el.closest("#d-signin-email").val());
+        $(".validator-message").text("");
+        console.log($el.closest("#d-signin-email").val());
+      }
+      if (!!$el.closest("#d-signin-pass").get(0)) {
+        setPassword($el.closest("#d-signin-pass").val());
+        $(".validator-message").text("");
+      }
     }
-    if (valEmail) {
-      $("#d-signin-email").parent().css("border", "1px solid #ccd1d6");
-      if (valPassword) $(".validator-message").text("");
-    } else {
-      $("#d-signin-email").parent().css("border", "1px solid red");
-      $(".validator-message").text("Invalid input for Email or Password");
-    }
-  }
+  },[])
+
   return (
     <>
+    <Head>{parseHtml(props.headContent,parseOptions)}</Head>
       <div
+      id="signin-div"
         onClick={wrapClickHandler}
-        onChange={wrapChangeHandler}
+        // onChange={wrapChangeHandler}
         onKeyUp={wrapKeyUpHandler}
       >
-        {parseHtml(props.headContent,parseOptions)}
+        
 
         {parseHtml(props.bodyContent,parseOptions)}
       </div>
