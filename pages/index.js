@@ -41,10 +41,10 @@ export default function Home(props) {
           body: JSON.stringify({ customer: data[0].stripe_user_id }),
         })
           .then(function (response) {
-             return response.json();
+            return response.json();
           })
           .then(function (data) {
-             setPremiumUser(data.status);
+            setPremiumUser(data.status);
           });
       });
   }
@@ -80,19 +80,19 @@ export default function Home(props) {
     //   d.getElementsByTagName("head")[0].appendChild(s);
     // })(document);
 
-    // if (!supabase.auth.session()) {
-    //   setHideLogin(props.hideLogin);
-    //   setBlog("");
-    // } else {
-    //   setHideLogin("");
-    //   setBlog(props.showBlog);
-    //   setIllusHead("");
-    //   // setnavbar(props.LoggedinnavBar);
-    //   setIllusHeadLogin(props.illustrationHeadLogin);
-    //   if (PremiumUser == "active") {
-    //     setShowfree("");
-    //   }
-    // }
+    if (!supabase.auth.session()) {
+      // setHideLogin(props.hideLogin);
+      // setBlog("");
+    } else {
+      // setHideLogin("");
+      // setBlog(props.showBlog);
+      // setIllusHead("");
+      // setnavbar(props.LoggedinnavBar);
+      // setIllusHeadLogin();
+      // if (PremiumUser == "active") {
+      //   setShowfree("");
+      // }
+    }
 
     //my profile dropdown
   }, []);
@@ -105,18 +105,18 @@ export default function Home(props) {
       </Head>
 
       <NavbarContent navbarContent={parseHtml(navBar, parseOptions)} />
-      {/* <NavbarContent navbarContent=
-      {parseHtml(props.LoggedinnavBar, parseOptions)}
-       /> */}
+      {auth == null ? parseHtml(hideLogin, parseOptions) : null}
+      {auth == null
+        ? parseHtml(illusHeadLogin, parseOptions)
+        : parseHtml(props.illustrationHeadLogin, parseOptions)}
 
-      <MainWrapper mainWrap={parseHtml(hideLogin, parseOptions)} />
-      <MainWrapper mainWrap={parseHtml(illusHeadLogin, parseOptions)} />
-      <MainWrapper mainWrap={parseHtml(illusHead, parseOptions)} />
-      <MainWrapper mainWrap={parseHtml(props.HomeIllustration, parseOptions)} />
-      <MainWrapper mainWrap={parseHtml(showFree, parseOptions)} />
-      <MainWrapper mainWrap={parseHtml(props.showcase, parseOptions)} />
-      <MainWrapper mainWrap={parseHtml(blog, parseOptions)} />
-      <MainWrapper mainWrap={parseHtml(props.allShow, parseOptions)} />
+      {auth == null?parseHtml(illusHead, parseOptions):null}
+      {auth == null?parseHtml(props.HomeIllustration, parseOptions):<div className='l'>{parseHtml(props.HomeIllustration, parseOptions)}</div>}
+      {parseHtml(showFree, parseOptions)}
+      {auth == null?<div className="showCaseBeforLogin">{parseHtml(props.showcase, parseOptions)}</div>:<div className='showCaseAfterLogin'>{parseHtml(props.showcase, parseOptions)}</div> }
+
+      {auth == null ? null : parseHtml(blog, parseOptions)}
+      {parseHtml(props.allShow, parseOptions)}
       {parseHtml(props.globalStyles, parseOptions)}
       {parseHtml(props.footer, parseOptions)}
     </>

@@ -49,6 +49,7 @@ export default function ResetPassword(props) {
 
         {parseHtml(props.bodyContent)}
       </div>
+      {parseHtml(props.globalStyles)}
       <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
     </>
   );
@@ -72,11 +73,13 @@ export async function getStaticProps({ context }) {
   const bodyContent = $(`.main-wrapper`).html();
   //   const navDrop=$('.nav-dropdown-wrapper').html();
   const headContent = $(`head`).html();
+  const globalStyles = $(".global-styles").html();
+
   return {
     props: {
       bodyContent,
       headContent,
-      //   navDrop,
+      globalStyles,
     },
     revalidate: 3,
   };

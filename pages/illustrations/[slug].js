@@ -170,7 +170,7 @@ export const getServerSideProps = async (paths) => {
     const $ = cheerio.load(html);
 
     //   $('.navlink').addClass('title').html()
-    const navBar = $(`.navbar`).html();
+    const navBar = $(`.nav-access`).html();
     const bodyContent = $(`.main-wrapper`).html();
     //   const navDrop=$('.nav-dropdown-wrapper').html();
     const headContent = $(`head`).html();

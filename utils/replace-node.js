@@ -4,7 +4,7 @@ import Script from "next/script";
 import parseHtml, { domToReact } from "html-react-parser";
 import { supabase } from "../utils/supabaseClient";
 
-let premiumUser = "active";
+let premiumUser = "inactive";
 let pcheck = () => {
   if (supabase.auth.session()) {
     let uid = supabase.auth.session().user.id;
@@ -511,6 +511,182 @@ export function replace(node) {
           ></div>
         );
       }
+      if (props.className.includes("signin-page-form")) {
+        return (
+          <div
+            {...props}
+            dangerouslySetInnerHTML={{
+              __html: `<div class="signin-page-form">
+          <form
+            id="signin-form"
+            name="email-form"
+            data-name="Email Form"
+            method="get"
+            class="input-form"
+            aria-label="Email Form"
+          >
+            <div class="field signup">
+              <img
+                loading="lazy"
+                src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/626f5d0ae6c15c74572dd666_Email.svg"
+                alt="Email"
+              /><input
+                type="text"
+                class="form-input-field w-input"
+                maxlength="256"
+                name="name"
+                data-name="Name"
+                placeholder="Email"
+                id="d-signin-email"
+                required=""
+              />
+            </div>
+            <div>
+              <div class="field signup">
+                <img
+                  loading="lazy"
+                  src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/628b4ed0ac96440104be2d0d_Lock.svg"
+                  alt="Password"
+                /><input
+                  type="password"
+                  class="form-input-field w-input"
+                  maxlength="256"
+                  name="Password"
+                  data-name="Password"
+                  placeholder="Password"
+                  id="d-signin-pass"
+                  required=""
+                /><img
+                  loading="lazy"
+                  src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/628b4ed075f2ff3e4945af86_View.svg"
+                  alt="view Password"
+                  class="reveal-pw"
+                /><img
+                  src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/629e33ac7bb28319dc7cc9a8_eye-close.png"
+                  loading="eager"
+                  alt="hide password
+              "
+                  class="hide-pw"
+                />
+              </div>
+              <div class="validator-message"></div>
+              <div class="forgot-pw text-color-grey">
+                Forgot password?
+                <a href="/password-reset" class="text-color-black hover-pink"
+                  >Reset Password</a
+                >
+              </div>
+            </div>
+            <div id="signin" class="button-wrap signup">
+              <div class="btn-primary"><div>Sign In</div></div>
+              <div class="btn-overlay"></div>
+            </div>
+            <div class="have-account text-color-grey">
+              Don't have any account?
+              <a href="/signup" class="text-color-black hover-pink">Sign Up</a>
+            </div>
+          </form>
+        </div>`,
+            }}
+          ></div>
+        );
+      }
+      if (props.className.includes("signup-page-form")) {
+        return (
+          <div
+            {...props}
+            dangerouslySetInnerHTML={{
+              __html:
+               `<div class="signup-page-form ">
+          <form
+            id="signup-form"
+            name="email-form"
+            data-name="Email Form"
+            method="get"
+            class="input-form"
+            aria-label="Email Form"
+          >
+            <div class="field signup" style="border: 1px solid rgb(204, 209, 214)">
+              <img
+                loading="lazy"
+                src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/626f5d0ae6c15c74572dd666_Email.svg"
+                alt="Email"
+              /><input
+                type="email"
+                class="form-input-field w-input"
+                maxlength="256"
+                name="field-2"
+                data-name="Field 2"
+                placeholder="Email"
+                id="signup-name"
+                required=""
+              />
+            </div>
+            <div>
+              <div class="field signup">
+                <img
+                  loading="lazy"
+                  src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/628b4ed0ac96440104be2d0d_Lock.svg"
+                  alt="Password"
+                /><input
+                  type="password"
+                  class="form-input-field w-input"
+                  maxlength="256"
+                  name="Password"
+                  data-name="Password"
+                  placeholder="Password"
+                  id="d-signup-pass"
+                /><img
+                  loading="lazy"
+                  src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/628b4ed075f2ff3e4945af86_View.svg"
+                  alt="view Password"
+                  class="reveal-pw"
+                /><img
+                  src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/629e33ac7bb28319dc7cc9a8_eye-close.png"
+                  loading="eager"
+                  alt="hide password
+            "
+                  class="hide-pw"
+                />
+              </div>
+              <div class="validator-message"></div>
+              <label class="w-checkbox agree-tc text-color-grey"
+                ><div
+                  class="w-checkbox-input w-checkbox-input--inputType-custom checkbox"
+                ></div>
+                <input
+                  type="checkbox"
+                  name="checkbox"
+                  id="d-signup-checkbox"
+                  data-name="Checkbox"
+                  required=""
+                  style="opacity: 0; position: absolute; z-index: -1"
+                /><span class="w-form-label" for="checkbox"
+                  >Agreed with our
+                  <a href="/terms-of-service" class="text-color-black hover-pink"
+                    >Terms of Services</a
+                  >
+                  and
+                  <a href="/privacy-policy" class="text-color-black hover-pink"
+                    >Privacy Policy.</a
+                  ></span
+                ></label
+              >
+            </div>
+            <div id="signup" class="button-wrap signup">
+              <div class="btn-primary"><div>Sign Up</div></div>
+              <div class="btn-overlay"></div>
+            </div>
+            <div class="have-account text-color-grey">
+              Already a member?
+              <a href="/signin" class="text-color-black hover-pink">Sign In</a>
+            </div>
+          </form>
+        </div>`,
+            }}
+          ></div>
+        );
+      }
       if (props.className.includes("username-letters-big")) {
         if (supabase.auth.session()) {
           return (
@@ -529,7 +705,6 @@ export function replace(node) {
           );
         }
       }
-
       if (props.className.match(/^user$/)) {
         if (supabase.auth.session()) {
           return (
@@ -552,6 +727,7 @@ export function replace(node) {
       //     return <div></div>;
       //   }
       // }
+
       if (props.className.includes("premium-plan")) {
         if (premiumUser == "active") {
           return <div className="premium-plan">Current</div>;
@@ -579,20 +755,20 @@ export function replace(node) {
               </div>
               <div class="my-profile-wrap">
                 <div class="my-profile-options">
-                  <a
+                  <div
                     id="account"
-                    href="/profile"
+                    // href="/profile"
                     aria-current="page"
                     class="my-profile-links w-inline-block w--current"
                   >
-                    <div>My Account</div>
+                    <div id="account-link-text">My Account</div>
                     <img
                       src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/62909c7c81a99984fbd1304b_Chevrons5.svg"
                       loading="lazy"
                       alt="chevron"
                       class="right-chevron"
                     />
-                  </a>
+                  </div>
                   <div id="d-nav-signout" class="my-profile-links">
                     <div>Logout</div>
                     <img

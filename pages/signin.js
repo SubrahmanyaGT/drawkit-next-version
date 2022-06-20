@@ -32,7 +32,9 @@ export default function Home(props) {
   const [password, setPassword] = useState("");
   const [valEmail, setValEmail] = useState(false);
   const [valPassword, setValPassword] = useState(false);
-
+  const parseOptions = {
+    replace,
+  };
   const router = useRouter();
 
   useEffect(() => {
@@ -132,9 +134,9 @@ export default function Home(props) {
         onChange={wrapChangeHandler}
         onKeyUp={wrapKeyUpHandler}
       >
-        {parseHtml(props.headContent)}
+        {parseHtml(props.headContent,parseOptions)}
 
-        {parseHtml(props.bodyContent)}
+        {parseHtml(props.bodyContent,parseOptions)}
       </div>
       <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
     </>

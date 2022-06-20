@@ -6,6 +6,7 @@ import React, { useState, useEffect } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
 import Script from "next/script";
+import { replace } from "../utils/replace-node";
 
 const supabaseSignUp = async (email, password) => {
   let stripeCreate = await (async () => {
@@ -75,6 +76,9 @@ export default function Home(props) {
   const [valPassword, setValPassword] = useState(false);
   const router = useRouter();
 
+  const parseOptions = {
+    replace,
+  };
   useEffect(() => {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
       setValEmail(true);
@@ -193,8 +197,8 @@ export default function Home(props) {
   return (
     <>
       <div onClick={wrapClickHandler} onChange={wrapChangeHandler} onKeyUp={wrapKeyUpHandler}>
-        {parseHtml(props.headContent)}
-        {parseHtml(props.bodyContent)}
+        {parseHtml(props.headContent,parseOptions)}
+        {parseHtml(props.bodyContent,parseOptions)}
         {parseHtml(props.supportScripts)}
       </div>
       <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>

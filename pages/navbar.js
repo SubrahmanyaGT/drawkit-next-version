@@ -43,6 +43,9 @@ export default function NavbarContent(props) {
       let params = "/search-results?search=" + $("#nav-search-input").val();
       router.push(params);
     }
+    if (!!$el.closest("#account").get(0)) {
+      router.push('/profile');
+    }
     //
     if (!!$el.closest("#user-name").get(0)) {
       $(".my-profile-wrap").show();
@@ -74,7 +77,7 @@ export default function NavbarContent(props) {
 
   function wrapBlurHandler(event) {
     var $el = $(event.target);
-    $(".my-profile-wrap").hide();
+    if (!$el.closest("#account-link-text").get(0)) $(".my-profile-wrap").hide();
   }
   function wrapFocusHandler(event) {
     var $el = $(event.target);
@@ -108,7 +111,6 @@ export default function NavbarContent(props) {
         width: "100%",
         top: "0",
       }}
-   
     >
       <>{props.navbarContent}</>
     </div>
