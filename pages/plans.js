@@ -12,6 +12,7 @@ import { replace } from "../utils/replace-node";
 
 export default function Plans(props) {
   const router = useRouter();
+  const [premiumUser, setPremiumUser] = useState("inactive");
 
   //................................................................................................................................//
 
@@ -140,9 +141,42 @@ export default function Plans(props) {
 
   //..................................................................................................................................//
 
-  // useEffect(() => {
+  useEffect(() => {
+    if (supabase.auth.session()) {
+      let uid = supabase.auth.session().user.id;
+      supabase
+        .from("stripe_users")
+        .select("stripe_user_id")
+        .eq("user_id", uid)
+        .then(({ data, error }) => {
+          fetch("api/check-active-status")
+            .then(function (response) {
+              return response.json();
+            })
+            .then(function (data) {
+              console.log(data);
+              setPremiumUser(data.status);
+            });
+        });
+    }
+  }, []);
 
-  // }, []);
+  useEffect(() => {
+    if (supabase.auth.session() != null) {
+      document.querySelector(".get-started").style.display = "none";
+      if (premiumUser == "active") {
+        document.querySelector(".free-plan").style.display = "none";
+        document.querySelector("#subscribe").style.display = "none";
+        document.querySelector(".premium-plan").style.display = "block";
+      } else {
+        document.querySelector(".free-plan").style.display = "block";
+        document.querySelector(".premium-plan").style.display = "none";
+        document.querySelector("#subscribe").style.display = "block";
+      }
+    } else {
+      document.querySelector(".get-started").style.display = "flex";
+    }
+  }, [premiumUser]);
 
   function wrapClickHandler(event) {
     var $el = $(event.target);

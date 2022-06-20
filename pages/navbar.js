@@ -44,7 +44,7 @@ export default function NavbarContent(props) {
       router.push(params);
     }
     if (!!$el.closest("#account").get(0)) {
-      router.push('/profile');
+      window.location.pathname='/profile'
     }
     //
     if (!!$el.closest("#user-name").get(0)) {

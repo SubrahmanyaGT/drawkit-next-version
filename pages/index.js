@@ -110,10 +110,24 @@ export default function Home(props) {
         ? parseHtml(illusHeadLogin, parseOptions)
         : parseHtml(props.illustrationHeadLogin, parseOptions)}
 
-      {auth == null?parseHtml(illusHead, parseOptions):null}
-      {auth == null?parseHtml(props.HomeIllustration, parseOptions):<div className='l'>{parseHtml(props.HomeIllustration, parseOptions)}</div>}
+      {auth == null ? parseHtml(illusHead, parseOptions) : null}
+      {auth == null ? (
+        parseHtml(props.HomeIllustration, parseOptions)
+      ) : (
+        <div className="l">
+          {parseHtml(props.HomeIllustration, parseOptions)}
+        </div>
+      )}
       {parseHtml(showFree, parseOptions)}
-      {auth == null?<div className="showCaseBeforLogin">{parseHtml(props.showcase, parseOptions)}</div>:<div className='showCaseAfterLogin'>{parseHtml(props.showcase, parseOptions)}</div> }
+      {auth == null ? (
+        <div className="showCaseBeforLogin">
+          {parseHtml(props.showcase, parseOptions)}
+        </div>
+      ) : (
+        <div className="showCaseAfterLogin">
+          {parseHtml(props.showcase, parseOptions)}
+        </div>
+      )}
 
       {auth == null ? null : parseHtml(blog, parseOptions)}
       {parseHtml(props.allShow, parseOptions)}

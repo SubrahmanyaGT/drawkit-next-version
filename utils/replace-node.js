@@ -728,13 +728,13 @@ export function replace(node) {
       //   }
       // }
 
-      if (props.className.includes("premium-plan")) {
-        if (premiumUser == "active") {
-          return <div className="premium-plan">Current</div>;
-        } else {
-          return <div></div>;
-        }
-      }
+      // if (props.className.includes("premium-plan")) {
+      //   if (premiumUser == "active") {
+      //     return <div className="premium-plan">Current</div>;
+      //   } else {
+      //     return <div></div>;
+      //   }
+      // }
       if (props.className.includes("navbar-button-wrap")) {
         if (supabase.auth.session()) {
           console.log(supabase.auth.session(), "supabase.auth.session()");
@@ -814,7 +814,7 @@ export function replace(node) {
           return <div></div>;
         }
       }
-      if (props.className.includes("section-brands")) {
+      if (props.className.match(/^section-brands$/)) {
         if (supabase.auth.session()) {
           return <div></div>;
         }
