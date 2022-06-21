@@ -169,9 +169,9 @@ export default function Plans(props) {
         document.querySelector("#subscribe").style.display = "none";
         document.querySelector(".premium-plan").style.display = "block";
       } else {
-        document.querySelector(".free-plan").style.display = "block";
+        // document.querySelector(".free-plan").style.display = "block";
         document.querySelector(".premium-plan").style.display = "none";
-        document.querySelector("#subscribe").style.display = "block";
+        // document.querySelector("#subscribe").style.display = "block";
       }
     } else {
       document.querySelector(".get-started").style.display = "flex";
