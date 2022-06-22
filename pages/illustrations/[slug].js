@@ -196,7 +196,6 @@ export const getServerSideProps = async (paths) => {
         footer: footer,
         globalStyles: globalStyles,
       },
-      // revalidate: 3,
     };
   } else {
     return {

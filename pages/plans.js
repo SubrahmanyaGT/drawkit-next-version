@@ -178,6 +178,22 @@ export default function Plans(props) {
   //     document.querySelector(".get-started").style.display = "flex";
   //   }
   // }, [premiumUser]);
+  useEffect(() => {
+    if (supabase.auth.session() != null) {
+      document.querySelector(".get-started").style.display = "none";
+      if (premiumUser == "active") {
+        document.querySelector(".free-plan").style.display = "none";
+        document.querySelector("#subscribe").style.display = "none";
+        document.querySelector(".premium-plan").style.display = "block";
+      } else {
+        // document.querySelector(".free-plan").style.display = "block";
+        document.querySelector(".premium-plan").style.display = "none";
+        // document.querySelector("#subscribe").style.display = "block";
+      }
+    } else {
+      document.querySelector(".get-started").style.display = "flex";
+    }
+  }, [premiumUser]);
 
   function wrapClickHandler(event) {
     var $el = $(event.target);
