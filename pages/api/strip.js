@@ -60,21 +60,41 @@
 //     if(error) throw error
 //     console.log("Server created Successfully")
 // })
+import { supabase } from "../../utils/supabaseClient";
 
 export default async function handler(req, res) {
-  const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+  let userdetails = JSON.parse(req.body);
+  console.log(userdetails);
 
-  const session = await stripe.checkout.sessions.create({
-    mode: "subscription",
-    line_items: [
-      {
-        price: "price_1KYEiyFrgbA3kZrFUztTyUKR",
-        quantity: 1,
-      },
-    ],
-    customer: "cus_LuwRMy2vVaxm5g",
-    success_url: "http://localhost/payment-successful",
-    cancel_url: "http://localhost/plans",
+  let response = await supabase.from("stripe_users").select("*").eq('user_id',userdetails.user_id);
+  let stripeUser=response.body[0]
+console.log(stripeUser);
+  let price = "price_1KYEiyFrgbA3kZrFUztTyUKR";
+  const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+  const subscriptions = await stripe.subscriptions.list({
+    limit: 1,
+    status: "active",
+    price: price,
+    customer: stripeUser.stripe_user_id, //userdetails.customer,
   });
+
+  let session;
+  if (subscriptions.data.length <= 0) {
+    session = await stripe.checkout.sessions.create({
+      mode: "subscription",
+      line_items: [
+        {
+          price: price,
+          quantity: 1,
+        },
+      ],
+      customer: stripeUser.stripe_user_id, // userdetails.customer,
+      success_url: "http://localhost/payment-successful",
+      cancel_url: "http://localhost/plans",
+    });
+  } else {
+    session = { message: "Already a subscribed customer" };
+  }
+
   res.status(200).json({ session });
 }

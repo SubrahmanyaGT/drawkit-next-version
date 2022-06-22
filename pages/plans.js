@@ -144,21 +144,36 @@ export default function Plans(props) {
 
   useEffect(() => {
     if (supabase.auth.session()) {
-      let uid = supabase.auth.session().user.id;
-      supabase
-        .from("stripe_users")
-        .select("stripe_user_id")
-        .eq("user_id", uid)
-        .then(({ data, error }) => {
-          fetch("api/check-active-status")
-            .then(function (response) {
-              return response.json();
-            })
-            .then(function (data) {
-              console.log(data);
-              setPremiumUser(data.status);
-            });
+      fetch("/api/check-active-status", {
+        method: "POST",
+        headers: {
+          contentType: "application/json",
+        },
+        body: JSON.stringify({ user_id: auth.user.id }),
+      })
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          console.log(data);
+          setPremiumUser(data.status);
         });
+
+      // let uid = supabase.auth.session().user.id;
+      // supabase
+      //   .from("stripe_users")
+      //   .select("stripe_user_id")
+      //   .eq("user_id", uid)
+      //   .then(({ data, error }) => {
+      //     fetch("api/c")
+      //       .then(function (response) {
+      //         return response.json();
+      //       })
+      //       .then(function (data) {
+      //         console.log(data);
+      //         setPremiumUser(data.status);
+      //       });
+      //   });
     }
   }, []);
 
@@ -178,33 +193,27 @@ export default function Plans(props) {
   //     document.querySelector(".get-started").style.display = "flex";
   //   }
   // }, [premiumUser]);
-  useEffect(() => {
-    if (supabase.auth.session() != null) {
-      document.querySelector(".get-started").style.display = "none";
-      if (premiumUser == "active") {
-        document.querySelector(".free-plan").style.display = "none";
-        document.querySelector("#subscribe").style.display = "none";
-        document.querySelector(".premium-plan").style.display = "block";
-      } else {
-        // document.querySelector(".free-plan").style.display = "block";
-        document.querySelector(".premium-plan").style.display = "none";
-        // document.querySelector("#subscribe").style.display = "block";
-      }
-    } else {
-      document.querySelector(".get-started").style.display = "flex";
-    }
-  }, [premiumUser]);
 
   function wrapClickHandler(event) {
     var $el = $(event.target);
     if (!!$el.closest("#subscribe").get(0)) {
-      //strip payment
-      fetch("/api/strip")
-        .then((response) => response.json())
-        .then((data) => {
-          router.push(data.session.url);
-        });
-      // console.log("subscribe");
+      if (auth != null) {
+        //strip payment
+        fetch("/api/strip", {
+          method: "POST",
+          headers: {
+            contentType: "application/json",
+          },
+          body: JSON.stringify({ user_id: auth.user.id }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.session.url) router.push(data.session.url);
+            else alert(data.session.message);
+          });
+      } else {
+        router.push("/signup");
+      }
     }
   }
 
@@ -263,11 +272,17 @@ export default function Plans(props) {
         />
         {parseHtml(props.headContent, parseOptions)}
         {auth == null ? (
-          <div className="notLogedInPlans">{parseHtml(props.bodyContent, parseOptions)}</div>
+          <div className="notLogedInPlans">
+            {parseHtml(props.bodyContent, parseOptions)}
+          </div>
         ) : premiumUser == "active" ? (
-          <div className="primeInPlans">{parseHtml(props.bodyContent, parseOptions)}</div>
+          <div className="primeInPlans">
+            {parseHtml(props.bodyContent, parseOptions)}
+          </div>
         ) : (
-          <div className="freeUser">{parseHtml(props.bodyContent, parseOptions)}</div>
+          <div className="freeUser">
+            {parseHtml(props.bodyContent, parseOptions)}
+          </div>
         )}
       </div>
       {parseHtml(props.footer, parseOptions)}
