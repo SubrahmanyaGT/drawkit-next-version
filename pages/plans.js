@@ -13,6 +13,7 @@ import { replace } from "../utils/replace-node";
 export default function Plans(props) {
   const router = useRouter();
   const [premiumUser, setPremiumUser] = useState("inactive");
+  let [auth, setAuth] = useState(supabase.auth.session());
 
   //................................................................................................................................//
 
@@ -161,22 +162,22 @@ export default function Plans(props) {
     }
   }, []);
 
-  useEffect(() => {
-    if (supabase.auth.session() != null) {
-      document.querySelector(".get-started").style.display = "none";
-      if (premiumUser == "active") {
-        document.querySelector(".free-plan").style.display = "none";
-        document.querySelector("#subscribe").style.display = "none";
-        document.querySelector(".premium-plan").style.display = "block";
-      } else {
-        document.querySelector(".free-plan").style.display = "block";
-        document.querySelector(".premium-plan").style.display = "none";
-        document.querySelector("#subscribe").style.display = "block";
-      }
-    } else {
-      document.querySelector(".get-started").style.display = "flex";
-    }
-  }, [premiumUser]);
+  // useEffect(() => {
+  //   if (supabase.auth.session() != null) {
+  //     document.querySelector(".get-started").style.display = "none";
+  //     if (premiumUser == "active") {
+  //       document.querySelector(".free-plan").style.display = "none";
+  //       document.querySelector("#subscribe").style.display = "none";
+  //       document.querySelector(".premium-plan").style.display = "block";
+  //     } else {
+  //       document.querySelector(".free-plan").style.display = "block";
+  //       document.querySelector(".premium-plan").style.display = "none";
+  //       document.querySelector("#subscribe").style.display = "block";
+  //     }
+  //   } else {
+  //     document.querySelector(".get-started").style.display = "flex";
+  //   }
+  // }, [premiumUser]);
 
   function wrapClickHandler(event) {
     var $el = $(event.target);
@@ -245,8 +246,13 @@ export default function Plans(props) {
           navbarContent={parseHtml(props.navbarContent, parseOptions)}
         />
         {parseHtml(props.headContent, parseOptions)}
-
-        {parseHtml(props.bodyContent, parseOptions)}
+        {auth == null ? (
+          <div className="notLogedInPlans">{parseHtml(props.bodyContent, parseOptions)}</div>
+        ) : premiumUser == "active" ? (
+          <div className="primeInPlans">{parseHtml(props.bodyContent, parseOptions)}</div>
+        ) : (
+          <div className="freeUser">{parseHtml(props.bodyContent, parseOptions)}</div>
+        )}
       </div>
       {parseHtml(props.footer, parseOptions)}
 

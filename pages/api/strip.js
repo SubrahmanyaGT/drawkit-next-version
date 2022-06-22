@@ -68,11 +68,11 @@ export default async function handler(req, res) {
     mode: "subscription",
     line_items: [
       {
-        price: "price_1L5DdySJgRJkBQqsN61ybzli",
+        price: "price_1KYEiyFrgbA3kZrFUztTyUKR",
         quantity: 1,
       },
     ],
-    customer: "cus_Ls5Mz3A3EKIpzc",
+    customer: "cus_LuwRMy2vVaxm5g",
     success_url: "http://localhost/payment-successful",
     cancel_url: "http://localhost/plans",
   });
