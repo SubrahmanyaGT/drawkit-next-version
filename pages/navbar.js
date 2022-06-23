@@ -13,7 +13,7 @@ import Script from "next/script";
 const supabaseSignOut = async (email, password) => {
   const { error } = await supabase.auth.signOut();
   if (!error) {
-    Router.reload();
+    window.location.pathname='/'
   }
 };
 

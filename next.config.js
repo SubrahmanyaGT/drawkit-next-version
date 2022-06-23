@@ -8,10 +8,10 @@
 module.exports = {
   async rewrites() {
     return [
-      // {
-      //   source: '/:slug',
-      //   destination: '/illustrations/:slug',
-      // },
+      {
+        source: '/payment-successful',
+        destination: 'https://drawkit-v2.webflow.io/payment-successful',
+      },
       // {
       //   source: "/:slug",
       //   destination: "https://drawkit-v2.webflow.io/:slug",

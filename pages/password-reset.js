@@ -9,7 +9,7 @@ import Script from "next/script";
 
 const resetPassword = async (email) => {
   const respons= await supabase.auth.api.resetPasswordForEmail(email, {
-    redirectTo: "http://drawkit-v7.webflow.io/change-password",
+    redirectTo: "https://drawkit-next-version.vercel.app/change-password",
   });
   
     return respons;

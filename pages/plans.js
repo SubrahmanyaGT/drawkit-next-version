@@ -14,7 +14,7 @@ export default function Plans(props) {
   const router = useRouter();
   const [premiumUser, setPremiumUser] = useState("inactive");
   let [auth, setAuth] = useState(supabase.auth.session());
-
+console.log(router);
   //................................................................................................................................//
 
   function isUrlInternal(link) {
