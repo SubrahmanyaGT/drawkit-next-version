@@ -10,6 +10,9 @@ function MyApp(props) {
   const parseOptions = {
     replace,
   };
+  if (Component.getLayout) {
+        return(Component.getLayout(<Component {...pageProps}/>))
+      }
   return (
     <>
       <Head>
@@ -31,7 +34,7 @@ MyApp.getInitialProps = async (ctx) => {
   const cheerio = require("cheerio");
   const axios = require("axios");
 
-  const webUrl = "https://drawkit-v2.webflow.io/";
+  const webUrl = "https://drawkit-v2.webflow.io/new-test";
   const res = await axios(webUrl);
   const html = res.data;
   const $ = cheerio.load(html);
