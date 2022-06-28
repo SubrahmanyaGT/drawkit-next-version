@@ -86,17 +86,9 @@ export default function Illustration(props) {
 
   return supabase.auth.session() != null ? (
     <>
-      <Head>
-        {parseHtml(props.headContent)}
-        {parseHtml(props.supportScripts, parseOptions)}
-      </Head>
       <div onClick={wrapClickHandler} onChange={wrapChangeHandler}>
-        <NavbarContent navbarContent={parseHtml(props.navBar, parseOptions)} />
-
         {parseHtml(props.bodyContent, parseOptions)}
         <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
-        {parseHtml(props.footer, parseOptions)}
-        {parseHtml(props.globalStyles, parseOptions)}
       </div>
     </>
   ) : (

@@ -1,6 +1,6 @@
 import parseHtml, { domToReact } from "html-react-parser";
 import React, { useState, useEffect } from "react";
-import MainWrapper from "./mainwrapper";
+
 import Link from "next/link";
 import { supabase } from "../utils/supabaseClient";
 import NavbarContent from "./navbar";
@@ -106,10 +106,7 @@ export default function Home(props) {
 
   return (
     <>
-      
-
-      {/* <NavbarContent navbarContent={parseHtml(navBar, parseOptions)} /> */}
-      {auth == null ? parseHtml(hideLogin, parseOptions) : null}
+        {auth == null ? parseHtml(hideLogin, parseOptions) : null}
       {auth == null
         ? parseHtml(illusHeadLogin, parseOptions)
         : parseHtml(props.illustrationHeadLogin, parseOptions)}
@@ -135,8 +132,7 @@ export default function Home(props) {
 
       {auth == null ? null : parseHtml(blog, parseOptions)}
       {parseHtml(props.allShow, parseOptions)}
-      {parseHtml(props.globalStyles, parseOptions)}
-      {parseHtml(props.footer, parseOptions)}
+      
     </>
   );
 }

@@ -1,6 +1,4 @@
 import { useRouter } from "next/router";
-import Head from "next/head";
-import Link from "next/link";
 import parseHtml, { domToReact } from "html-react-parser";
 import get from "lodash/get";
 import React, { useState,useEffect } from "react";
@@ -9,56 +7,7 @@ import { supabase } from "../../utils/supabaseClient";
 import { replace } from "../../utils/replace-node";
 import JSZip  from "jszip";
 import FileSaver from 'file-saver';
-import NavbarContent from "../navbar";
-/**................................................................ */
-// function isUrlInternal(link) {
-//   if (
-//     !link ||
-//     link.indexOf(`https:`) === 0 ||
-//     link.indexOf(`#`) === 0 ||
-//     link.indexOf(`http`) === 0 ||
-//     link.indexOf(`://`) === 0
-//   ) {
-//     return false;
-//   }
-//   return true;
-// }
-// function replace(node) {
-//   const attribs = node.attribs || {};
-//   if (attribs.hasOwnProperty("class")) {
-//     attribs["className"] = attribs["class"];
-//   }
-//   if (node.name === `a`) {
-//     const { href, style, ...props } = attribs;
-//     if (!style && href) {
-//       return (
-//         <Link href={href}>
-//           <a {...props} data={"converted"}>
-//             {!!node.children &&
-//               !!node.children.length &&
-//               domToReact(node.children, parseOptions)}
-//           </a>
-//         </Link>
-//       );
-//     }
-//     if (href) {
-//     }
-//   }
-//   if (node.name === `script`) {
-//     let content = get(node, `children.0.data`, ``);
-//     if (content && content.trim().indexOf(`WebFont.load(`) === 0) {
-//       content = `setTimeout(function(){${content}}, 1)`;
-//       return (
-//         <script
-//           {...attribs}
-//           dangerouslySetInnerHTML={{ __html: content }}
-//         ></script>
-//       );
-//     }
-//   }
-//   const { href, style, ...props } = attribs;
-// }
-/**................................................................ */
+
 
 export default function Illustration(props) {
   const parseOptions = { replace };
@@ -115,20 +64,9 @@ export default function Illustration(props) {
 
   return (
     <>
-      {/* <Head>{parseHtml(props.headContent, parseOptions)}</Head> */}
       <div onClick={wrapClickHandler}>
-        <span style={{ fontSize: "10px", position: "fixed" }}>
-          Illustrations/[slug]
-        </span>
-        <NavbarContent navbarContent=
-      {parseHtml(props.navBar, parseOptions)}
-       />
-
         {parseHtml(props.bodyContent, parseOptions)}
         <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
-        {/* {parseHtml(props.supportScripts, parseOptions)} */}
-        {parseHtml(props.footer, parseOptions)}
-        {parseHtml(props.globalStyles, parseOptions)}
       </div>
     </>
   );

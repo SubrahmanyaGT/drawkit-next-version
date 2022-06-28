@@ -96,7 +96,7 @@ export default function NavbarContent(props) {
   // console.log(data.map((src)=>{returnn` <Script src=${src}></script>`}));
   return (
     <div
-      tabindex="100"
+      tabIndex="100"
       onClick={wrapClickHandler}
       onChange={wrapChangeHandler}
       onKeyUp={wrapKeyUpHandler}

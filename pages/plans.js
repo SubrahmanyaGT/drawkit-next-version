@@ -14,7 +14,7 @@ export default function Plans(props) {
   const router = useRouter();
   const [premiumUser, setPremiumUser] = useState("inactive");
   let [auth, setAuth] = useState(supabase.auth.session());
-console.log(router);
+  console.log(router);
   //................................................................................................................................//
 
   function isUrlInternal(link) {
@@ -262,14 +262,7 @@ console.log(router);
 
   return (
     <>
-      <Head>
-        {parseHtml(props.headContent, parseOptions)}
-        {parseHtml(props.supportScripts, parseOptions)}
-      </Head>
       <div onClick={wrapClickHandler}>
-        <NavbarContent
-          navbarContent={parseHtml(props.navbarContent, parseOptions)}
-        />
         {parseHtml(props.headContent, parseOptions)}
         {auth == null ? (
           <div className="notLogedInPlans">
@@ -285,15 +278,12 @@ console.log(router);
           </div>
         )}
       </div>
-      {parseHtml(props.footer, parseOptions)}
 
       <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
       <Script
         src="https://unpkg.com/swiper/swiper-bundle.min.js"
         onLoad={runSwiper}
       ></Script>
-
-      {parseHtml(props.globalStyles, parseOptions)}
     </>
   );
 }

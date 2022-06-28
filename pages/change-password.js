@@ -63,8 +63,6 @@ export default function ChangePassword(props) {
   return (
     <>
       <div onClick={wrapClickHandler} onChange={wrapChangeHandler}>
-        {parseHtml(props.headContent)}
-
         {parseHtml(props.bodyContent)}
       </div>
       <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>

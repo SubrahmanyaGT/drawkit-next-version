@@ -45,11 +45,11 @@ export default function ResetPassword(props) {
   return (
     <>
       <div onClick={wrapClickHandler} onChange={wrapChangeHandler}>
-        {parseHtml(props.headContent)}
+        
 
         {parseHtml(props.bodyContent)}
       </div>
-      {parseHtml(props.globalStyles)}
+ 
       <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
     </>
   );

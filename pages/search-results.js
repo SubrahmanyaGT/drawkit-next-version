@@ -98,22 +98,17 @@ console.log(router);
 
   return (
     <>
-      <Head>
-        {parseHtml(props.headContent, parseOptions)}
-        {parseHtml(props.supportScripts, parseOptions)}
-      </Head>
+      
       <div onClick={wrapClickHandler}>
-        <NavbarContent
-          navbarContent={parseHtml(props.navbarContent, parseOptions)}
-        />
+        
         {parseHtml(props.bodyContent, parseOptions)}
       </div>
-      {parseHtml(props.footer, parseOptions)}
+
 
       <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
       
 
-      {parseHtml(props.globalStyles, parseOptions)}
+    
     </>
   );
 }

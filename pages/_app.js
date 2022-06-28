@@ -13,13 +13,16 @@ function MyApp(props) {
   return (
     <>
       <Head>
+        {parseHtml(props.stars.globalStyles, parseOptions)}
         {parseHtml(props.stars.headContent, parseOptions)}
-        {parseHtml(props.stars.supportScripts, parseOptions)}
       </Head>
       <NavbarContent
         navbarContent={parseHtml(props.stars.navBar, parseOptions)}
       />
       <Component {...pageProps} />
+      {parseHtml(props.stars.supportScripts, parseOptions)}
+      {parseHtml(props.stars.footer, parseOptions)}
+      {parseHtml(props.stars.globalStyles, parseOptions)}
     </>
   );
 }

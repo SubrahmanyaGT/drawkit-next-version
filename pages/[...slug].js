@@ -10,38 +10,28 @@ import { replace } from "../utils/replace-node";
 import NavbarContent from "./navbar";
 import { useEffect } from "react";
 export default function slug(props) {
-useEffect(() => {
-  $(".view-all-add-button").click(function(){
-    $(".button-filter-item").show();
-    $(".view-all-add-button").hide();
-  });
-  
+  useEffect(() => {
+    $(".view-all-add-button").click(function () {
+      $(".button-filter-item").show();
+      $(".view-all-add-button").hide();
+    });
 
-  $('.filter-all-button').addClass("active-all");
-     $(".blog-filter-button").click(function(){
-     $('.filter-all-button').removeClass("active-all")
-     })    
-},[])
+    $(".filter-all-button").addClass("active-all");
+    $(".blog-filter-button").click(function () {
+      $(".filter-all-button").removeClass("active-all");
+    });
+  }, []);
   const parseOptions = { replace };
   return (
     <>
-      <Head>
-        {parseHtml(props.headContent, parseOptions)}
-        {parseHtml(props.supportScripts, parseOptions)}
+      <script
+        defer
+        src="https://cdn.jsdelivr.net/npm/@finsweet/attributes-selectcustom@1/selectcustom.js"
+      ></script>
 
-        <script
-          defer
-          src="https://cdn.jsdelivr.net/npm/@finsweet/attributes-selectcustom@1/selectcustom.js"
-        ></script>
-      </Head>
       <div>
-      
-        <NavbarContent navbarContent={parseHtml(props.navBar, parseOptions)} />
-
         {parseHtml(props.bodyContent, parseOptions)}
         <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
-        {parseHtml(props.footer, parseOptions)}
-        {parseHtml(props.globalStyles, parseOptions)}
       </div>
     </>
   );

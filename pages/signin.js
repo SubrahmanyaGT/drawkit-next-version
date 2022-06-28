@@ -123,7 +123,7 @@ export default function Home(props) {
 
   return (
     <>
-    <Head>{parseHtml(props.headContent,parseOptions)}</Head>
+    
       <div
       id="signin-div"
         onClick={wrapClickHandler}
