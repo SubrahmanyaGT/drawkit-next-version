@@ -1,14 +1,11 @@
 import { useRouter } from "next/router";
 import Head from "next/head";
-import Link from "next/link";
 import parseHtml, { domToReact } from "html-react-parser";
 import get from "lodash/get";
 import React, { useEffect, useState } from "react";
 import Script from "next/script";
 import { supabase } from "../utils/supabaseClient";
 import { replace } from "../utils/replace-node";
-import JSZip from "jszip";
-import FileSaver from "file-saver";
 import NavbarContent from "./navbar";
 
 export default function Illustration(props) {

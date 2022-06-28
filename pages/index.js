@@ -51,6 +51,13 @@ export default function Home(props) {
   console.log(PremiumUser);
 
   useEffect(() => {
+    
+      $(".filter-all-button").addClass("active-all");
+    
+    $(".filter-button").click(function () {
+      $(".filter-all-button").removeClass("active-all");
+    });
+
     $(".request").click(function () {
       $(".request-popup").show();
       setTimeout(function () {
@@ -99,12 +106,9 @@ export default function Home(props) {
 
   return (
     <>
-      <Head>
-        {parseHtml(headContent, parseOptions)}
-        {parseHtml(supportScripts, parseOptions)}
-      </Head>
+      
 
-      <NavbarContent navbarContent={parseHtml(navBar, parseOptions)} />
+      {/* <NavbarContent navbarContent={parseHtml(navBar, parseOptions)} /> */}
       {auth == null ? parseHtml(hideLogin, parseOptions) : null}
       {auth == null
         ? parseHtml(illusHeadLogin, parseOptions)

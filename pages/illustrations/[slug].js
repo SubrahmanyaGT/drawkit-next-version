@@ -3,7 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import parseHtml, { domToReact } from "html-react-parser";
 import get from "lodash/get";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Script from "next/script";
 import { supabase } from "../../utils/supabaseClient";
 import { replace } from "../../utils/replace-node";
@@ -103,9 +103,19 @@ export default function Illustration(props) {
     }
   }
 
+
+  useEffect(()=>{
+    $('.filter-all').addClass("active-all");
+
+    $(".filter-button").click(function(){
+      $('.filter-all').removeClass("active-all")
+      })   
+      
+  },[])
+
   return (
     <>
-      <Head>{parseHtml(props.headContent, parseOptions)}</Head>
+      {/* <Head>{parseHtml(props.headContent, parseOptions)}</Head> */}
       <div onClick={wrapClickHandler}>
         <span style={{ fontSize: "10px", position: "fixed" }}>
           Illustrations/[slug]
@@ -116,7 +126,7 @@ export default function Illustration(props) {
 
         {parseHtml(props.bodyContent, parseOptions)}
         <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
-        {parseHtml(props.supportScripts, parseOptions)}
+        {/* {parseHtml(props.supportScripts, parseOptions)} */}
         {parseHtml(props.footer, parseOptions)}
         {parseHtml(props.globalStyles, parseOptions)}
       </div>

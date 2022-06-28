@@ -596,8 +596,7 @@ export function replace(node) {
           <div
             {...props}
             dangerouslySetInnerHTML={{
-              __html:
-               `<div class="signup-page-form ">
+              __html: `<div class="signup-page-form ">
           <form
             id="signup-form"
             name="email-form"
@@ -719,6 +718,15 @@ export function replace(node) {
           );
         }
       }
+      if (props.className.includes("registered-email")) {
+        if (supabase.auth.session()) {
+          return (
+            <div className="registered-email">
+              {supabase.auth.session().user.email}
+            </div>
+          );
+        }
+      }
 
       // if (props.className.includes("free-plan")) {
       //   if (supabase.auth.session() && premiumUser != "active")
@@ -832,23 +840,17 @@ export function replace(node) {
       ) {
         // console.log(href.slice(href.lastIndexOf("/"), href.length));
         return (
-          // <Link
-          //   href={
-          //     "/illustrations" +
-          //     href.slice(href.lastIndexOf("/"), href.length)
-          //   }
-          // >
-          <a
+          <Link
             href={
               "/illustrations" + href.slice(href.lastIndexOf("/"), href.length)
             }
-            {...props}
           >
-            {!!node.children &&
-              !!node.children.length &&
-              domToReact(node.children, parseOptions)}
-          </a>
-          // </Link>
+            <a {...props}>
+              {!!node.children &&
+                !!node.children.length &&
+                domToReact(node.children, parseOptions)}
+            </a>
+          </Link>
         );
       }
 
@@ -859,14 +861,14 @@ export function replace(node) {
           if (!supabase.auth.session()) {
             // not sigedin user
             return (
-              // <Link href="/plans">
-              <a href="/plans" {...props}>
-                <div className="upgradedownload">Upgrade Your Plan</div>
-                {!!node.children &&
-                  !!node.children.length &&
-                  domToReact([node.children[1]], parseOptions)}
-              </a>
-              // </Link>
+              <Link href="/plans">
+                <a {...props}>
+                  <div className="upgradedownload">Upgrade Your Plan</div>
+                  {!!node.children &&
+                    !!node.children.length &&
+                    domToReact([node.children[1]], parseOptions)}
+                </a>
+              </Link>
             );
           } else {
             if (
@@ -874,48 +876,50 @@ export function replace(node) {
               premiumUser != "active"
             ) {
               return (
-                // <Link href="/plans">
-                <a href="/plans" {...props}>
-                  <div className="upgradedownload">Upgrade Your Plan</div>
-                  {!!node.children &&
-                    !!node.children.length &&
-                    domToReact([node.children[1]], parseOptions)}
-                </a>
-                // </Link>
+                <Link href="/plans">
+                  <a {...props}>
+                    <div className="upgradedownload">Upgrade Your Plan</div>
+                    {!!node.children &&
+                      !!node.children.length &&
+                      domToReact([node.children[1]], parseOptions)}
+                  </a>
+                </Link>
               );
             } else {
               return (
                 //download
-                // <Link href={href}>
-                <a href={href} {...props}>
-                  <div className="upgradedownload">Download Now</div>
-                  {!!node.children &&
-                    !!node.children.length &&
-                    domToReact([node.children[1]], parseOptions)}
-                </a>
-                // </Link>
+                <Link href={href}>
+                  <a {...props}>
+                    <div className="upgradedownload">Download Now</div>
+                    {!!node.children &&
+                      !!node.children.length &&
+                      domToReact([node.children[1]], parseOptions)}
+                  </a>
+                </Link>
               );
             }
           }
         } else {
           return (
-            <a href={href} {...props}>
-              {!!node.children &&
-                !!node.children.length &&
-                domToReact(node.children, parseOptions)}
-            </a>
+            <Link href={href}>
+              <a {...props}>
+                {!!node.children &&
+                  !!node.children.length &&
+                  domToReact(node.children, parseOptions)}
+              </a>
+            </Link>
           );
         }
       }
 
       return (
-        // <Link href={href} >
-        <a href={href} {...props}>
+         <Link href={href} >
+        <a {...props}>
           {!!node.children &&
             !!node.children.length &&
             domToReact(node.children, parseOptions)}
         </a>
-        // </Link>
+         </Link>
       );
     }
   }
