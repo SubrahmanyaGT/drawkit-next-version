@@ -4,8 +4,12 @@
 // }
 
 // module.exports = nextConfig
+const fs =require('fs');
 
 module.exports = {
+  env: {
+    rawJsFromFile: fs.readFileSync('./rawJsFromFile.js').toString()
+  },
   async rewrites() {
     return [
       {

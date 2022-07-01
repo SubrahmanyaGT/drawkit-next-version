@@ -22,6 +22,11 @@ export default function slug(props) {
     });
   }, []);
   const parseOptions = { replace };
+
+  // if (typeof window !== "undefined") {
+  //   window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8";
+  //   (function(d) { var s = d.createElement("script"); s.src = "https://cdn.jetboost.io/jetboost.js"; s.async = 1; d.getElementsByTagName("head")[0].appendChild(s); })(document)
+  //   }
   return (
     <>
       <script
@@ -33,6 +38,7 @@ export default function slug(props) {
         {parseHtml(props.bodyContent, parseOptions)}
         <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
       </div>
+     
     </>
   );
 }
@@ -70,6 +76,7 @@ export async function getServerSideProps(props) {
       })
       .map((m) => `<Script type="text/javascript" src="${m}"></Script>`)
       .join("");
+     
 
     return {
       props: {

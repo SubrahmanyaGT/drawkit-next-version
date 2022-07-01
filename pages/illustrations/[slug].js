@@ -1,13 +1,12 @@
 import { useRouter } from "next/router";
 import parseHtml, { domToReact } from "html-react-parser";
 import get from "lodash/get";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Script from "next/script";
 import { supabase } from "../../utils/supabaseClient";
 import { replace } from "../../utils/replace-node";
-import JSZip  from "jszip";
-import FileSaver from 'file-saver';
-
+import JSZip from "jszip";
+import FileSaver from "file-saver";
 
 export default function Illustration(props) {
   const parseOptions = { replace };
@@ -52,23 +51,44 @@ export default function Illustration(props) {
     }
   }
 
+  // function jetboost() {
+  //   window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8";
+  //   (function (d) {
+  //     var s = d.createElement("script");
+  //     s.src = "https://cdn.jetboost.io/jetboost.js";
+  //     s.async = 1;
+  //     d.getElementsByTagName("head")[0].appendChild(s);
+  //   })(document);
 
-  useEffect(()=>{
-    $('.filter-all').addClass("active-all");
+  //   $(".filter-all").addClass("active-all");
 
-    $(".filter-button").click(function(){
-      $('.filter-all').removeClass("active-all")
-      })   
-      
-  },[])
+  //   $(".filter-button").click(function () {
+  //     $(".filter-all").removeClass("active-all");
+  //   });
+  //   console.log('jetbost');
+  // }
+  
 
   return (
     <>
-      <div onClick={wrapClickHandler}>
+      <div onClick={wrapClickHandler} >
         {parseHtml(props.bodyContent, parseOptions)}
         <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
       </div>
+      {/* <Script id="jetboost-script" type="text/javascript" dangerouslySetInnerHTML={{__html: `window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8" (function(d) { var s = d.createElement("script"); s.src = "https://cdn.jetboost.io/jetboost.js"; s.async = 1; d.getElementsByTagName("head")[0].appendChild(s); })(document) }`}}/> */}
+    
+      <script
+      id="key"
+            dangerouslySetInnerHTML={{
+              __html: `
+              console.log('Freedom!!!!!!!!!!!!!!!');
+                  `,
+            }}
+          ></script>
+
     </>
+
+
   );
 }
 

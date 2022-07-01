@@ -1,6 +1,5 @@
 import parseHtml, { domToReact } from "html-react-parser";
 import React, { useState, useEffect } from "react";
-
 import Link from "next/link";
 import { supabase } from "../utils/supabaseClient";
 import NavbarContent from "./navbar";
@@ -48,65 +47,64 @@ export default function Home(props) {
           });
       });
   }
-  console.log(PremiumUser);
+ 
 
-  useEffect(() => {
-    
-      $(".filter-all-button").addClass("active-all");
-    
-    $(".filter-button").click(function () {
-      $(".filter-all-button").removeClass("active-all");
-    });
+ 
+  // function jetboosthome() {
+  //   window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8";
+  //   (function (d) {
+  //     var s = d.createElement("script");
+  //     s.src = "https://cdn.jetboost.io/jetboost.js";
+  //     s.async = 1;
+  //     d.getElementsByTagName("head")[0].appendChild(s);
+  //   })(document);
 
-    $(".request").click(function () {
-      $(".request-popup").show();
-      setTimeout(function () {
-        $("#loader").hide();
-        $(".iframe-holder").show();
-      }, 3000);
-    });
-    $(".cancel,.request-popup").click(function () {
-      $(".request-popup").hide();
-      $("#loader").show();
-      $(".iframe-holder").hide();
-    });
+  //   $(".filter-all").addClass("active-all");
 
-    $("input:not([type=checkbox],[type=submit]),textarea")
-      .focus(function () {
-        $(this).parent().css({ border: "1px solid #1aa1e5" });
-      })
-      .blur(function () {
-        $(this).parent().css({ border: "1px solid #ccd1d6" });
-      });
+  //   $(".filter-button").click(function () {
+  //     $(".filter-all").removeClass("active-all");
+  //   });
 
-    // window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8";
-    // (function (d) {
-    //   var s = d.createElement("script");
-    //   s.src = "https://cdn.jetboost.io/jetboost.js";
-    //   s.async = 1;
-    //   d.getElementsByTagName("head")[0].appendChild(s);
-    // })(document);
 
-    if (!supabase.auth.session()) {
-      // setHideLogin(props.hideLogin);
-      // setBlog("");
-    } else {
-      // setHideLogin("");
-      // setBlog(props.showBlog);
-      // setIllusHead("");
-      // setnavbar(props.LoggedinnavBar);
-      // setIllusHeadLogin();
-      // if (PremiumUser == "active") {
-      //   setShowfree("");
-      // }
-    }
+  //   $(".filter-all-button").addClass("active-all");
 
-    //my profile dropdown
-  }, []);
+  //   $(".filter-button").click(function () {
+  //     $(".filter-all-button").removeClass("active-all");
+  //   });
+
+  //   $(".request").click(function () {
+  //     $(".request-popup").show();
+  //     setTimeout(function () {
+  //       $("#loader").hide();
+  //       $(".iframe-holder").show();
+  //     }, 3000);
+  //   });
+  //   $(".cancel,.request-popup").click(function () {
+  //     $(".request-popup").hide();
+  //     $("#loader").show();
+  //     $(".iframe-holder").hide();
+  //   });
+
+  //   $("input:not([type=checkbox],[type=submit]),textarea")
+  //     .focus(function () {
+  //       $(this).parent().css({ border: "1px solid #1aa1e5" });
+  //     })
+  //     .blur(function () {
+  //       $(this).parent().css({ border: "1px solid #ccd1d6" });
+  //     });
+  // }
+
+
+  // if (typeof window !== "undefined") {
+  //   window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8";
+  //   (function(d) { var s = d.createElement("script"); s.src = "https://cdn.jetboost.io/jetboost.js"; s.async = 1; d.getElementsByTagName("head")[0].appendChild(s); })(document)
+  //   }
 
   return (
     <>
-        {auth == null ? parseHtml(hideLogin, parseOptions) : null}
+      {/* <div onLoad={jetboosthome}> */}
+
+      {auth == null ? parseHtml(hideLogin, parseOptions) : null}
       {auth == null
         ? parseHtml(illusHeadLogin, parseOptions)
         : parseHtml(props.illustrationHeadLogin, parseOptions)}
@@ -132,7 +130,11 @@ export default function Home(props) {
 
       {auth == null ? null : parseHtml(blog, parseOptions)}
       {parseHtml(props.allShow, parseOptions)}
-      
+      {/* </div> */}
+      {/* <Script strategy="lazyOnload" id="jetboost-script" type="text/javascript" src='https://cdn.jetboost.io/jetboost.js' async  onError={(e) => {
+          console.error('Script failed to load', e)
+        }}></Script> */}
+
     </>
   );
 }
