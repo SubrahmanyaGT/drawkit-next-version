@@ -8,8 +8,12 @@ import { replace } from "../../utils/replace-node";
 import JSZip from "jszip";
 import FileSaver from "file-saver";
 
+
 export default function Illustration(props) {
   const parseOptions = { replace };
+
+
+
 
   const [file, setFile] = useState([]);
   const downloadSupabase = async (folderName) => {
@@ -51,41 +55,15 @@ export default function Illustration(props) {
     }
   }
 
-  // function jetboost() {
-  //   window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8";
-  //   (function (d) {
-  //     var s = d.createElement("script");
-  //     s.src = "https://cdn.jetboost.io/jetboost.js";
-  //     s.async = 1;
-  //     d.getElementsByTagName("head")[0].appendChild(s);
-  //   })(document);
-
-  //   $(".filter-all").addClass("active-all");
-
-  //   $(".filter-button").click(function () {
-  //     $(".filter-all").removeClass("active-all");
-  //   });
-  //   console.log('jetbost');
-  // }
-  
+ 
 
   return (
     <>
       <div onClick={wrapClickHandler} >
         {parseHtml(props.bodyContent, parseOptions)}
+        
         <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
       </div>
-      {/* <Script id="jetboost-script" type="text/javascript" dangerouslySetInnerHTML={{__html: `window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8" (function(d) { var s = d.createElement("script"); s.src = "https://cdn.jetboost.io/jetboost.js"; s.async = 1; d.getElementsByTagName("head")[0].appendChild(s); })(document) }`}}/> */}
-    
-      <script
-      id="key"
-            dangerouslySetInnerHTML={{
-              __html: `
-              console.log('Freedom!!!!!!!!!!!!!!!');
-                  `,
-            }}
-          ></script>
-
     </>
 
 
@@ -145,6 +123,7 @@ export const getServerSideProps = async (paths) => {
     const footer = $(`.footer-access`).html();
     const globalStyles = $(".global-styles").html();
 
+
     const supportScripts = Object.keys($(`script`))
       .map((key) => {
         if ($(`script`)[key].attribs) return $(`script`)[key].attribs.src;
@@ -163,6 +142,7 @@ export const getServerSideProps = async (paths) => {
         supportScripts: supportScripts,
         footer: footer,
         globalStyles: globalStyles,
+       
       },
     };
   } else {
@@ -172,5 +152,5 @@ export const getServerSideProps = async (paths) => {
         permanent: false,
       },
     };
-  }
+  };
 };

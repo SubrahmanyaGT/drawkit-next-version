@@ -13,35 +13,40 @@ function MyApp(props) {
   const parseOptions = {
     replace,
   };
-  const router = useRouter()
 
-  useEffect(() => {
-    console.log(router);
-      
-  if (typeof window !== "undefined") {
-    window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8";
-    (function(d) { var s = d.createElement("script"); s.src = "https://cdn.jetboost.io/jetboost.js"; s.async = 1; d.getElementsByTagName("head")[0].appendChild(s); })(document)
-    }
-
-
-  },[router.pathname,router.query])
   
 
   if (Component.getLayout) {
     return Component.getLayout(<Component {...pageProps} />);
   }
+
+  const router = useRouter()
+  useEffect(() => {
+    console.log(router);
+    if(Jetboost){
+      Jetboost=null
+    }
+      
+     if (typeof window !== "undefined") {
+    
+    window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8";
+  
+    (function(d) { var s = d.createElement("script"); s.src = "https://cdn.jetboost.io/jetboost.js"; s.async = 1; d.getElementsByTagName("head")[0].appendChild(s); console.log(s); d.getElementsByTagName("head")[0].removeChild(s)}  )(document)
+    }
+    else{
+      console.log('sfdsdafafs');
+    }
+
+
+  },[router.pathname,router.query])
+
   
   return (
     <>
       <Head>
         {parseHtml(props.stars.globalStyles, parseOptions)}
         {parseHtml(props.stars.headContent, parseOptions)}
-        {/* <script
-        
-        dangerouslySetInnerHTML={{ __html: 'window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8"; (function(d) { var s = d.createElement("script"); s.src = "https://cdn.jetboost.io/jetboost.js"; s.async = 1; d.getElementsByTagName("head")[0].appendChild(s); })(document)' }}
-        strategy="lazyOnload"
-      ></script> */}
-      <script type="text/javascript" dangerouslySetInnerHTML={{ __html: process.env.rawJsFromFile }}></script>
+        {/* <Script id="jetboost-script" type="text/javascript" dangerouslySetInnerHTML={{__html: `window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8" (function(d) { var s = d.createElement("script"); s.src = "https://cdn.jetboost.io/jetboost.js"; s.async = 1; d.getElementsByTagName("head")[0].appendChild(s); })(document) }`}}/> */}
       </Head>
 
       <NavbarContent

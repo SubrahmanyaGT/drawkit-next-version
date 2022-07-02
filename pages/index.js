@@ -7,6 +7,7 @@ import Script from "next/script";
 import $ from "jquery";
 import Head from "next/head";
 import { replace } from "../utils/replace-node";
+import { useRouter } from "next/router";
 
 export default function Home(props) {
   let [auth, setAuth] = useState(supabase.auth.session());
@@ -19,6 +20,7 @@ export default function Home(props) {
   let [PremiumUser, setPremiumUser] = useState("inactive");
   let [hideLogin, setHideLogin] = useState(props.hideLogin);
   let [supportScripts, setsupportScripts] = useState(props.supportScripts);
+
 
   /** ..................................................................................................................................*/
   const parseOptions = {
