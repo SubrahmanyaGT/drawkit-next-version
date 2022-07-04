@@ -62,12 +62,23 @@ export default function ChangePassword(props) {
   }
   return (
     <>
+    <Head>
+        {parseHtml(props.headContent)}
+      </Head>
       <div onClick={wrapClickHandler} onChange={wrapChangeHandler}>
         {parseHtml(props.bodyContent)}
       </div>
       <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
     </>
   );
+}
+ChangePassword.getLayout=function PageLayout(page){
+  return(
+    <>
+   
+    {page}
+    </>
+  )
 }
 
 export async function getStaticProps({ context }) {

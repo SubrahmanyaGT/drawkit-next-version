@@ -70,7 +70,7 @@ async function signInWithGoogle() {
     alert("google");
   }
 }
-export default function Home(props) {
+export default function Signup(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [valEmail, setValEmail] = useState(false);
@@ -210,6 +210,9 @@ export default function Home(props) {
   }
   return (
     <>
+      <Head>
+        {parseHtml(props.headContent, parseOptions)}
+      </Head>
       <div
         id="signup-div"
         onClick={wrapClickHandler}
@@ -222,6 +225,14 @@ export default function Home(props) {
       <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
     </>
   );
+}
+Signup.getLayout=function PageLayout(page){
+  return(
+    <>
+   
+    {page}
+    </>
+  )
 }
 
 export async function getServerSideProps({ context }) {

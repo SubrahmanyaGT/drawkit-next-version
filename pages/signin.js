@@ -27,7 +27,7 @@ async function signInWithGoogle() {
   });
 }
 
-export default function Home(props) {
+export default function Signin(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [valEmail, setValEmail] = useState(false);
@@ -123,7 +123,9 @@ export default function Home(props) {
 
   return (
     <>
-    
+     <Head>
+        {parseHtml(props.headContent, parseOptions)}
+      </Head>
       <div
       id="signin-div"
         onClick={wrapClickHandler}
@@ -137,6 +139,15 @@ export default function Home(props) {
       <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
     </>
   );
+}
+
+Signin.getLayout=function PageLayout(page){
+  return(
+    <>
+   
+    {page}
+    </>
+  )
 }
 
 export async function getStaticProps({ context }) {
@@ -153,13 +164,11 @@ export async function getStaticProps({ context }) {
 
   const bodyContent = $(`.main-wrapper`).html();
   const headContent = $(`head`).html();
-  // const globalStyles = $(".global-styles").html();
 
   return {
     props: {
       bodyContent,
       headContent,
     },
-    revalidate: 3,
   };
 }

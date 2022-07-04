@@ -44,6 +44,9 @@ export default function ResetPassword(props) {
   }
   return (
     <>
+     <Head>
+        {parseHtml(props.headContent)}
+      </Head>
       <div onClick={wrapClickHandler} onChange={wrapChangeHandler}>
         
 
@@ -54,7 +57,14 @@ export default function ResetPassword(props) {
     </>
   );
 }
-
+ResetPassword.getLayout=function PageLayout(page){
+  return(
+    <>
+   
+    {page}
+    </>
+  )
+}
 export async function getStaticProps({ context }) {
   // console.log(context,'ctx');
   const cheerio = await import(`cheerio`);

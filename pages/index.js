@@ -21,6 +21,8 @@ export default function Home(props) {
   let [hideLogin, setHideLogin] = useState(props.hideLogin);
   let [supportScripts, setsupportScripts] = useState(props.supportScripts);
 
+  const router = useRouter()
+  
 
   /** ..................................................................................................................................*/
   const parseOptions = {

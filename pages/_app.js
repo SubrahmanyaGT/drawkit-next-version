@@ -5,7 +5,7 @@ import { replace } from "../utils/replace-node";
 import parseHtml, { domToReact } from "html-react-parser";
 import Head from "next/head";
 import Script from "next/script";
-import {useEffect} from "react"
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 
 function MyApp(props) {
@@ -14,39 +14,36 @@ function MyApp(props) {
     replace,
   };
 
-  
-
   if (Component.getLayout) {
     return Component.getLayout(<Component {...pageProps} />);
   }
 
-  const router = useRouter()
+  const router = useRouter();
   useEffect(() => {
     console.log(router);
-    if(Jetboost){
-      Jetboost=null
-    }
-      
-     if (typeof window !== "undefined") {
-    
-    window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8";
-  
-    (function(d) { var s = d.createElement("script"); s.src = "https://cdn.jetboost.io/jetboost.js"; s.async = 1; d.getElementsByTagName("head")[0].appendChild(s); console.log(s); d.getElementsByTagName("head")[0].removeChild(s)}  )(document)
-    }
-    else{
-      console.log('sfdsdafafs');
+    if ( typeof Jetboost !== "undefined") {
+      Jetboost=null;
     }
 
+    if (typeof window !== "undefined") {
+      window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8";
 
-  },[router.pathname,router.query])
+      (function (d) {
+        var s = d.createElement("script");
+        s.src = "https://cdn.jetboost.io/jetboost.js";
+        s.async = 1;
+        d.getElementsByTagName("head")[0].appendChild(s);
+ 
+        d.getElementsByTagName("head")[0].removeChild(s);
+      })(document);
+    }
+  }, [router.pathname,router.query]);
 
-  
   return (
     <>
       <Head>
         {parseHtml(props.stars.globalStyles, parseOptions)}
         {parseHtml(props.stars.headContent, parseOptions)}
-        {/* <Script id="jetboost-script" type="text/javascript" dangerouslySetInnerHTML={{__html: `window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8" (function(d) { var s = d.createElement("script"); s.src = "https://cdn.jetboost.io/jetboost.js"; s.async = 1; d.getElementsByTagName("head")[0].appendChild(s); })(document) }`}}/> */}
       </Head>
 
       <NavbarContent
@@ -56,6 +53,7 @@ function MyApp(props) {
       {parseHtml(props.stars.supportScripts, parseOptions)}
       {parseHtml(props.stars.footer, parseOptions)}
       {parseHtml(props.stars.globalStyles, parseOptions)}
+
     </>
   );
 }
