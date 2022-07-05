@@ -9,7 +9,7 @@
 }
 
 .primeInPlans .premium-plan:after {
-  content: "Current";
+  content: "Drawkit PRO";
   padding: 8px;
   background: #1aa1e5;
   border-radius: 20px;
@@ -26,26 +26,3 @@
 .freeUser .get-started{
   display:none
 }
-/* .notLogedInPlans .free-plan:after .notLogedInPlans .premium-plan:after {
-  content:'Current';
-  padding:8px;
-  background:#1aa1e5;
-  border-radius:20px;
-} */
-
-/* .premium-plan:after {
-  content: "Current";
-  background-color: #1aa1e5;
-  padding: 8px 12px;
-  border-radius: 20px;
-}
-
-
-.user-profile{
-    width:max-content !important;
-    padding-right: 27px !important;
-} */
-
-/* 
-    console.log(search.resolvedUrl);
- */

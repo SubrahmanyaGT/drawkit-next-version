@@ -30,117 +30,7 @@ export default function Plans(props) {
     return true;
   }
 
-  // Replaces DOM nodes with React components
-  //  function replace(node) {
-  //     const attribs = node.attribs || {};
-  //     if (attribs.hasOwnProperty("class")) {
-  //       attribs["className"] = attribs["class"];
-  //       delete attribs.class;
-  //     }
-
-  //     // Replace links with Next links
-
-  //     if (node.name == `a`) {
-  //       let { href, style, ...props } = attribs;
-  //       if (!style && href) {
-  //         if (
-  //           href.includes("/illustration-types/") ||
-  //           href.includes("/illustration-categories/") ||
-  //           href.includes("/single-illustrations/")
-  //         ) {
-  //           console.log(href.slice(href.lastIndexOf("/"), href.length));
-  //           // href = "/illustrations/unlock-colour";
-  //           return (
-  //             <Link
-  //               href={
-  //                 "/illustrations" +
-  //                 href.slice(href.lastIndexOf("/"), href.length)
-  //               }
-  //             >
-  //               <a {...props}>
-  //                 {!!node.children &&
-  //                   !!node.children.length &&
-  //                   domToReact(node.children, parseOptions)}
-  //               </a>
-  //             </Link>
-  //           );
-  //         }
-  //         console.log(href);
-  //         if (props.className) {
-  //           if (props.className.includes("upgrade-plan-link")) {
-  //             console.log(node.children[2].children[0].data);
-
-  //             if (!supabase.auth.session()) {
-  //               // not sigedin user
-  //               return (
-  //                 <Link href="/plans">
-  //                   <a {...props}>
-  //                     <div className="upgrade-download">Upgrade Your Plan</div>
-  //                     {!!node.children &&
-  //                       !!node.children.length &&
-  //                       domToReact([node.children[1]], parseOptions)}
-  //                   </a>
-  //                 </Link>
-  //               );
-  //             } else if (node.children[2].children[0].data == "Premium") {
-  //               return (
-  //                 <Link href="/plans">
-  //                   <a {...props}>
-  //                     <div className="upgrade-download">Upgrade Your Plan</div>
-  //                     {!!node.children &&
-  //                       !!node.children.length &&
-  //                       domToReact([node.children[1]], parseOptions)}
-  //                   </a>
-  //                 </Link>
-  //               );
-  //             } else {
-  //               return (
-  //                 <Link href={href}>
-  //                   <a {...props}>
-  //                     {!!node.children &&
-  //                       !!node.children.length &&
-  //                       domToReact(node.children, parseOptions)}
-  //                   </a>
-  //                 </Link>
-  //               );
-  //             }
-  //           }
-  //         }
-  //         return (
-  //           <Link href={href}>
-  //             <a {...props}>
-  //               {!!node.children &&
-  //                 !!node.children.length &&
-  //                 domToReact(node.children, parseOptions)}
-  //             </a>
-  //           </Link>
-  //         );
-  //       }
-  //     }
-  //     // Make Google Fonts scripts work
-  //     if (node.name === `script`) {
-  //       let content = get(node, `children.0.data`, ``);
-
-  //       if (content && content.trim().indexOf(`WebFont.load(`) === 0) {
-  //         content = `setTimeout(function(){${content}}, 1)`;
-  //         return (
-  //           <script
-  //             {...attribs}
-  //             dangerouslySetInnerHTML={{ __html: content }}
-  //           ></script>
-  //         );
-  //       } else {
-  //         <Script
-  //           {...attribs}
-  //           dangerouslySetInnerHTML={{ __html: content }}
-  //           strategy="lazyOnload"
-  //         ></Script>;
-  //       }
-  //     }
-  //   }
   const parseOptions = { replace };
-
-  //..................................................................................................................................//
 
   useEffect(() => {
     if (supabase.auth.session()) {
@@ -158,47 +48,14 @@ export default function Plans(props) {
           console.log(data);
           setPremiumUser(data.status);
         });
-
-      // let uid = supabase.auth.session().user.id;
-      // supabase
-      //   .from("stripe_users")
-      //   .select("stripe_user_id")
-      //   .eq("user_id", uid)
-      //   .then(({ data, error }) => {
-      //     fetch("api/c")
-      //       .then(function (response) {
-      //         return response.json();
-      //       })
-      //       .then(function (data) {
-      //         console.log(data);
-      //         setPremiumUser(data.status);
-      //       });
-      //   });
     }
   }, []);
-
-  // useEffect(() => {
-  //   if (supabase.auth.session() != null) {
-  //     document.querySelector(".get-started").style.display = "none";
-  //     if (premiumUser == "active") {
-  //       document.querySelector(".free-plan").style.display = "none";
-  //       document.querySelector("#subscribe").style.display = "none";
-  //       document.querySelector(".premium-plan").style.display = "block";
-  //     } else {
-  //       document.querySelector(".free-plan").style.display = "block";
-  //       document.querySelector(".premium-plan").style.display = "none";
-  //       document.querySelector("#subscribe").style.display = "block";
-  //     }
-  //   } else {
-  //     document.querySelector(".get-started").style.display = "flex";
-  //   }
-  // }, [premiumUser]);
+  
 
   function wrapClickHandler(event) {
     var $el = $(event.target);
     if (!!$el.closest("#subscribe").get(0)) {
       if (auth != null) {
-        //strip payment
         fetch("/api/strip", {
           method: "POST",
           headers: {
@@ -259,7 +116,10 @@ export default function Plans(props) {
       },
     });
   }
-
+  useEffect(()=>{
+    if(typeof Swiper !== 'undefined')
+    runSwiper();
+  },[])
   return (
     <>
       <div onClick={wrapClickHandler}>
@@ -289,7 +149,6 @@ export default function Plans(props) {
 }
 
 export async function getServerSideProps({ context }) {
-  // console.log(context,'ctx');
   const cheerio = await import(`cheerio`);
   const axios = (await import(`axios`)).default;
 
@@ -299,8 +158,6 @@ export async function getServerSideProps({ context }) {
   const html = res.data;
 
   const $ = cheerio.load(html);
-
-  //   $('.navlink').addClass('title').html()
   const globalStyles = $(".global-styles").html();
   const bodyContent = $(`.main-wrapper`).html();
   const navbarContent = $(".nav-access").html();

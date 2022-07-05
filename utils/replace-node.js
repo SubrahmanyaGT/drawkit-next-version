@@ -516,7 +516,7 @@ export function replace(node) {
           <div
             {...props}
             dangerouslySetInnerHTML={{
-              __html: `<div class="signin-page-form">
+              __html: `<div class="">
           <form
             id="signin-form"
             name="email-form"
@@ -596,7 +596,7 @@ export function replace(node) {
           <div
             {...props}
             dangerouslySetInnerHTML={{
-              __html: `<div class="signup-page-form ">
+              __html: `<div class="">
           <form
             id="signup-form"
             name="email-form"

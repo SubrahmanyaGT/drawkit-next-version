@@ -13,16 +13,11 @@ function MyApp(props) {
   const parseOptions = {
     replace,
   };
-
-  if (Component.getLayout) {
-    return Component.getLayout(<Component {...pageProps} />);
-  }
-
   const router = useRouter();
   useEffect(() => {
     console.log(router);
-    if ( typeof Jetboost !== "undefined") {
-      Jetboost=null;
+    if (typeof Jetboost !== "undefined") {
+      Jetboost = null;
     }
 
     if (typeof window !== "undefined") {
@@ -33,11 +28,21 @@ function MyApp(props) {
         s.src = "https://cdn.jetboost.io/jetboost.js";
         s.async = 1;
         d.getElementsByTagName("head")[0].appendChild(s);
- 
+
         d.getElementsByTagName("head")[0].removeChild(s);
       })(document);
+
+      ((d) => {
+        d.querySelectorAll(".nav-menu .w--open").forEach((el) => {
+          el.classList.remove("w--open");
+        });
+      })(document);
     }
-  }, [router.pathname,router.query]);
+  }, [router.pathname, router.query]);
+let navLayoutStyle={}
+  if (Component.getLayout) {
+    navLayoutStyle={display:'none'}
+  }
 
   return (
     <>
@@ -46,14 +51,18 @@ function MyApp(props) {
         {parseHtml(props.stars.headContent, parseOptions)}
       </Head>
 
+      <div style={navLayoutStyle}>
       <NavbarContent
         navbarContent={parseHtml(props.stars.navBar, parseOptions)}
       />
+      </div>
+     
       <Component {...pageProps} />
       {parseHtml(props.stars.supportScripts, parseOptions)}
+      <div style={navLayoutStyle}>
       {parseHtml(props.stars.footer, parseOptions)}
+      </div>
       {parseHtml(props.stars.globalStyles, parseOptions)}
-
     </>
   );
 }

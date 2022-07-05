@@ -14,6 +14,7 @@ export default function Illustration(props) {
   const [lastName, setLastName] = useState("");
   const [savefName, setsavefName] = useState("");
   const [savelName, setsavelName] = useState("");
+  const [paymentDetails, setPaymentDetails] = useState([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -31,7 +32,23 @@ export default function Illustration(props) {
           }
         });
     }
+
+    if (supabase.auth.session() != null) {
+   
+      fetch("/api/payment-intents", {
+        method: "POST",
+        headers: {
+          contentType: "application/json",
+        },
+        body: JSON.stringify({ user_id: '' }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setPaymentDetails(data);
+        });
+    }
   }, []);
+  console.log(paymentDetails);
   useEffect(() => {
     if (supabase.auth.session() != null) {
       document.getElementById("first-name").value = firstName;
@@ -90,6 +107,20 @@ export default function Illustration(props) {
         {parseHtml(props.bodyContent, parseOptions)}
         <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
       </div>
+      <div>
+        {
+          // paymentDetails.map((payments)=>{
+          //   console.log(paymentDetails)
+          //   return (<>
+          //   {/* <div>{payments.amount_received}</div>
+          //   <div>{payments.description}</div>
+          //   <div>{payments.email}</div>
+          //   <div>{new Date(payments.created*1000).toDateString("en-US")}</div>
+          //   <div><a href={payments.receipt_url} download>{payments.receipt_url}</a></div> */}
+          //   </>)
+          // })
+        }
+        </div>
     </>
   ) : (
     ""

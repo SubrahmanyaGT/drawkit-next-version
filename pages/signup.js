@@ -133,7 +133,7 @@ export default function Signup(props) {
           if (data) {
             router.push("/");
           } else {
-            console.log("asdfadf");
+          
           }
         } else {
           $(".w-checkbox-input").css("box-shadow", "0 0 3px 1px red");
@@ -210,9 +210,7 @@ export default function Signup(props) {
   }
   return (
     <>
-      <Head>
-        {parseHtml(props.headContent, parseOptions)}
-      </Head>
+     
       <div
         id="signup-div"
         onClick={wrapClickHandler}
