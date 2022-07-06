@@ -7,6 +7,10 @@ import Head from "next/head";
 import Script from "next/script";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import LogRocket from 'logrocket';
+
+LogRocket.init('p5qzuw/drawkit-test');
+
 
 function MyApp(props) {
   const { Component, pageProps } = props;
@@ -49,20 +53,23 @@ let navLayoutStyle={}
       <Head>
         {parseHtml(props.stars.globalStyles, parseOptions)}
         {parseHtml(props.stars.headContent, parseOptions)}
+      {parseHtml(props.stars.supportScripts, parseOptions)}
+
       </Head>
 
       <div style={navLayoutStyle}>
-      <NavbarContent
+      <NavbarContent 
         navbarContent={parseHtml(props.stars.navBar, parseOptions)}
       />
       </div>
      
       <Component {...pageProps} />
-      {parseHtml(props.stars.supportScripts, parseOptions)}
+    
       <div style={navLayoutStyle}>
       {parseHtml(props.stars.footer, parseOptions)}
       </div>
       {parseHtml(props.stars.globalStyles, parseOptions)}
+
     </>
   );
 }
@@ -76,7 +83,7 @@ MyApp.getInitialProps = async (ctx) => {
   const html = res.data;
   const $ = cheerio.load(html);
 
-  const supportScripts = Object.keys($(`script`))
+  const supportScripts = Object.keys($(`body script`))
     .map((key) => {
       if ($(`script`)[key].attribs) return $(`script`)[key].attribs.src;
     })
@@ -86,6 +93,7 @@ MyApp.getInitialProps = async (ctx) => {
     .map((m) => `<Script type="text/javascript" src="${m}"></Script>`)
     .join("")
     .toString();
+    console.log("supportScripts",$(`body script`));
   const navBar = $(".nav-access").html();
   const globalStyles = $(".global-styles").html();
   const LoggedinnavBar = $(`.logged-in-user-nav`).html();

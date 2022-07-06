@@ -26,12 +26,11 @@ export default function Illustration(props) {
     setFile(data);
 
     for (let i = 0; i < file.length; i++) {
-      console.log(file[i]);
+      
       const { data, error } = await supabase.storage
         .from("public/illustration-downloadable")
         .download(`illustrationid2/${file[i].name}`);
 
-      console.log(data);
 
       const zip = new JSZip();
       zip.file(`${file[i].name}`, data);
@@ -119,32 +118,32 @@ export const getServerSideProps = async (paths) => {
     const $ = cheerio.load(html);
 
     //   $('.navlink').addClass('title').html()
-    const navBar = $(`.nav-access`).html();
-    const bodyContent = $(`.main-wrapper`).html();
+    // const navBar = $(`.nav-access`).html();
+    const bodyContent = $(`.main-wrapper`).html();   
     //   const navDrop=$('.nav-dropdown-wrapper').html();
-    const headContent = $(`head`).html();
-    const footer = $(`.footer-access`).html();
-    const globalStyles = $(".global-styles").html();
+    // const headContent = $(`head`).html();
+    // const footer = $(`.footer-access`).html();
+    // const globalStyles = $(".global-styles").html();
 
 
-    const supportScripts = Object.keys($(`script`))
-      .map((key) => {
-        if ($(`script`)[key].attribs) return $(`script`)[key].attribs.src;
-      })
-      .filter((src) => {
-        if (src) return src;
-      })
-      .map((m) => `<Script type="text/javascript" src="${m}"></Script>`)
-      .join("");
+    // const supportScripts = Object.keys($(`script`))
+    //   .map((key) => {
+    //     if ($(`script`)[key].attribs) return $(`script`)[key].attribs.src;
+    //   })
+    //   .filter((src) => {
+    //     if (src) return src;
+    //   })
+    //   .map((m) => `<Script type="text/javascript" src="${m}"></Script>`)
+    //   .join("");
 
     return {
       props: {
         bodyContent: bodyContent,
-        headContent: headContent,
-        navBar: navBar,
-        supportScripts: supportScripts,
-        footer: footer,
-        globalStyles: globalStyles,
+        headContent: 'headContent',
+        navBar: 'navBar',
+        supportScripts: 'supportScripts',
+        footer: 'footer',
+        globalStyles: 'globalStyles',
        
       },
     };
