@@ -6,38 +6,40 @@ import Script from "next/script";
 import { supabase } from "../../utils/supabaseClient";
 import { replace } from "../../utils/replace-node";
 import JSZip from "jszip";
-import FileSaver from "file-saver";
-
+import { saveAs } from "file-saver";
 
 export default function Illustration(props) {
   const parseOptions = { replace };
 
   const router = useRouter();
 
-
-
-
-
   const [file, setFile] = useState([]);
-  const downloadSupabase = async (folderName) => {
+  const downloadSupabase = async (item_id) => {
+    const path = await supabase
+      .from("illustrations_pack")
+      .select("downloadable_illustration,pricing_type")
+      .eq("wf_item_id", item_id);
+      console.log('path',path.data[0].pricing_type);
+    const file = path.data[0].downloadable_illustration;
+    const fileName = file.substring(file.lastIndexOf("/") + 1, file.length);
+    console.log(fileName);
+
     const { data, error } = await supabase.storage
       .from("illustration-downloadable")
-      .list(folderName);
-    setFile(data);
+      .download(fileName);
 
-    for (let i = 0; i < file.length; i++) {
-      
-      const { data, error } = await supabase.storage
-        .from("public/illustration-downloadable")
-        .download(`illustrationid2/${file[i].name}`);
+    // const { signedURL, error } = await supabase.storage
+    //   .from("illustration-downloadable")
+    //   .createSignedUrl(
+    //     fileName,
+    //     60
+    //   );
+    //   console.log(signedURL);
 
-
-      const zip = new JSZip();
-      zip.file(`${file[i].name}`, data);
-      zip.generateAsync({ type: "blob" }).then(function (content) {
-        FileSaver.saveAs(content, `illustrationid2.zip`);
-      });
-    }
+    // saveAs(data,fileName);
+    const strip = await supabase.from("stripe_users").select("*");
+    console.log(strip);
+    saveAs(data, fileName);
   };
 
   async function wrapClickHandler(event) {
@@ -50,25 +52,23 @@ export default function Illustration(props) {
       }
     }
     if (!!$el.closest("#sb-download").get(0)) {
-      let folderName = $("#sb-download").children().get(2).innerText;
-      if (await downloadSupabase(folderName)) {
-        // router.push("/")
+      if (supabase.auth.session() != null) {
+        let item = $("#sb-download").children().get(2).innerText;
+        await downloadSupabase(item);
+      } else {
+        router.push("/signup");
       }
     }
   }
 
- 
-
   return (
     <>
-      <div onClick={wrapClickHandler} >
+      <div onClick={wrapClickHandler}>
         {parseHtml(props.bodyContent, parseOptions)}
-        
+
         <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
       </div>
     </>
-
-
   );
 }
 
@@ -119,12 +119,11 @@ export const getServerSideProps = async (paths) => {
 
     //   $('.navlink').addClass('title').html()
     // const navBar = $(`.nav-access`).html();
-    const bodyContent = $(`.main-wrapper`).html();   
+    const bodyContent = $(`.main-wrapper`).html();
     //   const navDrop=$('.nav-dropdown-wrapper').html();
     // const headContent = $(`head`).html();
     // const footer = $(`.footer-access`).html();
     // const globalStyles = $(".global-styles").html();
-
 
     // const supportScripts = Object.keys($(`script`))
     //   .map((key) => {
@@ -139,12 +138,11 @@ export const getServerSideProps = async (paths) => {
     return {
       props: {
         bodyContent: bodyContent,
-        headContent: 'headContent',
-        navBar: 'navBar',
-        supportScripts: 'supportScripts',
-        footer: 'footer',
-        globalStyles: 'globalStyles',
-       
+        headContent: "headContent",
+        navBar: "navBar",
+        supportScripts: "supportScripts",
+        footer: "footer",
+        globalStyles: "globalStyles",
       },
     };
   } else {
@@ -154,5 +152,5 @@ export const getServerSideProps = async (paths) => {
         permanent: false,
       },
     };
-  };
+  }
 };

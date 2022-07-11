@@ -57,6 +57,7 @@ const supabaseSignUp = async (email, password) => {
       return false;
     }
   })();
+  // return ({storeUser, supabaseCreate, stripeCreate})
   return !storeUser.error && !supabaseCreate.error && !stripeCreate.errors
     ? true
     : false;
@@ -112,7 +113,6 @@ export default function Signup(props) {
         if ($("#d-signup-checkbox").is(":checked")) {
           $(".w-checkbox-input").addClass("w--redirected-checked");
           $(".w-checkbox-input").css("box-shadow", "0 0 3px 1px #3898ec");
-
         } else {
           $(".w-checkbox-input").removeClass("w--redirected-checked");
         }
@@ -133,7 +133,6 @@ export default function Signup(props) {
           if (data) {
             router.push("/");
           } else {
-          
           }
         } else {
           $(".w-checkbox-input").css("box-shadow", "0 0 3px 1px red");
@@ -210,28 +209,20 @@ export default function Signup(props) {
   }
   return (
     <>
-     
       <div
         id="signup-div"
         onClick={wrapClickHandler}
         onKeyUp={wrapKeyUpHandler}
       >
-        
         {parseHtml(props.bodyContent, parseOptions)}
-       
       </div>
       <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
     </>
   );
 }
-Signup.getLayout=function PageLayout(page){
-  return(
-    <>
-   
-    {page}
-    </>
-  )
-}
+Signup.getLayout = function PageLayout(page) {
+  return <>{page}</>;
+};
 
 export async function getServerSideProps({ context }) {
   // console.log(context,'ctx');

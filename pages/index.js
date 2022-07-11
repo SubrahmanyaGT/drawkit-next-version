@@ -24,85 +24,42 @@ export default function Home(props) {
   const router = useRouter()
   
 
-  /** ..................................................................................................................................*/
   const parseOptions = {
     replace,
   };
-  /** ..................................................................................................................................*/
-  if (supabase.auth.session()) {
-    let uid = supabase.auth.session().user.id;
-    supabase
-      .from("stripe_users")
-      .select("stripe_user_id")
-      .eq("user_id", uid)
-      .then(({ data, error }) => {
-        fetch("api/check-active-status", {
-          method: "POST",
-          headers: {
-            contentType: "application/json",
-          },
-          body: JSON.stringify({ customer: data[0].stripe_user_id }),
-        })
-          .then(function (response) {
-            return response.json();
-          })
-          .then(function (data) {
-            setPremiumUser(data.status);
-          });
-      });
-  }
- 
-
- 
-  // function jetboosthome() {
-  //   window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8";
-  //   (function (d) {
-  //     var s = d.createElement("script");
-  //     s.src = "https://cdn.jetboost.io/jetboost.js";
-  //     s.async = 1;
-  //     d.getElementsByTagName("head")[0].appendChild(s);
-  //   })(document);
-
-  //   $(".filter-all").addClass("active-all");
-
-  //   $(".filter-button").click(function () {
-  //     $(".filter-all").removeClass("active-all");
-  //   });
-
-
-  //   $(".filter-all-button").addClass("active-all");
-
-  //   $(".filter-button").click(function () {
-  //     $(".filter-all-button").removeClass("active-all");
-  //   });
-
-  //   $(".request").click(function () {
-  //     $(".request-popup").show();
-  //     setTimeout(function () {
-  //       $("#loader").hide();
-  //       $(".iframe-holder").show();
-  //     }, 3000);
-  //   });
-  //   $(".cancel,.request-popup").click(function () {
-  //     $(".request-popup").hide();
-  //     $("#loader").show();
-  //     $(".iframe-holder").hide();
-  //   });
-
-  //   $("input:not([type=checkbox],[type=submit]),textarea")
-  //     .focus(function () {
-  //       $(this).parent().css({ border: "1px solid #1aa1e5" });
-  //     })
-  //     .blur(function () {
-  //       $(this).parent().css({ border: "1px solid #ccd1d6" });
+  // if (supabase.auth.session()) {
+  //   let uid = supabase.auth.session().user.id;
+  //   supabase
+  //     .from("stripe_users")
+  //     .select("stripe_user_id")
+  //     .eq("user_id", uid)
+  //     .then(({ data, error }) => {
+  //       fetch("api/check-active-status", {
+  //         method: "POST",
+  //         headers: {
+  //           contentType: "application/json",
+  //         },
+  //         body: JSON.stringify({ customer: data[0].stripe_user_id }),
+  //       })
+  //         .then(function (response) {
+  //           return response.json();
+  //         })
+  //         .then(function (data) {
+  //           setPremiumUser(data.status);
+  //         });
   //     });
   // }
 
 
-  // if (typeof window !== "undefined") {
-  //   window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8";
-  //   (function(d) { var s = d.createElement("script"); s.src = "https://cdn.jetboost.io/jetboost.js"; s.async = 1; d.getElementsByTagName("head")[0].appendChild(s); })(document)
-  //   }
+
+
+
+  // (async()=>{console.log(supabase.auth.session().access_token,);
+  // console.log(await supabase.auth.verifyOTP({
+  //   email:'subrahmanyagt@gmail.com',
+  //   token:supabase.auth.session.access_token,
+  //   type:'magiclink',
+  // }))})()
 
   return (
     <>

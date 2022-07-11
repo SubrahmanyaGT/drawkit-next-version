@@ -836,13 +836,14 @@ export function replace(node) {
       if (
         href.includes("/illustration-types/") ||
         href.includes("/illustration-categories/") ||
-        href.includes("/single-illustrations/")
+        href.includes("/single-illustrations/")||
+        href.includes("/illustrations")
       ) {
         // console.log(href.slice(href.lastIndexOf("/"), href.length));
         return (
           <Link
             href={
-              "/illustrations" + href.slice(href.lastIndexOf("/"), href.length)
+              "/product" + href.slice(href.lastIndexOf("/"), href.length)
             }
           >
             <a {...props}>

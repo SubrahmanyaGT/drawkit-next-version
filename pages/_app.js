@@ -5,19 +5,23 @@ import { replace } from "../utils/replace-node";
 import parseHtml, { domToReact } from "html-react-parser";
 import Head from "next/head";
 import Script from "next/script";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import LogRocket from 'logrocket';
+import LogRocket from "logrocket";
+import { ThemeProvider } from "../lib/authInfo";
+import { supabase } from "../utils/supabaseClient";
+import InitUser from "./authComponent";
 
-LogRocket.init('p5qzuw/drawkit-test');
-
+LogRocket.init("p5qzuw/drawkit-test");
 
 function MyApp(props) {
+  const [loading, setLoading] = useState(true);
   const { Component, pageProps } = props;
   const parseOptions = {
     replace,
   };
   const router = useRouter();
+
   useEffect(() => {
     console.log(router);
     if (typeof Jetboost !== "undefined") {
@@ -43,33 +47,46 @@ function MyApp(props) {
       })(document);
     }
   }, [router.pathname, router.query]);
-let navLayoutStyle={}
+  let navLayoutStyle = {};
   if (Component.getLayout) {
-    navLayoutStyle={display:'none'}
+    navLayoutStyle = { display: "none" };
   }
 
   return (
-    <>
-      <Head>
-        {parseHtml(props.stars.globalStyles, parseOptions)}
-        {parseHtml(props.stars.headContent, parseOptions)}
-      {parseHtml(props.stars.supportScripts, parseOptions)}
+    <> <Head>
+              {parseHtml(props.stars.globalStyles, parseOptions)}
+              {parseHtml(props.stars.headContent, parseOptions)}
+              {parseHtml(props.stars.supportScripts, parseOptions)}
+            </Head>
+      <ThemeProvider>
+        <InitUser setLoading={setLoading} />
+        {loading ? (
+          <div className="loadingContainer">
+            <div className="lds-ellipsis">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        ) : (
+          <>
+           
+            <div style={navLayoutStyle}>
+              <NavbarContent
+                navbarContent={parseHtml(props.stars.navBar, parseOptions)}
+              />
+            </div>
 
-      </Head>
+            <Component {...pageProps} />
 
-      <div style={navLayoutStyle}>
-      <NavbarContent 
-        navbarContent={parseHtml(props.stars.navBar, parseOptions)}
-      />
-      </div>
-     
-      <Component {...pageProps} />
-    
-      <div style={navLayoutStyle}>
-      {parseHtml(props.stars.footer, parseOptions)}
-      </div>
-      {parseHtml(props.stars.globalStyles, parseOptions)}
-
+            <div style={navLayoutStyle}>
+              {parseHtml(props.stars.footer, parseOptions)}
+            </div>
+            {parseHtml(props.stars.globalStyles, parseOptions)}
+          </>
+        )}
+      </ThemeProvider>
     </>
   );
 }
@@ -93,7 +110,7 @@ MyApp.getInitialProps = async (ctx) => {
     .map((m) => `<Script type="text/javascript" src="${m}"></Script>`)
     .join("")
     .toString();
-    console.log("supportScripts",$(`body script`));
+  console.log("supportScripts", $(`body script`));
   const navBar = $(".nav-access").html();
   const globalStyles = $(".global-styles").html();
   const LoggedinnavBar = $(`.logged-in-user-nav`).html();

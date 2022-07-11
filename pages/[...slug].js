@@ -10,10 +10,7 @@ import { replace } from "../utils/replace-node";
 import NavbarContent from "./navbar";
 import { useEffect } from "react";
 
-export default function slug(props) {
-
-  
-
+export default function Slug(props) {
   useEffect(() => {
     $(".view-all-add-button").click(function () {
       $(".button-filter-item").show();
