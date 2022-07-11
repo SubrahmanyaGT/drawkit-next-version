@@ -10,57 +10,21 @@ import { replace } from "../utils/replace-node";
 
 const supabaseSignUp = async (email, password) => {
   console.log(email, password);
-  let stripeCreate = await (async () => {
-    const response = await fetch("api/createStripCust", {
-      method: "POST",
-      headers: {
-        contentType: "application/json",
-      },
-      body: JSON.stringify({ email: email, name: email }),
-    });
-    if (response.ok) {
-      const { data } = await response.json();
-      return data;
-    } else {
-      return false;
-    }
-  })();
-  let supabaseCreate = await (async () => {
-    let supabaseuser = new Promise(async function (resolve, reject) {
-      if (!stripeCreate.errors && !!stripeCreate.customer) {
-        let supabaseuserPromise = await supabase.auth.signUp({
-          email: email,
-          password: password,
-        });
 
-        if (!supabaseuserPromise.error) {
-          resolve(supabaseuserPromise);
-        } else {
-          reject(false);
-        }
-      }
-    });
+ 
 
-    return await supabaseuser;
-  })();
-  let storeUser = await (async () => {
-    if (supabaseCreate.user) {
-      let stripeuser = await supabase.from("stripe_users").insert([
-        {
-          stripe_user_id: stripeCreate.customer.id,
-          stripe_user_email: stripeCreate.customer.email,
-          user_id: supabaseCreate.user.id,
-        },
-      ]);
-      return stripeuser;
-    } else {
-      return false;
-    }
-  })();
-  // return ({storeUser, supabaseCreate, stripeCreate})
-  return !storeUser.error && !supabaseCreate.error && !stripeCreate.errors
-    ? true
-    : false;
+  let Supabaseuser = await supabase.auth.signUp({
+    email: email,
+    password: password,
+  });
+
+  return Supabaseuser
+
+  
+  // return { storeUser, supabaseCreate, stripeCreate };
+  // return !storeUser.error && !supabaseCreate.error && !stripeCreate.errors
+  //   ? true
+  //   : false;
 };
 
 async function signInWithGoogle() {
@@ -128,11 +92,16 @@ export default function Signup(props) {
 
       if (valEmail && valPassword) {
         if ($("#d-signup-checkbox").is(":checked")) {
-          let data = await supabaseSignUp(email, password);
-          console.log("data", data);
-          if (data) {
-            router.push("/");
+          let Supabaseuser = await supabaseSignUp(email, password);
+          console.log("data", Supabaseuser);
+
+          if (!Supabaseuser.error) {
+            router.push({
+              pathname: "/verification",
+              query: { email: email },
+            });
           } else {
+            $(".validator-message").text(Supabaseuser.error.message);
           }
         } else {
           $(".w-checkbox-input").css("box-shadow", "0 0 3px 1px red");

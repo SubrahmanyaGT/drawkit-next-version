@@ -52,14 +52,22 @@ export default function Home(props) {
 
 
 
+// (async()=>{  const { user, error } = await supabase.auth.signUp({
+//     email: 'subrahmanyagt@gmail.com',
+//     password:'1234567890'
+//   })
+//   console.log(user,error);
+// })()
 
 
-  // (async()=>{console.log(supabase.auth.session().access_token,);
-  // console.log(await supabase.auth.verifyOTP({
-  //   email:'subrahmanyagt@gmail.com',
-  //   token:supabase.auth.session.access_token,
-  //   type:'magiclink',
-  // }))})()
+
+  // (async ()=>{
+  //   const datas=await supabase.auth.verifyOTP({
+  //     email:'subrahmanyagt@gmail.com',
+  //     token:'vpqiv-vbvff-snxeb-ymsjm',
+  //     type:'signup',
+  //   })
+  // console.log(datas)})()
 
   return (
     <>

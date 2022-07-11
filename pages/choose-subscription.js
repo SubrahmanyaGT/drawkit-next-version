@@ -7,26 +7,16 @@ import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
 import Script from "next/script";
 import { replace } from "../utils/replace-node";
+import { log } from "logrocket";
 
-const supabaseSignIn = async (email, password) => {
-  console.log(email, password);
-  const { user, session, error } = await supabase.auth.signIn({
+const verifyOTP = async (token, email) => {
+  const datas = await supabase.auth.verifyOTP({
     email: email,
-    password: password,
+    token: token,
+    type: "signup",
   });
-  console.log(user, session,error);
-  if (!error) {
-    return true;
-  } else {
-    return false;
-  }
+  return datas;
 };
-
-async function signInWithGoogle() {
-  const { user, session, error } = await supabase.auth.signIn({
-    provider: "google",
-  });
-}
 
 export default function Signin(props) {
   const [email, setEmail] = useState("");
@@ -37,7 +27,7 @@ export default function Signin(props) {
     replace,
   };
   const router = useRouter();
-
+  console.log(router.query.email);
   useEffect(() => {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
       setValEmail(true);
@@ -50,65 +40,41 @@ export default function Signin(props) {
       setValPassword(false);
     }
   }, [email, password]);
-  
+
+  console.log(supabase.auth);
   async function wrapClickHandler(event) {
     var $el = $(event.target);
-    if (!!$el.closest("#d-signin-google").get(0)) {
-      signInWithGoogle();
-    }
-    if (!!$el.closest("#signin").get(0)) {
-      event.preventDefault();
-      // validateEmailPassword();
-      if ((await supabaseSignIn(email, password)) && valEmail && valPassword) {
-        console.log(await supabaseSignIn(email, password));
-        router.push("/");
+    if (!!$el.closest("#verify").get(0)) {
+      const token = $("#verification-token").get(0).value;
+      const userEmail = router.query.email;
+      const verificationResult = await verifyOTP(token, userEmail);
+      if (verificationResult.error) {
+        $("#verify-error-msg").text(verificationResult.error.message);
       } else {
-        $(".validator-message").text("Invalid Signin Attempt");
+        console.log(verificationResult);
+        router.push('/choose-subscription')
       }
-    }
-
-    if (!!$el.closest(".reveal-pw").get(0)) {
-      let signin_input = $("#d-signin-pass");
-      signin_input.attr("type", "text");
-      $(".reveal-pw").hide();
-      $(".hide-pw").show();
-    }
-    if (!!$el.closest(".hide-pw").get(0)) {
-      let signin_input = $("#d-signin-pass");
-      signin_input.attr("type", "password");
-      $(".reveal-pw").show();
-      $(".hide-pw").hide();
     }
   }
 
- 
-
   async function wrapKeyUpHandler(event) {
+    const $el = $(event.target);
     if (event.keyCode === 13) {
-      var $el = $(event.target);
-      if (!!$el.closest("#d-signin-email").get(0)) {
-        $("#d-signin-pass").focus();
+      if (!!$el.closest("#verification-token").get(0)) {
       }
-      if (!!$el.closest("#d-signin-pass").get(0)) {
-        if (
-          (await supabaseSignIn(email, password)) &&
-          valEmail &&
-          valPassword
-        ) {
-          console.log(await supabaseSignIn(email, password));
-          router.push("/");
-        } else {
-          $(".validator-message").text("Invalid Signin Attempt");
-        }
+    } else {
+      if (!!$el.closest("#verification-token").get(0)) {
+        $("#verify-error-msg").text("");
       }
     }
   }
 
   useEffect(() => {
-
-    document.getElementById('signin-div').addEventListener('change',wrapChangeHandler)
+    document
+      .getElementById("signin-div")
+      .addEventListener("change", wrapChangeHandler);
     function wrapChangeHandler(event) {
-      console.log('change');
+      console.log("change");
       var $el = $(event.target);
       if (!!$el.closest("#d-signin-email").get(0)) {
         setEmail($el.closest("#d-signin-email").val());
@@ -120,45 +86,38 @@ export default function Signin(props) {
         $(".validator-message").text("");
       }
     }
-  },[])
+  }, []);
 
   return (
     <>
-     <Head>
-        {parseHtml(props.headContent, parseOptions)}
-      </Head>
+      <Head>{parseHtml(props.headContent, parseOptions)}</Head>
       <div
-      id="signin-div"
+        id="signin-div"
         onClick={wrapClickHandler}
         // onChange={wrapChangeHandler}
         onKeyUp={wrapKeyUpHandler}
       >
-        
-
-        {parseHtml(props.bodyContent,parseOptions)}
+        {parseHtml(props.bodyContent, parseOptions)}
       </div>
       <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
     </>
   );
 }
 
-Signin.getLayout=function PageLayout(page){
-  return(
-    <>
-   
-    {page}
-    </>
-  )
-}
+Signin.getLayout = function PageLayout(page) {
+  return <>{page}</>;
+};
 
 export async function getStaticProps({ context }) {
   // console.log(context,'ctx');
   const cheerio = await import(`cheerio`);
   const axios = (await import(`axios`)).default;
 
-  let res = await axios("https://drawkit-v2.webflow.io/signin").catch((err) => {
-    console.error(err);
-  });
+  let res = await axios("https://drawkit-v2.webflow.io/choose-subscription").catch(
+    (err) => {
+      console.error(err);
+    }
+  );
   const html = res.data;
 
   const $ = cheerio.load(html);

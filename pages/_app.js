@@ -57,7 +57,10 @@ function MyApp(props) {
               {parseHtml(props.stars.globalStyles, parseOptions)}
               {parseHtml(props.stars.headContent, parseOptions)}
               {parseHtml(props.stars.supportScripts, parseOptions)}
+
+        
             </Head>
+            {/* <Script type="text/javascript" data-site-id='94e7f93cc3c0707dfc70' data-base-url src = 'https://customerioforms.com/assets/forms.js'></Script> */}
       <ThemeProvider>
         <InitUser setLoading={setLoading} />
         {loading ? (
