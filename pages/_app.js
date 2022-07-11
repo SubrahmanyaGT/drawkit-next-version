@@ -86,6 +86,7 @@ function MyApp(props) {
             <div style={navLayoutStyle}>
               {parseHtml(props.stars.footer, parseOptions)}
             </div>
+            {parseHtml(props.stars.supportScripts, parseOptions)}
             {parseHtml(props.stars.globalStyles, parseOptions)}
           </>
         )}
