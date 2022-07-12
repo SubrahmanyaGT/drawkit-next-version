@@ -53,8 +53,13 @@ function MyApp(props) {
   }
 
   return (
-    <> 
-            {/* <Script type="text/javascript" data-site-id='94e7f93cc3c0707dfc70' data-base-url src = 'https://customerioforms.com/assets/forms.js'></Script> */}
+    <>
+      {" "}
+      <Head>
+        {parseHtml(props.stars.globalStyles, parseOptions)}
+        {parseHtml(props.stars.headContent, parseOptions)}
+      </Head>
+      {/* <Script type="text/javascript" data-site-id='94e7f93cc3c0707dfc70' data-base-url src = 'https://customerioforms.com/assets/forms.js'></Script> */}
       <ThemeProvider>
         <InitUser setLoading={setLoading} />
         {loading ? (
@@ -68,24 +73,17 @@ function MyApp(props) {
           </div>
         ) : (
           <>
-        
             <div style={navLayoutStyle}>
               <NavbarContent
                 navbarContent={parseHtml(props.stars.navBar, parseOptions)}
               />
             </div>
-            <Head>
-              {parseHtml(props.stars.globalStyles, parseOptions)}
-              {parseHtml(props.stars.headContent, parseOptions)}
-            </Head>
-           
 
             <Component {...pageProps} />
 
             <div style={navLayoutStyle}>
               {parseHtml(props.stars.footer, parseOptions)}
             </div>
-            {parseHtml(props.stars.supportScripts, parseOptions)}
             {parseHtml(props.stars.globalStyles, parseOptions)}
           </>
         )}
@@ -103,48 +101,28 @@ MyApp.getInitialProps = async (ctx) => {
   const html = res.data;
   const $ = cheerio.load(html);
 
-  const supportScripts = Object.keys($(`body script`))
-    .map((key) => {
-      if ($(`script`)[key].attribs) return $(`script`)[key].attribs.src;
-    })
-    .filter((src) => {
-      if (src) return src;
-    })
-    .map((m) => `<Script type="text/javascript" src="${m}"></Script>`)
-    .join("")
-    .toString();
-  console.log("supportScripts", $(`body script`));
   const navBar = $(".nav-access").html();
   const globalStyles = $(".global-styles").html();
-  const LoggedinnavBar = $(`.logged-in-user-nav`).html();
-  const hideLogin = $(`.hide-login`).html();
-  const homeIllustration = $(`.show-all-illustration`).html();
-  const showFree = $(`.show-free`).html();
-  const showcase = $(`.showcase`).html();
-  const illustrationHeadLogin = $(`.after-login-heading`).html();
-  const illustrationHead = $(".before-login-heading").html();
-  const showBlog = $(`.show-blogs-login`).html();
-  const allShow = $(`.show-all`).html();
   const headContent = $(`head`).html();
   const footer = $(`.footer-access`).html();
-
+  // const supportScripts = Object.keys($(`body script`))
+  //   .map((key) => {
+  //     if ($(`script`)[key].attribs) return $(`script`)[key].attribs.src;
+  //   })
+  //   .filter((src) => {
+  //     if (src) return src;
+  //   })
+  //   .map((m) => `<Script type="text/javascript" src="${m}"></Script>`)
+  //   .join("")
+  //   .toString();
+  // console.log("supportScripts", $(`body script`));
   return {
     stars: {
       headContent: headContent,
       globalStyles: globalStyles,
-      supportScripts: supportScripts,
+      // supportScripts: supportScripts,
       navBar: navBar,
-      hideLogin: hideLogin,
-      LoggedinnavBar: LoggedinnavBar,
       footer: footer,
-      showFree: showFree,
-      showcase: showcase,
-      showBlog: showBlog,
-      illustrationHeadLogin: illustrationHeadLogin,
-      illustrationHead: illustrationHead,
-      HomeIllustration: homeIllustration,
-      showFree: showFree,
-      allShow: allShow,
     },
   };
 };
