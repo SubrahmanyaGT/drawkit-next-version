@@ -51,6 +51,7 @@ function MyApp(props) {
   if (Component.getLayout) {
     navLayoutStyle = { display: "none" };
   }
+  console.log(props.stars.supportScripts);
 
   return (
     <>
@@ -58,6 +59,9 @@ function MyApp(props) {
       <Head>
         {parseHtml(props.stars.globalStyles, parseOptions)}
         {parseHtml(props.stars.headContent, parseOptions)}
+        
+      
+        
       </Head>
       {/* <Script type="text/javascript" data-site-id='94e7f93cc3c0707dfc70' data-base-url src = 'https://customerioforms.com/assets/forms.js'></Script> */}
       <ThemeProvider>
@@ -73,6 +77,7 @@ function MyApp(props) {
           </div>
         ) : (
           <>
+          {props.stars.supportScripts.map((m,i) => <Script key={i} strategy="afterInteractive" type="text/javascript" src={m}></Script>)}
             <div style={navLayoutStyle}>
               <NavbarContent
                 navbarContent={parseHtml(props.stars.navBar, parseOptions)}
@@ -80,11 +85,11 @@ function MyApp(props) {
             </div>
 
             <Component {...pageProps} />
-
             <div style={navLayoutStyle}>
               {parseHtml(props.stars.footer, parseOptions)}
             </div>
             {parseHtml(props.stars.globalStyles, parseOptions)}
+            
           </>
         )}
       </ThemeProvider>
@@ -105,22 +110,20 @@ MyApp.getInitialProps = async (ctx) => {
   const globalStyles = $(".global-styles").html();
   const headContent = $(`head`).html();
   const footer = $(`.footer-access`).html();
-  // const supportScripts = Object.keys($(`body script`))
-  //   .map((key) => {
-  //     if ($(`script`)[key].attribs) return $(`script`)[key].attribs.src;
-  //   })
-  //   .filter((src) => {
-  //     if (src) return src;
-  //   })
-  //   .map((m) => `<Script type="text/javascript" src="${m}"></Script>`)
-  //   .join("")
-  //   .toString();
-  // console.log("supportScripts", $(`body script`));
+  const supportScripts = Object.keys($(`body script`))
+    .map((key) => {
+      if ($(`script`)[key].attribs) return $(`script`)[key].attribs.src;
+    })
+    .filter((src) => {
+      if (src) return src;
+    })
+    // .map((m) => `<Script strategy="afterInteractive" type="text/javascript" src="${m}"></Script>`)
+  console.log("supportScripts", $(`body script`));
   return {
     stars: {
       headContent: headContent,
       globalStyles: globalStyles,
-      // supportScripts: supportScripts,
+      supportScripts: supportScripts,
       navBar: navBar,
       footer: footer,
     },
