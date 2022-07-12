@@ -28,12 +28,40 @@ const supabaseSignUp = async (email, password) => {
 };
 
 async function signInWithGoogle() {
-  const { user, session, error } = await supabase.auth.signIn({
+  // const { user, session, error } = await 
+  supabase.auth.signIn({
     provider: "google",
+  }).then( async({ user, session, error } ) => {
+    console.log(user, session, error);
+    if (!error) {
+      let stripeCreate = await (async () => {
+        const response = await fetch("api/createStripCust", {
+          method: "POST",
+          headers: {
+            contentType: "application/json",
+          },
+          body: JSON.stringify({ email: user.email }),
+        });
+        if (response.ok) {
+          const { data } = await response.json();
+          return data;
+        } else {
+          return false;
+        }
+      })();
+      let storeUser = await (async () => {
+        let stripeuser = await supabase.from("stripe_users").insert([
+          {
+            stripe_user_id: stripeCreate.customer.id,
+            stripe_user_email: stripeCreate.customer.email,
+            user_id: user.id,
+          },
+        ]);
+        return stripeuser;
+      })();
+    }
   });
-  if (!error) {
-    alert("google");
-  }
+ 
 }
 export default function Signup(props) {
   const [email, setEmail] = useState("");
