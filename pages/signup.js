@@ -11,16 +11,13 @@ import { replace } from "../utils/replace-node";
 const supabaseSignUp = async (email, password) => {
   console.log(email, password);
 
- 
-
   let Supabaseuser = await supabase.auth.signUp({
     email: email,
     password: password,
   });
 
-  return Supabaseuser
+  return Supabaseuser;
 
-  
   // return { storeUser, supabaseCreate, stripeCreate };
   // return !storeUser.error && !supabaseCreate.error && !stripeCreate.errors
   //   ? true
@@ -28,40 +25,11 @@ const supabaseSignUp = async (email, password) => {
 };
 
 async function signInWithGoogle() {
-  // const { user, session, error } = await 
-  supabase.auth.signIn({
-    provider: "google",
-  }).then( async({ user, session, error } ) => {
-    console.log(user, session, error);
-    if (!error) {
-      let stripeCreate = await (async () => {
-        const response = await fetch("api/createStripCust", {
-          method: "POST",
-          headers: {
-            contentType: "application/json",
-          },
-          body: JSON.stringify({ email: user.email }),
-        });
-        if (response.ok) {
-          const { data } = await response.json();
-          return data;
-        } else {
-          return false;
-        }
-      })();
-      let storeUser = await (async () => {
-        let stripeuser = await supabase.from("stripe_users").insert([
-          {
-            stripe_user_id: stripeCreate.customer.id,
-            stripe_user_email: stripeCreate.customer.email,
-            user_id: user.id,
-          },
-        ]);
-        return stripeuser;
-      })();
-    }
-  });
- 
+  // const { user, session, error } = await
+  supabase.auth
+    .signIn({
+      provider: "google",
+    })
 }
 export default function Signup(props) {
   const [email, setEmail] = useState("");
@@ -137,7 +105,7 @@ export default function Signup(props) {
       }
     }
     if (!!$el.closest("#d-signup-google").get(0)) {
-      signInWithGoogle();
+       await signInWithGoogle();
     }
 
     if (!!$el.closest(".w-checkbox").get(0)) {

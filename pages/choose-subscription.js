@@ -9,84 +9,42 @@ import Script from "next/script";
 import { replace } from "../utils/replace-node";
 import { log } from "logrocket";
 
-const verifyOTP = async (token, email) => {
-  const datas = await supabase.auth.verifyOTP({
-    email: email,
-    token: token,
-    type: "signup",
-  });
-  return datas;
-};
+
 
 export default function Signin(props) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [valEmail, setValEmail] = useState(false);
-  const [valPassword, setValPassword] = useState(false);
+  let [auth, setAuth] = useState(supabase.auth.session());
   const parseOptions = {
     replace,
   };
   const router = useRouter();
-  console.log(router.query.email);
-  useEffect(() => {
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-      setValEmail(true);
-    } else {
-      setValEmail(false);
-    }
-    if (password.length >= 8) {
-      setValPassword(true);
-    } else {
-      setValPassword(false);
-    }
-  }, [email, password]);
 
-  console.log(supabase.auth);
+  
+
+
   async function wrapClickHandler(event) {
     var $el = $(event.target);
-    if (!!$el.closest("#verify").get(0)) {
-      const token = $("#verification-token").get(0).value;
-      const userEmail = router.query.email;
-      const verificationResult = await verifyOTP(token, userEmail);
-      if (verificationResult.error) {
-        $("#verify-error-msg").text(verificationResult.error.message);
+    if (!!$el.closest("#d-subscribe").get(0)) {
+      if (auth != null) {
+        fetch("/api/strip", {
+          method: "POST",
+          headers: {
+            contentType: "application/json",
+          },
+          body: JSON.stringify({ user_id: auth.user.id }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.session.url) router.push(data.session.url);
+            else alert(data.session.message);
+          });
       } else {
-        console.log(verificationResult);
-        router.push('/choose-subscription')
+        router.push("/signup");
       }
     }
   }
 
-  async function wrapKeyUpHandler(event) {
-    const $el = $(event.target);
-    if (event.keyCode === 13) {
-      if (!!$el.closest("#verification-token").get(0)) {
-      }
-    } else {
-      if (!!$el.closest("#verification-token").get(0)) {
-        $("#verify-error-msg").text("");
-      }
-    }
-  }
 
-  useEffect(() => {
-    document
-      .getElementById("signin-div")
-      .addEventListener("change", wrapChangeHandler);
-    function wrapChangeHandler(event) {
-      console.log("change");
-      var $el = $(event.target);
-      if (!!$el.closest("#d-signin-email").get(0)) {
-        setEmail($el.closest("#d-signin-email").val());
-        $(".validator-message").text("");
-        console.log($el.closest("#d-signin-email").val());
-      }
-      if (!!$el.closest("#d-signin-pass").get(0)) {
-        setPassword($el.closest("#d-signin-pass").val());
-        $(".validator-message").text("");
-      }
-    }
-  }, []);
+
 
   return (
     <>
@@ -94,8 +52,6 @@ export default function Signin(props) {
       <div
         id="signin-div"
         onClick={wrapClickHandler}
-        // onChange={wrapChangeHandler}
-        onKeyUp={wrapKeyUpHandler}
       >
         {parseHtml(props.bodyContent, parseOptions)}
       </div>

@@ -19,7 +19,7 @@ export default function Illustration(props) {
       .from("illustrations_pack")
       .select("downloadable_illustration,pricing_type")
       .eq("wf_item_id", item_id);
-      console.log('path',path.data[0].pricing_type);
+    console.log("path", path.data[0].pricing_type);
     const file = path.data[0].downloadable_illustration;
     const fileName = file.substring(file.lastIndexOf("/") + 1, file.length);
     console.log(fileName);

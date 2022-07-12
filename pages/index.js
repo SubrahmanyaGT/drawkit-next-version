@@ -5,7 +5,7 @@ import { supabase } from "../utils/supabaseClient";
 import NavbarContent from "./navbar";
 import Script from "next/script";
 import $ from "jquery";
-import Head from "next/head";
+import Head from "next/head"; 
 import { replace } from "../utils/replace-node";
 import { useRouter } from "next/router";
 

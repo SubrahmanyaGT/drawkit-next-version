@@ -59,33 +59,33 @@ export function replace(node) {
       if (props.className.includes("nav-form")) {
         return (
           <div {...props}>
-            <div class="form-block ">
+            <div className="form-block ">
               <form
                 id="wf-form-search"
                 name="wf-form-search"
                 data-name="search"
                 method="post"
-                class="search-wrapper"
+                className="search-wrapper"
                 aria-label="search"
               >
                 <img
                   loading="lazy"
                   src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/626f5d0ae6c15c4a0b2dd61b_Search.svg"
                   alt="Search"
-                  class="search-icon"
+                  className="search-icon"
                 />
                 <input
                   type="text"
-                  class="search-input w-input"
-                  maxlength="256"
+                  className="search-input w-input"
+                  maxLength="256"
                   name="search"
                   data-name="search"
                   placeholder="Categories, types, subjects, etc"
                   id="nav-search-input"
                   required=""
                 />
-                <div id="close" class="search-cancel-wrapper nav">
-                  <div id="search-close" class="cancel-icon w-embed">
+                <div id="close" className="search-cancel-wrapper nav">
+                  <div id="search-close" className="cancel-icon w-embed">
                     <svg
                       width="24"
                       height="24"
@@ -112,8 +112,8 @@ export function replace(node) {
                     </svg>
                   </div>
                 </div>
-                <div id="search" class="search-button nav-search">
-                  <div class="search-text">Search</div>
+                <div id="search" className="search-button nav-search">
+                  <div className="search-text">Search</div>
                 </div>
               </form>
             </div>
@@ -689,7 +689,7 @@ export function replace(node) {
       if (props.className.includes("username-letters-big")) {
         if (supabase.auth.session()) {
           return (
-            <div class="username-letters-big big">
+            <div className="username-letters-big big">
               {supabase.auth.session().user.email.slice(0, 1).toUpperCase()}
             </div>
           );
@@ -698,7 +698,7 @@ export function replace(node) {
       if (props.className.includes("username-letters")) {
         if (supabase.auth.session()) {
           return (
-            <div class="username-letters small">
+            <div className="username-letters small">
               {supabase.auth.session().user.email.slice(0, 1).toUpperCase()}
             </div>
           );
@@ -707,7 +707,7 @@ export function replace(node) {
       if (props.className.match(/^user$/)) {
         if (supabase.auth.session()) {
           return (
-            <div class="user">
+            <div className="user">
               {supabase.auth
                 .session()
                 .user.email.slice(
@@ -747,12 +747,12 @@ export function replace(node) {
         if (supabase.auth.session()) {
           console.log(supabase.auth.session(), "supabase.auth.session()");
           return (
-            <div class="user-profile" id="user-name">
-              <div class="user-name-wrap">
-                <div class="letter-avatar">
+            <div className="user-profile" id="user-name">
+              <div className="user-name-wrap">
+                <div className="letter-avatar">
                   {supabase.auth.session().user.email.slice(0, 1)}
                 </div>
-                <div class="user-name">
+                <div className="user-name">
                   {supabase.auth
                     .session()
                     .user.email.slice(
@@ -761,29 +761,29 @@ export function replace(node) {
                     )}
                 </div>
               </div>
-              <div class="my-profile-wrap">
-                <div class="my-profile-options">
+              <div className="my-profile-wrap">
+                <div className="my-profile-options">
                   <div
                     id="account"
                     // href="/profile"
                     aria-current="page"
-                    class="my-profile-links w-inline-block w--current"
+                    className="my-profile-links w-inline-block w--current"
                   >
                     <div id="account-link-text">My Account</div>
                     <img
                       src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/62909c7c81a99984fbd1304b_Chevrons5.svg"
                       loading="lazy"
                       alt="chevron"
-                      class="right-chevron"
+                      className="right-chevron"
                     />
                   </div>
-                  <div id="d-nav-signout" class="my-profile-links">
+                  <div id="d-nav-signout" className="my-profile-links">
                     <div>Logout</div>
                     <img
                       src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/62909c7c81a99984fbd1304b_Chevrons5.svg"
                       loading="lazy"
                       alt="chevron"
-                      class="right-chevron"
+                      className="right-chevron"
                     />
                   </div>
                 </div>
@@ -836,15 +836,13 @@ export function replace(node) {
       if (
         href.includes("/illustration-types/") ||
         href.includes("/illustration-categories/") ||
-        href.includes("/single-illustrations/")||
+        href.includes("/single-illustrations/") ||
         href.includes("/illustrations")
       ) {
         // console.log(href.slice(href.lastIndexOf("/"), href.length));
         return (
           <Link
-            href={
-              "/product" + href.slice(href.lastIndexOf("/"), href.length)
-            }
+            href={"/product" + href.slice(href.lastIndexOf("/"), href.length)}
           >
             <a {...props}>
               {!!node.children &&
@@ -857,6 +855,7 @@ export function replace(node) {
 
       if (props.className) {
         if (props.className.includes("upgrade-plan-link")) {
+          
           // console.log(node.children[2].children[0].data);
 
           if (!supabase.auth.session()) {
@@ -873,7 +872,7 @@ export function replace(node) {
             );
           } else {
             if (
-              node.children[2].children[0].data === "Premium" &&
+              node.children[2].children[0].data == "Premium" &&
               premiumUser != "active"
             ) {
               return (
@@ -914,13 +913,13 @@ export function replace(node) {
       }
 
       return (
-         <Link href={href} >
-        <a {...props}>
-          {!!node.children &&
-            !!node.children.length &&
-            domToReact(node.children, parseOptions)}
-        </a>
-         </Link>
+        <Link href={href}>
+          <a {...props}>
+            {!!node.children &&
+              !!node.children.length &&
+              domToReact(node.children, parseOptions)}
+          </a>
+        </Link>
       );
     }
   }
