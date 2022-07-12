@@ -53,10 +53,7 @@ function MyApp(props) {
   }
 
   return (
-    <> <Head>
-              {parseHtml(props.stars.globalStyles, parseOptions)}
-              {parseHtml(props.stars.headContent, parseOptions)}        
-            </Head>
+    <> 
             {/* <Script type="text/javascript" data-site-id='94e7f93cc3c0707dfc70' data-base-url src = 'https://customerioforms.com/assets/forms.js'></Script> */}
       <ThemeProvider>
         <InitUser setLoading={setLoading} />
@@ -71,12 +68,17 @@ function MyApp(props) {
           </div>
         ) : (
           <>
-           
+        
             <div style={navLayoutStyle}>
               <NavbarContent
                 navbarContent={parseHtml(props.stars.navBar, parseOptions)}
               />
             </div>
+            <Head>
+              {parseHtml(props.stars.globalStyles, parseOptions)}
+              {parseHtml(props.stars.headContent, parseOptions)}
+            </Head>
+           
 
             <Component {...pageProps} />
 
@@ -111,7 +113,7 @@ MyApp.getInitialProps = async (ctx) => {
     .map((m) => `<Script type="text/javascript" src="${m}"></Script>`)
     .join("")
     .toString();
-  console.log("supportScripts", $(`script`));
+  console.log("supportScripts", $(`body script`));
   const navBar = $(".nav-access").html();
   const globalStyles = $(".global-styles").html();
   const LoggedinnavBar = $(`.logged-in-user-nav`).html();
