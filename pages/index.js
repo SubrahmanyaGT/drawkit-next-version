@@ -5,9 +5,11 @@ import { supabase } from "../utils/supabaseClient";
 import NavbarContent from "./navbar";
 import Script from "next/script";
 import $ from "jquery";
-import Head from "next/head"; 
+import Head from "next/head";
+import { useUser } from "../lib/authInfo";
 // import { replace } from "../utils/replace-node";
 import { useRouter } from "next/router";
+import { log } from "logrocket";
 
 export default function Home(props) {
   let [auth, setAuth] = useState(supabase.auth.session());
@@ -20,9 +22,10 @@ export default function Home(props) {
   let [PremiumUser, setPremiumUser] = useState("inactive");
   let [hideLogin, setHideLogin] = useState(props.hideLogin);
   let [supportScripts, setsupportScripts] = useState(props.supportScripts);
-
-  const router = useRouter()
-   function replace(node) {
+  const { user, setUser } = useUser();
+  console.log(user);
+  const router = useRouter();
+  function replace(node) {
     const attribs = node.attribs || {};
     if (attribs.hasOwnProperty("class")) {
       attribs["className"] = attribs["class"];
@@ -30,11 +33,98 @@ export default function Home(props) {
     }
     supabase.auth.onAuthStateChange((event, session) => {
       setAuth(supabase.auth.session());
-    })
-  
+    });
+
     // Replace links with Next links
-    
-  
+    if (node.name == "div") {
+      const { ...props } = attribs;
+      if (props.className) {
+        if (props.className.includes("contact-form-hero")) {
+          return (
+            <div
+              {...props}
+              dangerouslySetInnerHTML={{
+                __html: ` <form
+                      id="wf-form-form-home"
+                      name="wf-form-form-home"
+                      data-name="form-home"
+                      method="get"
+                      class="contact-form responsive-grid"
+                      aria-label="form-home"
+                    >
+                      <div
+                        id="w-node-_6e04061e-ac3d-547e-dce7-8a022d94f7de-0820319e"
+                        class="hero-input-field"
+                        style="border: 1px solid rgb(204, 209, 214)"
+                      >
+                        <img
+                          loading="lazy"
+                          src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/626f5d0ae6c15c07172dd663_Profile.svg"
+                          alt="profile"
+                          class="user-icon"
+                        />
+                        <input
+                          type="text"
+                          class="text-field w-input"
+                          maxlength="256"
+                          name="Name"
+                          data-name="Name"
+                          placeholder="Your full name"
+                          id="Name-3"
+                          required=""
+                        />
+                      </div>
+                      <div
+                        id="w-node-_6e04061e-ac3d-547e-dce7-8a022d94f7e1-0820319e"
+                        class="hero-input-field"
+                      >
+                        <img
+                          loading="lazy"
+                          src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/626f5d0ae6c15c74572dd666_Email.svg"
+                          alt="Email"
+                          class="user-icon"
+                        />
+                        <input
+                          type="email"
+                          class="text-field w-input"
+                          maxlength="256"
+                          name="Email"
+                          data-name="Email"
+                          placeholder="Your email"
+                          id="Email"
+                          required=""
+                        />
+                      </div>
+                      <div
+                        id="w-node-_742b536b-b539-2c95-f8ba-7b2c6f8198e3-0820319e"
+                        data-w-id="742b536b-b539-2c95-f8ba-7b2c6f8198e3"
+                        class="button-wrap home-form"
+                      >
+                        <div class="btn-primary">
+                          <div>Submit</div>
+                          <input
+                            type="submit"
+                            value="Submit"
+                            data-wait="Please wait..."
+                            class="submit-button w-button"
+                          />
+                          <img
+                            loading="lazy"
+                            src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/626f5d0ae6c15c2bb32dd5f5_Arrows.svg"
+                            alt=""
+                            class="button-icon"
+                          />
+                        </div>
+                        <div class="btn-overlay"></div>
+                      </div>
+                    </form>`,
+              }}
+            ></div>
+          );
+        }
+      }
+    }
+
     if (node.name == "section") {
       const { ...props } = attribs;
       if (props.className) {
@@ -50,16 +140,18 @@ export default function Home(props) {
         }
       }
     }
-  
+
     if (node.name == `a`) {
       let { href, style, ...props } = attribs;
-      if (!style && href) {
+      if (href) {
+
         if (
-          href.includes("/illustration-types/") ||
+          (href.includes("/illustration-types/") ||
           href.includes("/illustration-categories/") ||
           href.includes("/single-illustrations/") ||
-          href.includes("/illustrations")
+          href.includes("/illustrations") && !props.className.includes("upgrade-plan-link "))
         ) {
+
           // console.log(href.slice(href.lastIndexOf("/"), href.length));
           return (
             <Link
@@ -72,13 +164,13 @@ export default function Home(props) {
               </a>
             </Link>
           );
+          
         }
-  
-        if (props.className) {
-          if (props.className.includes("upgrade-plan-link")) {
-            
-            // console.log(node.children[2].children[0].data);
-  
+        if (attribs.className) {
+
+          if (props.className.includes("upgrade-plan-link ")) {
+            console.log(node.children[2].children[0].data);
+
             if (!supabase.auth.session()) {
               // not sigedin user
               return (
@@ -94,7 +186,7 @@ export default function Home(props) {
             } else {
               if (
                 node.children[2].children[0].data == "Premium" &&
-                premiumUser != "active"
+                user.subscription_details.status != "active"
               ) {
                 return (
                   <Link href="/plans">
@@ -132,7 +224,7 @@ export default function Home(props) {
             );
           }
         }
-  
+
         return (
           <Link href={href}>
             <a {...props}>
@@ -147,7 +239,7 @@ export default function Home(props) {
     // Make Google Fonts scripts work
     if (node.name === `script`) {
       let content = get(node, `children.0.data`, ``);
-  
+
       if (content && content.trim().indexOf(`WebFont.load(`) === 0) {
         content = `setTimeout(function(){${content}}, 1)`;
         return (
@@ -193,16 +285,12 @@ export default function Home(props) {
   //     });
   // }
 
-
-
-// (async()=>{  const { user, error } = await supabase.auth.signUp({
-//     email: 'subrahmanyagt@gmail.com',
-//     password:'1234567890'
-//   })
-//   console.log(user,error);
-// })()
-
-
+  // (async()=>{  const { user, error } = await supabase.auth.signUp({
+  //     email: 'subrahmanyagt@gmail.com',
+  //     password:'1234567890'
+  //   })
+  //   console.log(user,error);
+  // })()
 
   // (async ()=>{
   //   const datas=await supabase.auth.verifyOTP({
@@ -246,7 +334,6 @@ export default function Home(props) {
       {/* <Script strategy="lazyOnload" id="jetboost-script" type="text/javascript" src='https://cdn.jetboost.io/jetboost.js' async  onError={(e) => {
           console.error('Script failed to load', e)
         }}></Script> */}
-
     </>
   );
 }

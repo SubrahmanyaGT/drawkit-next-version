@@ -9,61 +9,61 @@ import { loadStripe } from "@stripe/stripe-js";
 import { useRouter } from "next/router";
 import NavbarContent from "./navbar";
 import { replace } from "../utils/replace-node";
-import { useTheme } from "../lib/authInfo";
+import { useUser } from "../lib/authInfo";
 
 export default function Plans(props) {
-  const { theme, setTheme } = useTheme();
+  const { user, setUser } = useUser();
   const router = useRouter();
   const [premiumUser, setPremiumUser] = useState("inactive");
   let [auth, setAuth] = useState(supabase.auth.session());
   console.log(router);
 
-  console.log(theme);
-  useEffect(() => {
-    if (supabase.auth.session()) {
-      let uid = supabase.auth.session().user.id;
-      supabase
-        .from("stripe_users")
-        .select("stripe_user_id")
-        .eq("user_id", uid)
-        .then(({ data, error }) => {
-          fetch("api/check-active-status", {
-            method: "POST",
-            headers: {
-              contentType: "application/json",
-            },
-            body: JSON.stringify({ customer: data[0].stripe_user_id }),
-          })
-            .then(function (response) {
-              return response.json();
-            })
-            .then(function (data) {
-              setTheme({ foreground: data.status, background: "#" });
-            });
-        });
-    }
-  }, []);
-  console.log(theme);
+  console.log(user);
+  // useEffect(() => {
+  //   if (supabase.auth.session()) {
+  //     let uid = supabase.auth.session().user.id;
+  //     supabase
+  //       .from("stripe_users")
+  //       .select("stripe_user_id")
+  //       .eq("user_id", uid)
+  //       .then(({ data, error }) => {
+  //         fetch("api/check-active-status", {
+  //           method: "POST",
+  //           headers: {
+  //             contentType: "application/json",
+  //           },
+  //           body: JSON.stringify({ customer: data[0].stripe_user_id }),
+  //         })
+  //           .then(function (response) {
+  //             return response.json();
+  //           })
+  //           .then(function (data) {
+  //             setUser({ foreground: data.status, background: "#" });
+  //           });
+  //       });
+  //   }
+  // }, []);
+  console.log(user.subscription_details.status);
   const parseOptions = { replace };
 
-  useEffect(() => {
-    if (supabase.auth.session()) {
-      fetch("/api/check-active-status", {
-        method: "POST",
-        headers: {
-          contentType: "application/json",
-        },
-        body: JSON.stringify({ user_id: auth.user.id }),
-      })
-        .then(function (response) {
-          return response.json();
-        })
-        .then(function (data) {
-          console.log(data);
-          setPremiumUser(data.status);
-        });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (supabase.auth.session()) {
+  //     fetch("/api/check-active-status", {
+  //       method: "POST",
+  //       headers: {
+  //         contentType: "application/json",
+  //       },
+  //       body: JSON.stringify({ user_id: auth.user.id }),
+  //     })
+  //       .then(function (response) {
+  //         return response.json();
+  //       })
+  //       .then(function (data) {
+  //         console.log(data);
+  //         setPremiumUser(data.status);
+  //       });
+  //   }
+  // }, []);
 
   function wrapClickHandler(event) {
     var $el = $(event.target);
@@ -140,7 +140,7 @@ export default function Plans(props) {
           <div className="notLogedInPlans">
             {parseHtml(props.bodyContent, parseOptions)}
           </div>
-        ) : premiumUser == "active" ? (
+        ) : user.subscription_details.status == "active" ? (
           <div className="primeInPlans">
             {parseHtml(props.bodyContent, parseOptions)}
           </div>

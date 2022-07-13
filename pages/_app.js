@@ -8,7 +8,7 @@ import Script from "next/script";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import LogRocket from "logrocket";
-import { ThemeProvider } from "../lib/authInfo";
+import { UserProvider } from "../lib/authInfo";
 import { supabase } from "../utils/supabaseClient";
 import InitUser from "./authComponent";
 import get from "lodash/get";
@@ -565,7 +565,7 @@ function MyApp(props) {
         
       </Head>
       {/* <Script type="text/javascript" data-site-id='94e7f93cc3c0707dfc70' data-base-url src = 'https://customerioforms.com/assets/forms.js'></Script> */}
-      <ThemeProvider>
+      <UserProvider>
         <InitUser setLoading={setLoading} auth={auth}/>
         {loading ? (
           <div className="loadingContainer">
@@ -593,7 +593,7 @@ function MyApp(props) {
             
           </>
         )}
-      </ThemeProvider>
+      </UserProvider>
     </>
   );
 }
