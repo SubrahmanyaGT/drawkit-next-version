@@ -4,13 +4,14 @@ import { useTheme } from "../lib/authInfo";
 import { Router } from "next/router";
 
 
+
 export default function InitUser(props) {
   const { theme, setTheme } = useTheme();
   const[userdata,setUserdata]= useState("");
-  console.log(theme);
+  console.log("props.auth",props.auth);
   const setAuthInfo=() => {
-    if (supabase.auth.session()) {
-      let uid = supabase.auth.session().user.id;
+    if (props.auth) {
+      let uid = props.auth.user.id;
       supabase
         .from("stripe_users")
         .select("stripe_user_id")
@@ -39,7 +40,7 @@ export default function InitUser(props) {
                 contentType: "application/json",
               },
               body: JSON.stringify({
-                email: supabase.auth.session().user.email,
+                email: props.auth.user.email,
               }),
             }).then(async (response) => {
               if (response.ok) {
@@ -67,7 +68,7 @@ export default function InitUser(props) {
   useEffect(() => {
     console.log('init');
     setAuthInfo()
-  }, [userdata]);
+  }, [props.auth]);
 
   
 

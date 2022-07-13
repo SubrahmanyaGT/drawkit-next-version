@@ -566,7 +566,7 @@ function MyApp(props) {
       </Head>
       {/* <Script type="text/javascript" data-site-id='94e7f93cc3c0707dfc70' data-base-url src = 'https://customerioforms.com/assets/forms.js'></Script> */}
       <ThemeProvider>
-        <InitUser setLoading={setLoading} />
+        <InitUser setLoading={setLoading} auth={auth}/>
         {loading ? (
           <div className="loadingContainer">
             <div className="lds-ellipsis">
