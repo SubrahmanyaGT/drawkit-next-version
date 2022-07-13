@@ -13,7 +13,7 @@ import Script from "next/script";
 const supabaseSignOut = async (email, password) => {
   const { error } = await supabase.auth.signOut();
   if (!error) {
-    window.location.pathname='/'
+    window.location.href=window.location.origin;
   }
 };
 
@@ -21,7 +21,7 @@ const supabaseSignOut = async (email, password) => {
 //   let scriptsapi=fetch('api/navbar').then(function (response ){return response.json()}).then( ({supportScripts})=>{return (supportScripts.map((sc)=>{return `<Script src=${sc}></Script>`}));});
 // return scriptsapi;
 // }
-const fetcher = () => fetch("api/navbar").then((res) => res.json());
+// const fetcher = () => fetch("api/navbar").then((res) => res.json());
 
 export default function NavbarContent(props) {
   const [email, setEmail] = useState("");
@@ -85,14 +85,14 @@ export default function NavbarContent(props) {
       $(".my-profile-wrap").show();
     }
   }
-  const { data = {}, error } = useSWR("/api/profile-data", fetcher);
+  // const { data = {}, error } = useSWR("/api/profile-data", fetcher);
 
-  console.log(typeof data.supportScripts, data.supportScripts);
-  if (data.supportScripts) {
-    data.supportScripts.map((src) => {
-      return <Script src={src}></Script>;
-    });
-  }
+  
+  // if (data.supportScripts) {
+  //   data.supportScripts.map((src) => {
+  //     return <Script src={src}></Script>;
+  //   });
+  // }
   // console.log(data.map((src)=>{returnn` <Script src=${src}></script>`}));
   return (
     <div
