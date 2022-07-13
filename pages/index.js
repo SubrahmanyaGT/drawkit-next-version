@@ -6,7 +6,7 @@ import NavbarContent from "./navbar";
 import Script from "next/script";
 import $ from "jquery";
 import Head from "next/head"; 
-import { replace } from "../utils/replace-node";
+// import { replace } from "../utils/replace-node";
 import { useRouter } from "next/router";
 
 export default function Home(props) {
@@ -22,7 +22,150 @@ export default function Home(props) {
   let [supportScripts, setsupportScripts] = useState(props.supportScripts);
 
   const router = useRouter()
+   function replace(node) {
+    const attribs = node.attribs || {};
+    if (attribs.hasOwnProperty("class")) {
+      attribs["className"] = attribs["class"];
+      delete attribs.class;
+    }
+    supabase.auth.onAuthStateChange((event, session) => {
+      setAuth(supabase.auth.session());
+    })
   
+    // Replace links with Next links
+    
+  
+    if (node.name == "section") {
+      const { ...props } = attribs;
+      if (props.className) {
+        if (props.className.includes("section-home_hero")) {
+          if (supabase.auth.session()) {
+            return <div></div>;
+          }
+        }
+        if (props.className.match(/^section-brands$/)) {
+          if (supabase.auth.session()) {
+            return <div></div>;
+          }
+        }
+      }
+    }
+  
+    if (node.name == `a`) {
+      let { href, style, ...props } = attribs;
+      if (!style && href) {
+        if (
+          href.includes("/illustration-types/") ||
+          href.includes("/illustration-categories/") ||
+          href.includes("/single-illustrations/") ||
+          href.includes("/illustrations")
+        ) {
+          // console.log(href.slice(href.lastIndexOf("/"), href.length));
+          return (
+            <Link
+              href={"/product" + href.slice(href.lastIndexOf("/"), href.length)}
+            >
+              <a {...props}>
+                {!!node.children &&
+                  !!node.children.length &&
+                  domToReact(node.children, parseOptions)}
+              </a>
+            </Link>
+          );
+        }
+  
+        if (props.className) {
+          if (props.className.includes("upgrade-plan-link")) {
+            
+            // console.log(node.children[2].children[0].data);
+  
+            if (!supabase.auth.session()) {
+              // not sigedin user
+              return (
+                <Link href="/plans">
+                  <a {...props}>
+                    <div className="upgradedownload">Upgrade Your Plan</div>
+                    {!!node.children &&
+                      !!node.children.length &&
+                      domToReact([node.children[1]], parseOptions)}
+                  </a>
+                </Link>
+              );
+            } else {
+              if (
+                node.children[2].children[0].data == "Premium" &&
+                premiumUser != "active"
+              ) {
+                return (
+                  <Link href="/plans">
+                    <a {...props}>
+                      <div className="upgradedownload">Upgrade Your Plan</div>
+                      {!!node.children &&
+                        !!node.children.length &&
+                        domToReact([node.children[1]], parseOptions)}
+                    </a>
+                  </Link>
+                );
+              } else {
+                return (
+                  //download
+                  <Link href={href}>
+                    <a {...props}>
+                      <div className="upgradedownload">Download Now</div>
+                      {!!node.children &&
+                        !!node.children.length &&
+                        domToReact([node.children[1]], parseOptions)}
+                    </a>
+                  </Link>
+                );
+              }
+            }
+          } else {
+            return (
+              <Link href={href}>
+                <a {...props}>
+                  {!!node.children &&
+                    !!node.children.length &&
+                    domToReact(node.children, parseOptions)}
+                </a>
+              </Link>
+            );
+          }
+        }
+  
+        return (
+          <Link href={href}>
+            <a {...props}>
+              {!!node.children &&
+                !!node.children.length &&
+                domToReact(node.children, parseOptions)}
+            </a>
+          </Link>
+        );
+      }
+    }
+    // Make Google Fonts scripts work
+    if (node.name === `script`) {
+      let content = get(node, `children.0.data`, ``);
+  
+      if (content && content.trim().indexOf(`WebFont.load(`) === 0) {
+        content = `setTimeout(function(){${content}}, 1)`;
+        return (
+          <Script
+            {...attribs}
+            dangerouslySetInnerHTML={{ __html: content }}
+          ></Script>
+        );
+      } else {
+        <Script
+          {...attribs}
+          dangerouslySetInnerHTML={{ __html: content }}
+          strategy="lazyOnload"
+        ></Script>;
+      }
+    }
+    const { href, style, ...props } = attribs;
+  }
 
   const parseOptions = {
     replace,
