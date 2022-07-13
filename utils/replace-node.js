@@ -765,6 +765,7 @@ export function replace(node) {
                 <div className="my-profile-options">
                   <div
                     id="account"
+                    // href="/profile"
                     aria-current="page"
                     className="my-profile-links w-inline-block w--current"
                   >
