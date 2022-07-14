@@ -28,6 +28,7 @@ export default function Home(props) {
   });
   console.log(user);
   const router = useRouter();
+
   function replace(node) {
     const attribs = node.attribs || {};
     if (attribs.hasOwnProperty("class")) {
@@ -259,6 +260,31 @@ export default function Home(props) {
   const parseOptions = {
     replace,
   };
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      $('.cancel,.request-popup').click(function(){
+        $('.request-popup').hide();
+          $('#loader').show()
+           $('.iframe-holder').hide()
+        })
+    }
+  },[])
+
+  async function wrapClickHandler(event) {
+    var $el = $(event.target);
+
+    if (!!$el.closest(".request").get(0)) {
+      console.log($el)
+      $(".request-popup").show();
+      setTimeout(function () {
+        $("#loader").hide();
+        $(".iframe-holder").show();
+      }, 3000);
+
+    }
+    
+  }
+
   // if (supabase.auth.session()) {
   //   let uid = supabase.auth.session().user.id;
   //   supabase
@@ -298,9 +324,7 @@ export default function Home(props) {
   // console.log(datas)})()
 
   return (
-    <>
-      {/* <div onLoad={jetboosthome}> */}
-
+    <div onClick={wrapClickHandler}>
       {auth == null ? parseHtml(hideLogin, parseOptions) : null}
       {auth == null
         ? parseHtml(illusHeadLogin, parseOptions)
@@ -331,7 +355,7 @@ export default function Home(props) {
       {/* <Script strategy="lazyOnload" id="jetboost-script" type="text/javascript" src='https://cdn.jetboost.io/jetboost.js' async  onError={(e) => {
           console.error('Script failed to load', e)
         }}></Script> */}
-    </>
+    </div>
   );
 }
 
