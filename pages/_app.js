@@ -14,26 +14,23 @@ import InitUser from "./authComponent";
 import get from "lodash/get";
 import Link from "next/link";
 
-
-
 LogRocket.init("p5qzuw/drawkit-test");
 
 function MyApp(props) {
   const [loading, setLoading] = useState(true);
   const { Component, pageProps } = props;
-  const[auth, setAuth] = useState(supabase.auth.session())
+  const [auth, setAuth] = useState(supabase.auth.session());
 
-  
   supabase.auth.onAuthStateChange((event, session) => {
     setAuth(supabase.auth.session());
-  })
-   function replace(node) {
+  });
+  function replace(node) {
     const attribs = node.attribs || {};
     if (attribs.hasOwnProperty("class")) {
       attribs["className"] = attribs["class"];
       delete attribs.class;
     }
-  
+
     // Replace links with Next links
     if (node.name == "div") {
       const { ...props } = attribs;
@@ -321,8 +318,7 @@ function MyApp(props) {
         }
         // state changes when the auth state changes
         if (props.className.includes("navbar-button-wrap")) {
-          if (auth!=null) {
-      
+          if (auth != null) {
             return (
               <div className="user-profile" id="user-name">
                 <div className="user-name-wrap">
@@ -332,10 +328,7 @@ function MyApp(props) {
                   <div className="user-name">
                     {supabase.auth
                       .session()
-                      .user.email.slice(
-                        0,
-                        auth.user.email.indexOf("@")
-                      )}
+                      .user.email.slice(0, auth.user.email.indexOf("@"))}
                   </div>
                 </div>
                 <div className="my-profile-wrap">
@@ -384,7 +377,7 @@ function MyApp(props) {
         }
       }
     }
-  
+
     if (node.name == "section") {
       const { ...props } = attribs;
       if (props.className) {
@@ -400,7 +393,7 @@ function MyApp(props) {
         }
       }
     }
-  
+
     if (node.name == `a`) {
       let { href, style, ...props } = attribs;
       if (!style && href) {
@@ -423,12 +416,11 @@ function MyApp(props) {
             </Link>
           );
         }
-  
+
         if (props.className) {
           if (props.className.includes("upgrade-plan-link")) {
-            
             // console.log(node.children[2].children[0].data);
-  
+
             if (!supabase.auth.session()) {
               // not sigedin user
               return (
@@ -482,7 +474,7 @@ function MyApp(props) {
             );
           }
         }
-  
+
         return (
           <Link href={href}>
             <a {...props}>
@@ -497,7 +489,7 @@ function MyApp(props) {
     // Make Google Fonts scripts work
     if (node.name === `script`) {
       let content = get(node, `children.0.data`, ``);
-  
+
       if (content && content.trim().indexOf(`WebFont.load(`) === 0) {
         content = `setTimeout(function(){${content}}, 1)`;
         return (
@@ -516,10 +508,9 @@ function MyApp(props) {
     }
     const { href, style, ...props } = attribs;
   }
-  
 
   const parseOptions = {
-    replace: replace
+    replace: replace,
   };
   const router = useRouter();
 
@@ -545,6 +536,9 @@ function MyApp(props) {
         d.querySelectorAll(".nav-menu .w--open").forEach((el) => {
           el.classList.remove("w--open");
         });
+        if(d.querySelectorAll(".nav-left-wrapper .w--open").length > 0){
+          document.querySelector('.menu-icon').click()
+        }
       })(document);
     }
   }, [router.pathname, router.query]);
@@ -560,13 +554,10 @@ function MyApp(props) {
       <Head>
         {parseHtml(props.stars.globalStyles, parseOptions)}
         {parseHtml(props.stars.headContent, parseOptions)}
-        
-      
-        
       </Head>
       {/* <Script type="text/javascript" data-site-id='94e7f93cc3c0707dfc70' data-base-url src = 'https://customerioforms.com/assets/forms.js'></Script> */}
       <UserProvider>
-        <InitUser setLoading={setLoading} auth={auth}/>
+        <InitUser setLoading={setLoading} auth={auth} />
         {loading ? (
           <div className="loadingContainer">
             <div className="lds-ellipsis">
@@ -578,7 +569,14 @@ function MyApp(props) {
           </div>
         ) : (
           <>
-          {props.stars.supportScripts.map((m,i) => <Script key={i} strategy="afterInteractive" type="text/javascript" src={m}></Script>)}
+            {props.stars.supportScripts.map((m, i) => (
+              <Script
+                key={i}
+                strategy="afterInteractive"
+                type="text/javascript"
+                src={m}
+              ></Script>
+            ))}
             <div style={navLayoutStyle}>
               <NavbarContent
                 navbarContent={parseHtml(props.stars.navBar, parseOptions)}
@@ -590,7 +588,6 @@ function MyApp(props) {
               {parseHtml(props.stars.footer, parseOptions)}
             </div>
             {parseHtml(props.stars.globalStyles, parseOptions)}
-            
           </>
         )}
       </UserProvider>
@@ -617,8 +614,8 @@ MyApp.getInitialProps = async (ctx) => {
     })
     .filter((src) => {
       if (src) return src;
-    })
-    // .map((m) => `<Script strategy="afterInteractive" type="text/javascript" src="${m}"></Script>`)
+    });
+  // .map((m) => `<Script strategy="afterInteractive" type="text/javascript" src="${m}"></Script>`)
   console.log("supportScripts", $(`body script`));
   return {
     stars: {

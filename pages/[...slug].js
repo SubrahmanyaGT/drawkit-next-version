@@ -30,10 +30,10 @@ export default function Slug(props) {
 
   return (
     <>
-      <script
+      <Script
         defer
         src="https://cdn.jsdelivr.net/npm/@finsweet/attributes-selectcustom@1/selectcustom.js"
-      ></script>
+      ></Script>
       <div onClick={wrapClickHandler}>
       <Script strategy="afterInteractive" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" onLoad={loadActive}></Script>
         <div>

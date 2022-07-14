@@ -60,7 +60,6 @@ export default function Signin(props) {
       event.preventDefault();
       // validateEmailPassword();
       if ((await supabaseSignIn(email, password)) && valEmail && valPassword) {
-        console.log(await supabaseSignIn(email, password));
         router.push("/");
       } else {
         $(".validator-message").text("Invalid Signin Attempt");
