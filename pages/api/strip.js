@@ -89,8 +89,8 @@ console.log(stripeUser);
         },
       ],
       customer: stripeUser.stripe_user_id, // userdetails.customer,
-      success_url: "http://localhost/payment-successful",
-      cancel_url: "http://localhost/plans",
+      success_url: "https://drawkit-next-version.vercel.app/payment-successful",
+      cancel_url: "https://drawkit-next-version.vercel.app/plans",
     });
   } else {
     session = { message: "Already a subscribed customer" };

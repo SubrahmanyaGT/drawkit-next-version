@@ -70,16 +70,27 @@ export default function Illustration(props) {
     }
 
     if (supabase.auth.session() != null) {
-      fetch("/api/payment-intents", {
-        method: "POST",
-        headers: {
-          contentType: "application/json",
-        },
-        body: JSON.stringify({ user_id: "" }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          setPaymentDetails(data);
+      let uid = supabase.auth.session().user.id;
+
+      supabase
+        .from("stripe_users")
+        .select("stripe_user_id")
+        .eq("user_id", uid)
+        .then(async ({ data, error }) => {
+          console.log(data);
+          if (data.length > 0) {
+            fetch("/api/payment-intents", {
+              method: "POST",
+              headers: {
+                contentType: "application/json",
+              },
+              body: JSON.stringify({ customer: data[0].stripe_user_id }),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                setPaymentDetails(data);
+              });
+          }
         });
     }
   }, []);
@@ -106,7 +117,7 @@ export default function Illustration(props) {
         )}</div>
         <div class="bill-date"><a href="${
           invoice.hosted_invoice_url
-        }" target='_blank'>Recipt</a></div></div>
+        }" target='_blank'><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download" style="&#10;    color: black;&#10;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a></div></div>
         `;
         console.log(paymentDetails.invoices);
         console.log(
@@ -120,7 +131,7 @@ export default function Illustration(props) {
         console.log(unixDateToLocalDate(invoice.lines.data[0].period.end));
         console.log(unixDateToLocalDate(invoice.lines.data[0].period.start));
       });
-      parentDiv.innerHTML=innerText;
+      parentDiv.innerHTML = innerText;
     }
   }, [paymentDetails]);
 

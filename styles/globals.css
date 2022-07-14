@@ -98,11 +98,29 @@
 
 .subscription-invoice-details > .subscription-invoice-details {
   display: flex;
+  justify-content: space-between;
+  
 }
 .bill-date {
   text-align: left;
   font-size: 14px;
-
+  width: 100px;
   display: block;
   font-family: Inter, sans-serif;
+
+  padding: 0%;
+
+
+}
+.bill-date svg {
+margin-top: -6px;
+}
+.bill-date a{
+  padding:20%;
+}
+
+.subscription-reciepts-grid > div{
+  width: 100px;
+ 
+  
 }

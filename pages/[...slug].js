@@ -11,35 +11,35 @@ import NavbarContent from "./navbar";
 import { useEffect } from "react";
 
 export default function Slug(props) {
-  // useEffect(() => {
-  //   $(".view-all-add-button").click(function () {
-  //     $(".button-filter-item").show();
-  //     $(".view-all-add-button").hide();
-  //   });
-
-  //   $(".filter-all-button").addClass("active-all");
-  //   $(".blog-filter-button").click(function () {
-  //     $(".filter-all-button").removeClass("active-all");
-  //   });
-  // }, []);
   const parseOptions = { replace };
+  const loadActive=() => {
+    if (typeof window !== "undefined") {
+      $(".filter-all-button").addClass("active-all");
+    }
+  };
+  function wrapClickHandler(event) {
+    var $el = $(event.target);
+    if (!!$el.closest(".view-all-add-button").get(0)) {
+      $(".button-filter-item").show();
+      $(".view-all-add-button").hide();
+    }
+    if (!!$el.closest(".blog-filter-button").get(0)) {
+      $(".filter-all-button").removeClass("active-all");
+    }
+  }
 
-  // if (typeof window !== "undefined") {
-  //   window.JETBOOST_SITE_ID = "cl3t7gbuo00wi0n1548hwb3q8";
-  //   (function(d) { var s = d.createElement("script"); s.src = "https://cdn.jetboost.io/jetboost.js"; s.async = 1; d.getElementsByTagName("head")[0].appendChild(s); })(document)
-  //   }
   return (
     <>
       <script
         defer
         src="https://cdn.jsdelivr.net/npm/@finsweet/attributes-selectcustom@1/selectcustom.js"
       ></script>
-
-      <div>
-        {parseHtml(props.bodyContent, parseOptions)}
-        <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
+      <div onClick={wrapClickHandler}>
+      <Script strategy="afterInteractive" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" onLoad={loadActive}></Script>
+        <div>
+          {parseHtml(props.bodyContent, parseOptions)}
+        </div>
       </div>
-     
     </>
   );
 }
@@ -77,7 +77,6 @@ export async function getServerSideProps(props) {
       })
       .map((m) => `<Script type="text/javascript" src="${m}"></Script>`)
       .join("");
-     
 
     return {
       props: {
