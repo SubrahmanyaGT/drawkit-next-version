@@ -136,7 +136,7 @@ export default function Illustration(props) {
               } else {
                 return (
                   //download
-                  <Link href={href}>
+                  <Link href={href.replace("illustrations", "product")}>
                     <a {...props}>
                       <div className="upgradedownload">Download Now</div>
                       {!!node.children &&
