@@ -48,12 +48,13 @@ function isUrlInternal(link) {
 export function replace(node) {
   const attribs = node.attribs || {};
   if (attribs.hasOwnProperty("class")) {
-    attribs["className"] = attribs["class"];
+    console.log();
+    attribs["className"] = attribs["class"].split(" ").filter(v=>!v.match('w-form')).join(" ");
     delete attribs.class;
   }
 
   // Replace links with Next links
-  if (node.name == "div") {
+  if (node.name == "div") { 
     const { ...props } = attribs;
     if (props.className) {
       if (props.className.includes("nav-form")) {

@@ -66,9 +66,12 @@ export default async function handler(req, res) {
   let userdetails = JSON.parse(req.body);
   console.log(userdetails);
 
-  let response = await supabase.from("stripe_users").select("*").eq('user_id',userdetails.user_id);
-  let stripeUser=response.body[0]
-console.log(stripeUser);
+  let response = await supabase
+    .from("stripe_users")
+    .select("*")
+    .eq("user_id", userdetails.user_id);
+  let stripeUser = response.body[0];
+  console.log(stripeUser);
   let price = "price_1KYEiyFrgbA3kZrFUztTyUKR";
   const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
   const subscriptions = await stripe.subscriptions.list({
@@ -88,6 +91,12 @@ console.log(stripeUser);
           quantity: 1,
         },
       ],
+      // discounts: [
+      //   {
+      //     coupon: "drawkitcoupon",
+      //   },
+      // ],
+      allow_promotion_codes:true,
       customer: stripeUser.stripe_user_id, // userdetails.customer,
       success_url: "https://drawkit-next-version.vercel.app/payment-successful",
       cancel_url: "https://drawkit-next-version.vercel.app/plans",

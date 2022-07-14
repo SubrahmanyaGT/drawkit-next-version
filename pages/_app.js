@@ -39,7 +39,7 @@ function MyApp(props) {
           return (
             <div {...props}>
               <div className="form-block ">
-                <form
+                <div
                   id="wf-form-search"
                   name="wf-form-search"
                   data-name="search"
@@ -94,7 +94,7 @@ function MyApp(props) {
                   <div id="search" className="search-button nav-search">
                     <div className="search-text">Search</div>
                   </div>
-                </form>
+                </div>
               </div>
             </div>
           );

@@ -13,7 +13,7 @@ import Script from "next/script";
 const supabaseSignOut = async (email, password) => {
   const { error } = await supabase.auth.signOut();
   if (!error) {
-    window.location.href=window.location.origin;
+    window.location.href = window.location.origin;
   }
 };
 
@@ -44,7 +44,7 @@ export default function NavbarContent(props) {
       router.push(params);
     }
     if (!!$el.closest("#account").get(0)) {
-      window.location.pathname='/profile'
+      window.location.pathname = "/profile";
     }
     //
     if (!!$el.closest("#user-name").get(0)) {
@@ -73,6 +73,15 @@ export default function NavbarContent(props) {
         $("#close").hide();
       }
     }
+
+    if (event.keyCode === 13) {
+      if (!!$el.closest("#nav-search-input").get(0)) {
+        if ($("#nav-search-input").val().length > 0) {
+          let params = "/search-results?search=" + $("#nav-search-input").val();
+          router.push(params);
+        }
+      }
+    }
   }
 
   function wrapBlurHandler(event) {
@@ -87,7 +96,6 @@ export default function NavbarContent(props) {
   }
   // const { data = {}, error } = useSWR("/api/profile-data", fetcher);
 
-  
   // if (data.supportScripts) {
   //   data.supportScripts.map((src) => {
   //     return <Script src={src}></Script>;
