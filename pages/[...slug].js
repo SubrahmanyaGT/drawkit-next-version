@@ -11,17 +11,17 @@ import NavbarContent from "./navbar";
 import { useEffect } from "react";
 
 export default function Slug(props) {
-  useEffect(() => {
-    $(".view-all-add-button").click(function () {
-      $(".button-filter-item").show();
-      $(".view-all-add-button").hide();
-    });
+  // useEffect(() => {
+  //   $(".view-all-add-button").click(function () {
+  //     $(".button-filter-item").show();
+  //     $(".view-all-add-button").hide();
+  //   });
 
-    $(".filter-all-button").addClass("active-all");
-    $(".blog-filter-button").click(function () {
-      $(".filter-all-button").removeClass("active-all");
-    });
-  }, []);
+  //   $(".filter-all-button").addClass("active-all");
+  //   $(".blog-filter-button").click(function () {
+  //     $(".filter-all-button").removeClass("active-all");
+  //   });
+  // }, []);
   const parseOptions = { replace };
 
   // if (typeof window !== "undefined") {
