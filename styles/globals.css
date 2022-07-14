@@ -14,8 +14,9 @@
   background: #1aa1e5;
   border-radius: 20px;
 }
-.primeInPlans #subscribe, .primeInPlans .get-started{
-  display:none
+.primeInPlans #subscribe,
+.primeInPlans .get-started {
+  display: none;
 }
 .freeUser .free-plan:after {
   content: "Current";
@@ -23,27 +24,23 @@
   background: #1aa1e5;
   border-radius: 20px;
 }
-.freeUser .get-started{
-  display:none
+.freeUser .get-started {
+  display: none;
 }
 
-
-
 /* loading css*/
-.loadingContainer{
+.loadingContainer {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  height:90vh;
-
+  height: 90vh;
 }
 .lds-ellipsis {
   display: inline-block;
   position: relative;
   width: 80px;
   height: 80px;
-
 }
 .lds-ellipsis div {
   position: absolute;
@@ -93,4 +90,19 @@
   100% {
     transform: translate(24px, 0);
   }
+}
+
+.popup-open #cancel-popup {
+  display: flex;
+}
+
+.subscription-invoice-details > .subscription-invoice-details {
+  display: flex;
+}
+.bill-date {
+  text-align: left;
+  font-size: 14px;
+
+  display: block;
+  font-family: Inter, sans-serif;
 }

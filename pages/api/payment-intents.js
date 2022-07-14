@@ -5,11 +5,11 @@ export default async function handler(req, res) {
 
   const paymentIntents = await stripe.paymentIntents.list({
     limit: 3,
-    customer: "cus_LxVNSpTiMHJaFH",
+    customer: "cus_M3COXqfoET6wCv",
   });
   const invoices = await stripe.invoices.list({
     limit: 3,
-    customer: "cus_LxVNSpTiMHJaFH",
+    customer: "cus_M3COXqfoET6wCv",
   });
 
   res.status(200).json({ paymentIntents, invoices });

@@ -8,15 +8,51 @@ import { supabase } from "../utils/supabaseClient";
 import { replace } from "../utils/replace-node";
 import NavbarContent from "./navbar";
 
+function unixDateToLocalDate(unxStamp) {
+  return new Date(unxStamp * 1000).toLocaleDateString();
+}
 export default function Illustration(props) {
   const parseOptions = { replace };
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [savefName, setsavefName] = useState("");
   const [savelName, setsavelName] = useState("");
-  const [paymentDetails, setPaymentDetails] = useState([]);
+  const [paymentDetails, setPaymentDetails] = useState(null);
   const router = useRouter();
 
+  function cancel() {
+    if (supabase.auth.session()) {
+      let uid = supabase.auth.session().user.id;
+
+      supabase
+        .from("stripe_users")
+        .select("stripe_user_id")
+        .eq("user_id", uid)
+        .then(async ({ data, error }) => {
+          console.log(data);
+          if (data.length > 0) {
+            fetch("api/cancel-subscriptions", {
+              method: "POST",
+              headers: {
+                contentType: "application/json",
+              },
+              body: JSON.stringify({ customer: data[0].stripe_user_id }),
+            })
+              .then(function (response) {
+                return response.json();
+              })
+              .then(function (data) {
+                if (!data.error) {
+                  console.log(data);
+                  alert("successfully canceled your subscription");
+                } else {
+                  alert("You Have no active subscriptions");
+                }
+              });
+          }
+        });
+    }
+  }
   useEffect(() => {
     if (supabase.auth.session() != null) {
       supabase
@@ -34,13 +70,12 @@ export default function Illustration(props) {
     }
 
     if (supabase.auth.session() != null) {
-   
       fetch("/api/payment-intents", {
         method: "POST",
         headers: {
           contentType: "application/json",
         },
-        body: JSON.stringify({ user_id: '' }),
+        body: JSON.stringify({ user_id: "" }),
       })
         .then((response) => response.json())
         .then((data) => {
@@ -48,7 +83,47 @@ export default function Illustration(props) {
         });
     }
   }, []);
-  console.log(paymentDetails);
+
+  useEffect(() => {
+    // console.log("paymentDetails",paymentDetails.paymentIntents);
+    if (typeof window !== "undefined" && paymentDetails) {
+      let parentDiv = document.getElementById("invoice-detail");
+      let innerText = "";
+      paymentDetails.paymentIntents.data.forEach((payment) => {
+        let invoice = paymentDetails.invoices.data.find(
+          (el) => el.payment_intent == payment.id
+        );
+        innerText += `<div class="subscription-invoice-details"><div class="bill-date">${
+          (payment.amount_received / 100).toFixed(2) +
+          " " +
+          payment.currency.toUpperCase()
+        }</div> 
+        <div class="bill-date">${unixDateToLocalDate(
+          invoice.lines.data[0].period.start
+        )}</div>
+        <div class="bill-date">${unixDateToLocalDate(
+          invoice.lines.data[0].period.end
+        )}</div>
+        <div class="bill-date"><a href="${
+          invoice.hosted_invoice_url
+        }" target='_blank'>Recipt</a></div></div>
+        `;
+        console.log(paymentDetails.invoices);
+        console.log(
+          (payment.amount_received / 100).toFixed(2) +
+            " " +
+            payment.currency.toUpperCase()
+        );
+        console.log(unixDateToLocalDate(payment.created));
+
+        console.log(invoice.hosted_invoice_url);
+        console.log(unixDateToLocalDate(invoice.lines.data[0].period.end));
+        console.log(unixDateToLocalDate(invoice.lines.data[0].period.start));
+      });
+      parentDiv.innerHTML=innerText;
+    }
+  }, [paymentDetails]);
+
   useEffect(() => {
     if (supabase.auth.session() != null) {
       document.getElementById("first-name").value = firstName;
@@ -86,6 +161,22 @@ export default function Illustration(props) {
           });
       }
     }
+
+    if (!!$el.closest(".subscription-plan-button").get(0)) {
+      $("#popup-open").addClass("popup-open");
+    }
+
+    if ($el.get(0).id == "cancel-popup") {
+      $("#popup-open").removeClass("popup-open");
+    }
+
+    if (!!$el.closest("#cancel-yes").get(0)) {
+      cancel();
+      $("#popup-open").removeClass("popup-open");
+    }
+    if (!!$el.closest("#cancel-no").get(0)) {
+      $("#popup-open").removeClass("popup-open");
+    }
   }
 
   async function wrapChangeHandler(event) {
@@ -120,7 +211,7 @@ export default function Illustration(props) {
           //   </>)
           // })
         }
-        </div>
+      </div>
     </>
   ) : (
     ""

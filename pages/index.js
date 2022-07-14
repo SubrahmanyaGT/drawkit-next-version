@@ -23,6 +23,9 @@ export default function Home(props) {
   let [hideLogin, setHideLogin] = useState(props.hideLogin);
   let [supportScripts, setsupportScripts] = useState(props.supportScripts);
   const { user, setUser } = useUser();
+  supabase.auth.onAuthStateChange((event, session) => {
+    setAuth(supabase.auth.session());
+  });
   console.log(user);
   const router = useRouter();
   function replace(node) {
@@ -31,9 +34,6 @@ export default function Home(props) {
       attribs["className"] = attribs["class"];
       delete attribs.class;
     }
-    supabase.auth.onAuthStateChange((event, session) => {
-      setAuth(supabase.auth.session());
-    });
 
     // Replace links with Next links
     if (node.name == "div") {
@@ -144,14 +144,13 @@ export default function Home(props) {
     if (node.name == `a`) {
       let { href, style, ...props } = attribs;
       if (href) {
-
         if (
-          (href.includes("/illustration-types/") ||
+          href.includes("/illustration-types/") ||
           href.includes("/illustration-categories/") ||
           href.includes("/single-illustrations/") ||
-          href.includes("/illustrations") && !props.className.includes("upgrade-plan-link "))
+          (href.includes("/illustrations") &&
+            !props.className.includes("upgrade-plan-link "))
         ) {
-
           // console.log(href.slice(href.lastIndexOf("/"), href.length));
           return (
             <Link
@@ -164,10 +163,8 @@ export default function Home(props) {
               </a>
             </Link>
           );
-          
         }
         if (attribs.className) {
-
           if (props.className.includes("upgrade-plan-link ")) {
             console.log(node.children[2].children[0].data);
 
