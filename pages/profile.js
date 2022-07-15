@@ -29,7 +29,7 @@ export default function Illustration(props) {
         .select("stripe_user_id")
         .eq("user_id", uid)
         .then(async ({ data, error }) => {
-          console.log(data);
+          console.log(data[0].stripe_user_id);
           if (data.length > 0) {
             fetch("api/cancel-subscriptions", {
               method: "POST",

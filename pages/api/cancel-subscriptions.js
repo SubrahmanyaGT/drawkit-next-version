@@ -1,7 +1,7 @@
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 export default async function subscriptionsCancle(req, res) {
-//   let userdetails = JSON.parse(req.body);
+  let userdetails = JSON.parse(req.body);
   const subscriptions = await stripe.subscriptions.list({
     price: "price_1KYEiyFrgbA3kZrFUztTyUKR",
     customer:userdetails.customer,
