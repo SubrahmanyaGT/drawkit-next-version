@@ -4,7 +4,7 @@ export default async function subscriptionsCancle(req, res) {
 //   let userdetails = JSON.parse(req.body);
   const subscriptions = await stripe.subscriptions.list({
     price: "price_1KYEiyFrgbA3kZrFUztTyUKR",
-    customer: "cus_M3COXqfoET6wCv"//userdetails.customer,
+    customer:userdetails.customer,
   });
   
   if (subscriptions.data.length > 0) {
