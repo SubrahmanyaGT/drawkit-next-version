@@ -86,7 +86,7 @@ export default function Signin(props) {
             verificationResult.user.id
           )
         );
-        // router.push('/choose-subscription')
+        router.push('/choose-subscription')
       }
     }
   }
