@@ -13,7 +13,10 @@ import Link from "next/link";
 export default function Illustration(props) {
   const { user, setUser } = useUser();
   let [auth, setAuth] = useState(supabase.auth.session());
+  const [file, setFile] = useState([]);
+  let [favourites, setFavraties] = useState([]);
 
+  const router = useRouter();
   function replace(node) {
     const attribs = node.attribs || {};
     if (attribs.hasOwnProperty("class")) {
@@ -29,9 +32,9 @@ export default function Illustration(props) {
           console.log(node.children[3].children[0].data);
           let pricing_type = node.children[3].children[0].data;
           if (
-            ( pricing_type == "Premium" &&
+            (pricing_type == "Premium" &&
               user.subscription_details.status == "active") ||
-            (pricing_type == "Free" && auth!= null)
+            (pricing_type == "Free" && auth != null)
           ) {
             return (
               //download
@@ -195,10 +198,6 @@ export default function Illustration(props) {
   }
 
   const parseOptions = { replace };
-
-  const router = useRouter();
-
-  const [file, setFile] = useState([]);
   const downloadSupabase = async (item_id) => {
     const path = await supabase
       .from("illustrations_pack")
@@ -244,6 +243,49 @@ export default function Illustration(props) {
       }
     }
   }
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (auth) {
+        (async () => {
+          const { data, error } = await supabase
+            .from("user_profile")
+            .select()
+            .eq("user_id", auth.user.id);
+          if (data.length > 0 && data[0].liked_illustrations) {
+            setFavraties(data[0].liked_illustrations);
+          }
+        })();
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    //heighlight the liked_illustrations
+    let likeIcon = document.querySelectorAll(".like-buttons-wrap");
+    likeIcon.forEach((icon) => {
+      let wf_item_id = icon.children[0].innerText;
+      if (favourites.includes(wf_item_id)) {
+        console.log(wf_item_id, icon);
+        icon.children[1].innerHTML = `<div><div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g filter="url(#filter0_i_81_74)">
+        <path d="M20.7601 4.8802C23.0001 7.1202 23.0001 10.6402 20.7601 12.7202L19.9601 13.5202L13.5601 19.7602C12.6001 20.5602 11.1601 20.7202 10.3601 19.7602L3.9601 13.5202L3.1601 12.7202C1.0801 10.6402 1.0801 7.1202 3.1601 4.8802C5.4001 2.6402 8.9201 2.6402 11.1601 4.8802L11.9601 5.6802L12.7601 4.8802C15.0001 2.8002 18.5201 2.8002 20.7601 4.8802Z" fill="#E62020"/>
+        </g>
+        <defs>
+        <filter id="filter0_i_81_74" x="1.6001" y="3.2002" width="20.8401" height="17.2212" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+        <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+        <feOffset/>
+        <feGaussianBlur stdDeviation="2"/>
+        <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+        <feBlend mode="normal" in2="shape" result="effect1_innerShadow_81_74"/>
+        </filter>
+        </defs>
+        </svg></div></div>`;
+      }
+    });
+  }, [favourites]);
 
   return (
     <>

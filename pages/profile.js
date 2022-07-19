@@ -18,6 +18,8 @@ export default function Illustration(props) {
   const [savefName, setsavefName] = useState("");
   const [savelName, setsavelName] = useState("");
   const [paymentDetails, setPaymentDetails] = useState(null);
+  const [favraties, setFavraties] = useState([]);
+  const [auth, setAuth] = useState(supabase.auth.session());
   const router = useRouter();
 
   function cancel() {
@@ -93,7 +95,49 @@ export default function Illustration(props) {
           }
         });
     }
+
+    if (supabase.auth.session() != null) {
+      (async () => {
+        const { data, error } = await supabase
+          .from("user_profile")
+          .select()
+          .eq("user_id", auth.user.id);
+        if (data.length > 0 && data[0].liked_illustrations) {
+          setFavraties(data[0].liked_illustrations);
+        }
+      })();
+    }
   }, []);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (favraties.length > 0) {
+        (async () => {
+          let favcardCantainer = "";
+          let { data, error } = await supabase
+            .from("illustrations_pack")
+            .select("*")
+            .in("wf_item_id", favraties);
+          if (!error) {
+            console.log("packs", data);
+            data.forEach((pack) => {
+              favcardCantainer += `<a href="/product/${pack.wf_slug}" class="favourite-flex w-inline-block"><div class="favourite-image-wrapper">
+              <img src="${pack.thumbnail_img}" loading="lazy" alt="" class="favourites-image"></div>
+              <div class="liked-content">
+              <div class="favourite-title">${pack.name}
+              </div><div class="favourite-description text-style-2lines">${pack.quantity_details}</div>
+              </div><div class="cancel-favourite-wrapper">
+              <div class="cancel-favourite-icon">
+              <img src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/626f5d0ae6c15c51462dd655_wrong.svg" loading="lazy" alt="donts
+              "></div></div></a>`;
+            });
+            document.querySelector(".favourite-content-wrapper").innerHTML =
+              favcardCantainer;
+          }
+        })();
+      }
+    }
+    console.log(favraties, "favraties");
+  }, [favraties]);
 
   useEffect(() => {
     // console.log("paymentDetails",paymentDetails.paymentIntents);
@@ -120,7 +164,7 @@ export default function Illustration(props) {
         }" target='_blank'><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download" style="&#10;    color: black;&#10;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a></div></div>
         `;
         console.log(paymentDetails.invoices);
-        console.log(  
+        console.log(
           (payment.amount_received / 100).toFixed(2) +
             " " +
             payment.currency.toUpperCase()
