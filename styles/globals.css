@@ -234,21 +234,20 @@
 
 /* twiter like button*/
 .heart {
-    z-index:999;
-    width: 100px;
-    height: 100px;
-    /* background: url("https://cssanimation.rocks/images/posts/steps/heart.png"); */
-    background-image: url("https://cssanimation.rocks/images/posts/steps/heart.png");
-    text-align: center;
-    cursor: pointer;
-    transition: background-position 1s steps(28);
-    transition-duration: 0s;
-    position: relative;
-    bottom: 25px;
-    left: 25px;
+  width: 100px;
+  height: 100px;
+  /* background: url("https://cssanimation.rocks/images/posts/steps/heart.png"); */
+  background-image: url("https://cssanimation.rocks/images/posts/steps/heart.png");
+  text-align: center;
+  cursor: pointer;
+  transition: background-position 1s steps(28);
+  transition-duration: 0s;
+  position: relative;
+  bottom: 25px;
+  left: 25px;
 }
 
 .is-active {
-    transition-duration: 1s;
-    background-position: -2800px 0;
+  transition-duration: 1s;
+  background-position: -2800px 0;
 }
