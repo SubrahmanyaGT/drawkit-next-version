@@ -9,10 +9,10 @@ import { supabase } from "../utils/supabaseClient";
 import { replace } from "../utils/replace-node";
 import NavbarContent from "./navbar";
 import { useEffect } from "react";
-
 export default function Slug(props) {
+
   const parseOptions = { replace };
-  const loadActive=() => {
+  const loadActive = () => {
     if (typeof window !== "undefined") {
       $(".filter-all-button").addClass("active-all");
     }
@@ -27,7 +27,42 @@ export default function Slug(props) {
       $(".filter-all-button").removeClass("active-all");
     }
   }
+  useEffect(() => {
 
+    // const faq = document.querySelectorAll('.faq');
+    const faq_answer = document.querySelectorAll('.faq-answer');
+
+    const plus_icon_faq = document.querySelectorAll('.plus-icon-faq');
+
+
+    const faq_question = document.querySelectorAll('.faq-question');
+    faq_question.forEach((ele, index1) => {
+
+      ele.addEventListener('click', (element) => {
+        //code for cross pannel
+        plus_icon_faq.forEach((e, i) => {
+          if (i == index1) {
+            e.classList.toggle("open_close");
+            e.children[0].style.transition = "all 0.5s"
+          } else {
+            e.classList.remove("open_close");
+            e.children[0].style.transition = "all 0.5s"
+          }
+        })
+        faq_answer.forEach((e, index2) => {
+          if (index1 == index2) {
+            e.classList.toggle('faq-answer-open');
+            e.classList.remove('faq-answer-close');
+
+          } else {
+            e.classList.remove('faq-answer-open');
+            e.classList.toggle('faq-answer-close');
+
+          }
+        })
+      })
+    })
+  }, [])
   return (
     <>
       <Script
@@ -35,7 +70,7 @@ export default function Slug(props) {
         src="https://cdn.jsdelivr.net/npm/@finsweet/attributes-selectcustom@1/selectcustom.js"
       ></Script>
       <div onClick={wrapClickHandler}>
-      <Script strategy="afterInteractive" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" onLoad={loadActive}></Script>
+        <Script strategy="afterInteractive" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" onLoad={loadActive}></Script>
         <div>
           {parseHtml(props.bodyContent, parseOptions)}
         </div>

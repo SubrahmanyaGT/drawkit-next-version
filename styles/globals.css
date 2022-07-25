@@ -1,9 +1,11 @@
 .l .home-filter-buttons-wrap {
   justify-content: flex-start !important;
 }
+
 .showCaseBeforLogin .drawkit-header:after {
   content: "Make your webpages and apps more engaging";
 }
+
 .showCaseAfterLogin .drawkit-header:after {
   content: "Get inspired";
 }
@@ -14,16 +16,19 @@
   background: #1aa1e5;
   border-radius: 20px;
 }
+
 .primeInPlans #subscribe,
 .primeInPlans .get-started {
   display: none;
 }
+
 .freeUser .free-plan:after {
   content: "Current";
   padding: 8px;
   background: #1aa1e5;
   border-radius: 20px;
 }
+
 .freeUser .get-started {
   display: none;
 }
@@ -36,12 +41,14 @@
   flex-direction: column;
   height: 90vh;
 }
+
 .lds-ellipsis {
   display: inline-block;
   position: relative;
   width: 80px;
   height: 80px;
 }
+
 .lds-ellipsis div {
   position: absolute;
   top: 33px;
@@ -51,42 +58,52 @@
   background: #f075c6;
   animation-timing-function: cubic-bezier(0, 1, 1, 0);
 }
+
 .lds-ellipsis div:nth-child(1) {
   left: 8px;
   animation: lds-ellipsis1 0.6s infinite;
 }
+
 .lds-ellipsis div:nth-child(2) {
   left: 8px;
   animation: lds-ellipsis2 0.6s infinite;
 }
+
 .lds-ellipsis div:nth-child(3) {
   left: 32px;
   animation: lds-ellipsis2 0.6s infinite;
 }
+
 .lds-ellipsis div:nth-child(4) {
   left: 56px;
   animation: lds-ellipsis3 0.6s infinite;
 }
+
 @keyframes lds-ellipsis1 {
   0% {
     transform: scale(0);
   }
+
   100% {
     transform: scale(1);
   }
 }
+
 @keyframes lds-ellipsis3 {
   0% {
     transform: scale(1);
   }
+
   100% {
     transform: scale(0);
   }
 }
+
 @keyframes lds-ellipsis2 {
   0% {
     transform: translate(0, 0);
   }
+
   100% {
     transform: translate(24px, 0);
   }
@@ -96,11 +113,12 @@
   display: flex;
 }
 
-.subscription-invoice-details > .subscription-invoice-details {
+.subscription-invoice-details>.subscription-invoice-details {
   display: flex;
   justify-content: space-between;
-  
+
 }
+
 .bill-date {
   text-align: left;
   font-size: 14px;
@@ -112,23 +130,25 @@
 
 
 }
+
 .bill-date svg {
-margin-top: -6px;
-}
-.bill-date a{
-  padding:20%;
+  margin-top: -6px;
 }
 
-.subscription-reciepts-grid > div{
+.bill-date a {
+  padding: 20%;
+}
+
+.subscription-reciepts-grid>div {
   width: 100px;
- 
-  
+
+
 }
 
 
 
 /* hart animation */
- #replace-heart{
+#replace-heart {
   width: 100px;
   height: 100px;
   position: absolute;
@@ -140,16 +160,95 @@ margin-top: -6px;
   cursor: pointer;
   animation: fave-heart 1s steps(28);
 }
+
 #replace-heart:hover {
   background-position: -2800px 0;
   transition: background 1s steps(28);
 }
+
 @keyframes fave-heart {
   0% {
     background-position: 0 0;
   }
+
   100% {
     background-position: -2800px 0;
   }
 }
 
+/* in about page for open-close */
+.open_close svg {
+
+  color: #1AA1E5 !important;
+  transform: rotate(-135deg) !important;
+
+
+}
+
+/* .faq-answer1 {
+  transition: all 1s 1s !important;
+  display: block !important;
+
+} */
+.faq-answer-open {
+  display: block !important;
+  overflow: hidden;
+  animation: anime-open 0.5s linear !important;
+}
+
+@keyframes anime-open {
+  from {
+    height: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+
+  to {
+    height: 40px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+
+  }
+}
+
+.faq-answer-close {
+  overflow: hidden;
+  display: none !important;
+  animation: anime-close 0.5s linear !important;
+}
+
+@keyframes anime-close {
+  from {
+    height: 40px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
+  to {
+    height: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+}
+
+
+/* twiter like button*/
+.heart {
+    z-index:999;
+    width: 100px;
+    height: 100px;
+    /* background: url("https://cssanimation.rocks/images/posts/steps/heart.png"); */
+    background-image: url("https://cssanimation.rocks/images/posts/steps/heart.png");
+    text-align: center;
+    cursor: pointer;
+    transition: background-position 1s steps(28);
+    transition-duration: 0s;
+    position: relative;
+    bottom: 25px;
+    left: 25px;
+}
+
+.is-active {
+    transition-duration: 1s;
+    background-position: -2800px 0;
+}

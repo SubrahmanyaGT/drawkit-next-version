@@ -282,7 +282,7 @@ export default function Home(props) {
       }
     }
   }, []);
-  
+
   useEffect(() => {
     //heighlight the liked_illustrations
     let likeIcon = document.querySelectorAll(".like-buttons-wrap");
@@ -290,25 +290,22 @@ export default function Home(props) {
       let wf_item_id = icon.children[0].innerText;
       if (favourites.includes(wf_item_id)) {
         console.log(wf_item_id, icon);
-        icon.children[1].innerHTML = `<div><div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g filter="url(#filter0_i_81_74)">
-        <path d="M20.7601 4.8802C23.0001 7.1202 23.0001 10.6402 20.7601 12.7202L19.9601 13.5202L13.5601 19.7602C12.6001 20.5602 11.1601 20.7202 10.3601 19.7602L3.9601 13.5202L3.1601 12.7202C1.0801 10.6402 1.0801 7.1202 3.1601 4.8802C5.4001 2.6402 8.9201 2.6402 11.1601 4.8802L11.9601 5.6802L12.7601 4.8802C15.0001 2.8002 18.5201 2.8002 20.7601 4.8802Z" fill="#E62020"/>
-        </g>
-        <defs>
-        <filter id="filter0_i_81_74" x="1.6001" y="3.2002" width="20.8401" height="17.2212" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-        <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-        <feOffset/>
-        <feGaussianBlur stdDeviation="2"/>
-        <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
-        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-        <feBlend mode="normal" in2="shape" result="effect1_innerShadow_81_74"/>
-        </filter>
-        </defs>
-        </svg></div></div>`;
+        icon.children[1].innerHTML = `<div class="heart is-active "></div>`;
+
+   
+
+
+
+      } else {
+        console.log(icon.children[1]);
+        icon.classList.add('.heart');
+        icon.children[1].innerHTML = ` 
+        <div class="heart">
+        </div>
+        `
       }
     });
+
   }, [favourites]);
 
   async function wrapClickHandler(event) {
@@ -328,7 +325,7 @@ export default function Home(props) {
         .children[0].innerText;
       console.log(wf_item_id);
       if (auth) {
-        
+
         if (favourites.length > 0) {
           let liked_illustrations = favourites;
           if (
@@ -339,7 +336,7 @@ export default function Home(props) {
               .closest(".like-buttons-wrap")
               .get(
                 0
-              ).children[1].innerHTML = `<div><div><img src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/62d14e0fd359cc7cd96e0e25_Like.svg" loading="lazy" width="24" alt=""></div></div>`;
+              ).children[1].innerHTML = `<div class="heart"></div>`;
             liked_illustrations.splice(
               liked_illustrations.indexOf(wf_item_id),
               1
@@ -353,36 +350,54 @@ export default function Home(props) {
               .closest(".like-buttons-wrap")
               .get(
                 0
-              ).children[1].innerHTML = `<div><div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g filter="url(#filter0_i_81_74)">
-        <path d="M20.7601 4.8802C23.0001 7.1202 23.0001 10.6402 20.7601 12.7202L19.9601 13.5202L13.5601 19.7602C12.6001 20.5602 11.1601 20.7202 10.3601 19.7602L3.9601 13.5202L3.1601 12.7202C1.0801 10.6402 1.0801 7.1202 3.1601 4.8802C5.4001 2.6402 8.9201 2.6402 11.1601 4.8802L11.9601 5.6802L12.7601 4.8802C15.0001 2.8002 18.5201 2.8002 20.7601 4.8802Z" fill="#E62020"/>
-        </g>
-        <defs>
-        <filter id="filter0_i_81_74" x="1.6001" y="3.2002" width="20.8401" height="17.2212" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-        <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-        <feOffset/>
-        <feGaussianBlur stdDeviation="2"/>
-        <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
-        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-        <feBlend mode="normal" in2="shape" result="effect1_innerShadow_81_74"/>
-        </filter>
-        </defs>
-        </svg></div></div>`;
-            liked_illustrations.push(wf_item_id);
+              ).children[1].innerHTML = `<div class="heart is-active"></div>`;
 
+            liked_illustrations.push(wf_item_id);
             const { data, error } = await supabase
               .from("user_profile")
               .update({ liked_illustrations: liked_illustrations })
               .eq("user_id", auth.user.id);
           }
         } else {
+          $el
+            .closest(".like-buttons-wrap")
+            .get(
+              0
+            ).children[1].innerHTML = `<div class="heart is-active"></div>`;
+          favourites.push(wf_item_id);
+
+          const { data, error } = await supabase
+            .from("user_profile")
+            .update({ liked_illustrations: favourites })
+            .eq("user_id", auth.user.id);
+
         }
+      }
+      else {
+        const signinpopup = document.querySelector('.signup-popup');
+        signinpopup.style.display = "flex"
       }
     }
   }
+  useEffect(() => {
+    const hide = document.querySelector('.signup-popup');
+    hide.addEventListener('click', hidefn);
+    function hidefn() {
+      hide.style.display = "none";
+    }
 
+
+  }, [])
+
+
+
+
+  // if(!supabase.auth.session()){
+  //   document.querySelectorAll('.like-buttons-wrap').forEach((ele)=>{
+  //     ele.querySelector('.')
+  //   })
+
+  // }
   // if (supabase.auth.session()) {
   //   let uid = supabase.auth.session().user.id;
   //   supabase

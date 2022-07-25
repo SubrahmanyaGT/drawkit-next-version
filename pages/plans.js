@@ -66,6 +66,7 @@ export default function Plans(props) {
   // }, []);
 
   function wrapClickHandler(event) {
+    // console.log('dheeraj')
     var $el = $(event.target);
     if (!!$el.closest("#subscribe").get(0)) {
       if (auth != null) {

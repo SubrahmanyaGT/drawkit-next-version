@@ -15,6 +15,7 @@ export default function Illustration(props) {
   let [auth, setAuth] = useState(supabase.auth.session());
   const [file, setFile] = useState([]);
   let [favourites, setFavraties] = useState([]);
+  const [incr, setIncr] = useState(1)
 
   const router = useRouter();
   function replace(node) {
@@ -244,7 +245,15 @@ export default function Illustration(props) {
     }
   }
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window != "undefined") {
+
+      // const detail_dropdown = document.querySelector('.detail-dropdown');
+      // const detail_dropdown_list = document.querySelector('detail-dropdown-list');
+      // detail_dropdown.addEventListener('click', () => {
+      //   detail_dropdown_list.style.display = "block";
+      // })
+
+
       if (auth) {
         (async () => {
           const { data, error } = await supabase
@@ -257,13 +266,36 @@ export default function Illustration(props) {
         })();
       }
     }
+
+
+
   }, []);
+  // useEffect(()=>{
+  //   const illustration_list=querySelector('.category-illustration-list');
+  //   const illustration-item=qu
+  // },[])
+
 
   useEffect(() => {
+
+
+
     //heighlight the liked_illustrations
     let likeIcon = document.querySelectorAll(".like-buttons-wrap");
     likeIcon.forEach((icon) => {
       let wf_item_id = icon.children[0].innerText;
+      console.log(wf_item_id)
+      const like = icon.children[1];
+      icon.addEventListener('click', (e) => {
+        console.log(e);
+        if (auth) {
+
+        } else {
+          const signinpopup = document.querySelector('.signup-popup');
+          signinpopup.style.display = "flex"
+        }
+      })
+      console.log(like)
       if (favourites.includes(wf_item_id)) {
         console.log(wf_item_id, icon);
         icon.children[1].innerHTML = `<div><div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -284,7 +316,14 @@ export default function Illustration(props) {
         </defs>
         </svg></div></div>`;
       }
+
     });
+    // hiding signup popup 
+    const hide = document.querySelector('.signup-popup');
+    hide.addEventListener('click', hidefn);
+    function hidefn() {
+      hide.style.display = "none";
+    }
   }, [favourites]);
 
   return (

@@ -10,7 +10,7 @@ export default function InitUser(props) {
   const setAuthInfo = () => {
     if (props.auth) {
       let uid = props.auth.user.id;
-  
+
       supabase
         .from("stripe_users")
         .select("stripe_user_id")
@@ -31,10 +31,10 @@ export default function InitUser(props) {
               .then(function (data) {
                 setUser({
                   signin_details: {
-                   session:supabase.auth.session(),
+                    session: supabase.auth.session(),
                   },
                   subscription_details: {
-                    status:data.status,
+                    status: data.status,
                   },
                 });
               });
@@ -53,18 +53,27 @@ export default function InitUser(props) {
               if (response.ok) {
                 const { data } = await response.json();
                 console.log(data);
-                if(data.customer){supabase
-                  .from("stripe_users")
-                  .insert([
+                if (data.customer) {
+                  supabase
+                    .from("stripe_users")
+                    .insert([
+                      {
+                        stripe_user_id: data.customer.id,
+                        stripe_user_email: data.customer.email,
+                        user_id: uid,
+                      },
+                    ]).then((data) => {
+                      console.log(data);
+                    });
+
+                  supabase.from("user_profile").insert([
                     {
-                      stripe_user_id: data.customer.id,
-                      stripe_user_email: data.customer.email,
                       user_id: uid,
                     },
-                  ])
-                  .then((data) => {
-                    console.log(data);
-                  });}
+                  ]).then((data) => {
+                    console.log('user_profile', data);
+                  });
+                }
               } else {
                 return false;
               }

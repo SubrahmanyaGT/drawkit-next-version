@@ -14,8 +14,15 @@ const supabaseSignIn = async (email, password) => {
     email: email,
     password: password,
   });
-  console.log(user, session,error);
+  console.log(user, session, error);
   if (!error) {
+    await supabase
+      .from('user_profile')
+      .insert([
+        { first_name: email, last_name: email, user_id: 123 }
+      ])
+
+
     return true;
   } else {
     return false;
@@ -50,7 +57,7 @@ export default function Signin(props) {
       setValPassword(false);
     }
   }, [email, password]);
-  
+
   async function wrapClickHandler(event) {
     var $el = $(event.target);
     if (!!$el.closest("#d-signin-google").get(0)) {
@@ -80,13 +87,13 @@ export default function Signin(props) {
     }
   }
 
- 
+
 
   async function wrapKeyUpHandler(event) {
     if (event.keyCode === 13) {
       var $el = $(event.target);
       if (!!$el.closest("#d-signin-email").get(0)) {
-        $("#d-signin-pass").focus();
+        $("#d-signin-pass").bind.focus();
       }
       if (!!$el.closest("#d-signin-pass").get(0)) {
         if (
@@ -105,7 +112,7 @@ export default function Signin(props) {
 
   useEffect(() => {
 
-    document.getElementById('signin-div').addEventListener('change',wrapChangeHandler)
+    document.getElementById('signin-div').addEventListener('change', wrapChangeHandler)
     function wrapChangeHandler(event) {
       console.log('change');
       var $el = $(event.target);
@@ -119,33 +126,33 @@ export default function Signin(props) {
         $(".validator-message").text("");
       }
     }
-  },[])
+  }, [])
 
   return (
     <>
-     <Head>
+      <Head>
         {parseHtml(props.headContent, parseOptions)}
       </Head>
       <div
-      id="signin-div"
+        id="signin-div"
         onClick={wrapClickHandler}
         // onChange={wrapChangeHandler}
         onKeyUp={wrapKeyUpHandler}
       >
-        
 
-        {parseHtml(props.bodyContent,parseOptions)}
+
+        {parseHtml(props.bodyContent, parseOptions)}
       </div>
       <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
     </>
   );
 }
 
-Signin.getLayout=function PageLayout(page){
-  return(
+Signin.getLayout = function PageLayout(page) {
+  return (
     <>
-   
-    {page}
+
+      {page}
     </>
   )
 }

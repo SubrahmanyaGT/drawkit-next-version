@@ -14,7 +14,7 @@ export default function Plans(props) {
   const router = useRouter();
   const [premiumUser, setPremiumUser] = useState("inactive");
   let [auth, setAuth] = useState(supabase.auth.session());
-console.log(router);
+  console.log(router);
   //................................................................................................................................//
 
   function isUrlInternal(link) {
@@ -30,10 +30,63 @@ console.log(router);
     return true;
   }
 
-  
+
   const parseOptions = { replace };
 
   //..................................................................................................................................//
+
+
+  // hide and show signup while liking
+  useEffect(() => {
+    let likeIcon = document.querySelectorAll(".like-buttons-wrap");
+    likeIcon.forEach((icon) => {
+      let wf_item_id = icon.children[0].innerText;
+      console.log(wf_item_id)
+      icon.addEventListener('click', (e) => {
+        console.log(e);
+        if (auth) {
+
+        } else {
+          const signinpopup = document.querySelector('.signup-popup');
+          signinpopup.style.display = "flex"
+        }
+      })
+    });
+    // hiding signup popup
+    const hide = document.querySelector('.signup-popup');
+    hide.addEventListener('click', hidefn);
+    function hidefn() {
+      hide.style.display = "none";
+    }
+    const search_page_close = document.querySelector('#search-page-cancel');
+    const search_page_input = document.querySelector('#search-page-input');
+    search_page_close.style.display = 'block'
+
+    console.log(search_page_close);
+    search_page_close.addEventListener('click', () => {
+
+
+      search_page_input.value = "";
+      document.getElementById('all-search').click()
+      search_page_input.addEventListener('change', (e) => {
+        console.log(e)
+      })
+
+      search_page_close.style.display = "none"
+    })
+
+    search_page_input.addEventListener('keyup', (e) => {
+      console.log(search_page_close)
+
+      console.log(search_page_input.value)
+      if (search_page_input.value)
+        search_page_close.style.display = "block"
+      else
+        search_page_close.style.display = "none"
+    })
+  }, [])
+
+
 
   useEffect(() => {
     if (supabase.auth.session()) {
@@ -92,34 +145,48 @@ console.log(router);
         router.push("/signup");
       }
     }
+
+
+    // if (!!$el.closest("#search-close").get(0)) {
+    //   $("#nav-search-input").val("");
+    //   $("#close").hide();
+    // }
+    // if (!!$el.closest("#search").get(0)) {
+    //   let params = "/search-results?search=" + $("#nav-search-input").val();
+    //   router.push(params);
+    // }
+
   }
-  
- 
+
+
 
   return (
     <>
-      
+
       <div onClick={wrapClickHandler}>
-        
+
         {parseHtml(props.bodyContent, parseOptions)}
       </div>
 
 
       <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
-      
 
-    
+
+
     </>
   );
 }
 
 export async function getServerSideProps(search) {
+
+
+
   // console.log(context,'ctx');
   const cheerio = await import(`cheerio`);
   const axios = (await import(`axios`)).default;
-  console.log("https://drawkit-v2.webflow.io"+search.resolvedUrl);
+  console.log("https://drawkit-v2.webflow.io" + search.resolvedUrl);
 
-  let res = await axios("https://drawkit-v2.webflow.io"+search.resolvedUrl).catch((err) => {
+  let res = await axios("https://drawkit-v2.webflow.io" + search.resolvedUrl).catch((err) => {
     console.error(err);
   });
   const html = res.data;
@@ -151,6 +218,6 @@ export async function getServerSideProps(search) {
       supportScripts: supportScripts,
       footer: footer,
       globalStyles: globalStyles,
-    },
+    }
   };
 }

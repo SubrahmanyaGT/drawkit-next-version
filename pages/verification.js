@@ -43,7 +43,17 @@ const createStripeUser = async (email, id) => {
     ]);
     return stripeuser;
   })();
-  return { stripeCreate, storeUser };
+
+  let storeProfile = await (async () => {
+    let userProfile = await supabase.from("user_profile").insert([
+      {
+        user_id: id,
+      },
+    ]);
+    return userProfile;
+  })();
+
+  return { stripeCreate, storeUser, storeProfile };
 };
 
 export default function Signin(props) {

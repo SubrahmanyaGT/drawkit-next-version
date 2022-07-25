@@ -16,6 +16,8 @@ const supabaseSignUp = async (email, password) => {
     password: password,
   });
 
+  
+
   return Supabaseuser;
 
   // return { storeUser, supabaseCreate, stripeCreate };

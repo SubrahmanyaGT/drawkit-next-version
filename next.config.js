@@ -4,15 +4,14 @@
 // }
 
 // module.exports = nextConfig
-const fs =require('fs');
-
+const fs = require('fs');
 module.exports = {
   env: {
     rawJsFromFile: fs.readFileSync('./rawJsFromFile.js').toString()
   },
   async rewrites() {
     return [
-      
+
       // {
       //   source: "/:slug",
       //   destination: "https://drawkit-v2.webflow.io/:slug",
