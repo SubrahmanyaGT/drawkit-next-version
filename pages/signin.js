@@ -30,8 +30,10 @@ const supabaseSignIn = async (email, password) => {
 };
 
 async function signInWithGoogle() {
+
   const { user, session, error } = await supabase.auth.signIn({
     provider: "google",
+
   });
 }
 

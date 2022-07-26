@@ -21,6 +21,7 @@ function MyApp(props) {
   const { Component, pageProps } = props;
   const [auth, setAuth] = useState(supabase.auth.session());
 
+
   supabase.auth.onAuthStateChange((event, session) => {
     setAuth(supabase.auth.session());
   });
@@ -512,9 +513,11 @@ function MyApp(props) {
   const parseOptions = {
     replace: replace,
   };
-  const router = useRouter();
 
+
+  const router = useRouter();
   useEffect(() => {
+
     console.log(router);
     if (typeof Jetboost !== "undefined") {
       Jetboost = null;
@@ -536,12 +539,33 @@ function MyApp(props) {
         d.querySelectorAll(".nav-menu .w--open").forEach((el) => {
           el.classList.remove("w--open");
         });
-        if(d.querySelectorAll(".nav-left-wrapper .w--open").length > 0){
+        if (d.querySelectorAll(".nav-left-wrapper .w--open").length > 0) {
           document.querySelector('.menu-icon').click()
         }
       })(document);
+
+
+
     }
+
+
+    if (location.href.split('/').includes('#')) {
+      location.href = location.href.replace(/#/, "");
+    }
+
   }, [router.pathname, router.query]);
+
+
+
+
+
+
+
+
+
+
+
+
   let navLayoutStyle = {};
   if (Component.getLayout) {
     navLayoutStyle = { display: "none" };

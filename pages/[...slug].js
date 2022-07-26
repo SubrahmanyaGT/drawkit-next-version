@@ -62,6 +62,7 @@ export default function Slug(props) {
         })
       })
     })
+
   }, [])
   return (
     <>
@@ -78,6 +79,8 @@ export default function Slug(props) {
     </>
   );
 }
+
+
 
 export async function getServerSideProps(props) {
   const cheerio = await import(`cheerio`);

@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { log } from "logrocket";
 
 export default function Home(props) {
+
   let [auth, setAuth] = useState(supabase.auth.session());
   let [headContent, setheadContent] = useState(props.headContent);
   let [navBar, setnavbar] = useState(props.navBar);
@@ -280,7 +281,10 @@ export default function Home(props) {
           }
         })();
       }
+
     }
+
+
   }, []);
 
   useEffect(() => {
@@ -307,14 +311,7 @@ export default function Home(props) {
         </filter>
         </defs>
         </svg></div>`;
-
-
-
-
-
       } else {
-        console.log(icon.children[1]);
-        icon.classList.add('.heart');
         icon.children[1].innerHTML = `<div><img src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/62d14e0fd359cc7cd96e0e25_Like.svg" loading="lazy" alt=""/></div>`
       }
     });
@@ -425,16 +422,32 @@ export default function Home(props) {
     }
   }
   useEffect(() => {
-    const hide = document.querySelector('.signup-popup');
-    hide.addEventListener('click', hidefn);
-    function hidefn() {
-      hide.style.display = "none";
+    if (typeof window != "updefined") {
+      const hide = document.querySelector('.signup-popup');
+      hide.addEventListener('click', hidefn);
+      function hidefn() {
+        hide.style.display = "none";
+      }
+
+
+      // const all = document.querySelectorAll('.filter-all-button');
+      // all.forEach((e, i) => {
+      //   if (i == 0) {
+      //     e.click();
+      //     console.log('dheeraj', e)
+      //     // e.click()
+      //   }
+      // })
     }
-
-
   }, [])
 
+  useEffect(() => {
 
+
+
+    router.push("/")
+
+  }, [router.asPath]);
 
 
   // if(!supabase.auth.session()){

@@ -107,9 +107,13 @@ export default function Illustration(props) {
         }
       })();
     }
+
+
   }, []);
   useEffect(() => {
     if (typeof window !== "undefined") {
+
+
       if (favraties.length > 0) {
         (async () => {
           let favcardCantainer = "";
@@ -120,25 +124,49 @@ export default function Illustration(props) {
           if (!error) {
             console.log("packs", data);
             data.forEach((pack) => {
-              favcardCantainer += `<a href="/product/${pack.wf_slug}" class="favourite-flex w-inline-block"><div class="favourite-image-wrapper">
-              <img src="${pack.thumbnail_img}" loading="lazy" alt="" class="favourites-image"></div>
-              <div class="liked-content">
-              <div class="favourite-title">${pack.name}
-              </div><div class="favourite-description text-style-2lines">${pack.quantity_details}</div>
-              </div><div class="cancel-favourite-wrapper">
-              <div class="cancel-favourite-icon">
-              <img src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/626f5d0ae6c15c51462dd655_wrong.svg" loading="lazy" alt="donts
-              "></div></div></a>`;
+              favcardCantainer += `
+              <div class="favourite-details">
+              <a href="/product/${pack.wf_slug}" class="favourite-flex w-inline-block">
+                  <div class="pack_id">${pack.wf_item_id}</div>
+                  <div class="favourite-image-wrapper">
+                      <img src="${pack.thumbnail_img}" loading="lazy" alt="" class="favourites-image">
+                  </div>
+                  <div class="liked-content">
+                      <div class="favourite-title">${pack.name}
+                      </div>
+                      <div class="favourite-description text-style-2lines">${pack.quantity_details}</div>
+                  </div>
+              </a>
+      
+              <div class="cancel-favourite-wrapper">
+                  <div class="cancel-favourite-icon">
+                      <img src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/626f5d0ae6c15c51462dd655_wrong.svg"
+                          loading="lazy" alt="donts">
+                  </div>
+              </div>
+      
+          </div>
+              `;
             });
             document.querySelector(".favourite-content-wrapper").innerHTML =
               favcardCantainer;
           }
         })();
+      } else {
+        document.querySelector(".favourite-content-wrapper").innerHTML = `
+        <div class="w-layout-grid favourites-grid-profile"><div id="w-node-_1f6cf04d-131e-d345-fba9-91e37f091557-94a70818" class="no-favourite-text">No Illustrations has been Liked Yet...</div></div>
+        
+        `
       }
-    }
-    console.log(favraties, "favraties");
-  }, [favraties]);
 
+
+
+
+    }
+
+
+    // console.log(favraties, "favraties");
+  }, [favraties]);
   useEffect(() => {
     // console.log("paymentDetails",paymentDetails.paymentIntents);
     if (typeof window !== "undefined" && paymentDetails) {
@@ -148,26 +176,24 @@ export default function Illustration(props) {
         let invoice = paymentDetails.invoices.data.find(
           (el) => el.payment_intent == payment.id
         );
-        innerText += `<div class="subscription-invoice-details"><div class="bill-date">${
-          (payment.amount_received / 100).toFixed(2) +
+        innerText += `<div class="subscription-invoice-details"><div class="bill-date">${(payment.amount_received / 100).toFixed(2) +
           " " +
           payment.currency.toUpperCase()
-        }</div> 
+          }</div> 
         <div class="bill-date">${unixDateToLocalDate(
-          invoice.lines.data[0].period.start
-        )}</div>
+            invoice.lines.data[0].period.start
+          )}</div>
         <div class="bill-date">${unixDateToLocalDate(
-          invoice.lines.data[0].period.end
-        )}</div>
-        <div class="bill-date"><a href="${
-          invoice.hosted_invoice_url
-        }" target='_blank'><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download" style="&#10;    color: black;&#10;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a></div></div>
+            invoice.lines.data[0].period.end
+          )}</div>
+        <div class="bill-date"><a href="${invoice.hosted_invoice_url
+          }" target='_blank'><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download" style="&#10;    color: black;&#10;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a></div></div>
         `;
         console.log(paymentDetails.invoices);
         console.log(
           (payment.amount_received / 100).toFixed(2) +
-            " " +
-            payment.currency.toUpperCase()
+          " " +
+          payment.currency.toUpperCase()
         );
         console.log(unixDateToLocalDate(payment.created));
 
@@ -245,6 +271,36 @@ export default function Illustration(props) {
       setLastName($el.closest("#last-name").val());
       console.log(lastName);
     }
+  }
+
+  if (auth) {
+
+    const closeButtons = document.querySelectorAll('.cancel-favourite-wrapper');
+    const favourite_details = document.querySelectorAll('.favourite-details');
+    console.log('closeButtons', closeButtons)
+    closeButtons.forEach((ele, index1) => {
+      // console.log('ele', ele)
+      ele.addEventListener('click', (e) => {
+        favourite_details.forEach((ele, index2) => {
+          if (index2 == index1) {
+            let liked_illustrations = favraties;
+            const wf_item_id = ele.children[0].children[0].innerText;
+            console.log(wf_item_id);
+            liked_illustrations.splice(
+              liked_illustrations.indexOf(wf_item_id),
+              1
+            );
+            supabase
+              .from("user_profile")
+              .update({ liked_illustrations: liked_illustrations })
+              .eq("user_id", auth.user.id).then(() => {
+                ele.style.display = "none"
+                console.log("pack Dxelete Successfully")
+              })
+          }
+        })
+      })
+    })
   }
 
   return supabase.auth.session() != null ? (
