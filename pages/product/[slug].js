@@ -250,11 +250,15 @@ export default function Illustration(props) {
               liked_illustrations.indexOf(wf_item_id),
               1
             );
+            
+            setFavraties(liked_illustrations);
             const { data, error } = await supabase
               .from("user_profile")
               .update({ liked_illustrations: liked_illustrations })
               .eq("user_id", auth.user.id);
           } else {
+
+            setFavraties(liked_illustrations);
             $el
               .closest(".like-buttons-wrap")
               .get(
@@ -339,39 +343,30 @@ export default function Illustration(props) {
       }
     }
   }
+
   useEffect(() => {
-    if (typeof window != "undefined") {
-
-      // const detail_dropdown = document.querySelector('.detail-dropdown');
-      // const detail_dropdown_list = document.querySelector('detail-dropdown-list');
-      // detail_dropdown.addEventListener('click', () => {
-      //   detail_dropdown_list.style.display = "block";
-      // })
-
-
-      if (auth) {
-        (async () => {
-          const { data, error } = await supabase
-            .from("user_profile")
-            .select()
-            .eq("user_id", auth.user.id);
-          if (data.length > 0 && data[0].liked_illustrations) {
-            setFavraties(data[0].liked_illustrations);
-          }
-        })();
-      }
+    if (auth) {
+      (async () => {
+        const { data, error } = await supabase
+          .from("user_profile")
+          .select()
+          .eq("user_id", auth.user.id);
+        if (data.length > 0 && data[0].liked_illustrations) {
+          setFavraties(data[0].liked_illustrations);
+        }
+      })();
     }
-
-
-
-  }, []);
+  }, [router]);
   // useEffect(()=>{
   //   const illustration_list=querySelector('.category-illustration-list');
   //   const illustration-item=qu
   // },[])
 
+  console.log(favourites);
 
   useEffect(() => {
+    console.log('checking useEffect');
+
     //heighlight the liked_illustrations
     let likeIcon = document.querySelectorAll(".like-buttons-wrap");
     likeIcon.forEach((icon) => {
