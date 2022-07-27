@@ -229,16 +229,9 @@ export default function Illustration(props) {
 
   async function wrapClickHandler(event) {
     var $el = $(event.target);
-
-    if ($el.closest(".detail-dropdown").get(0)) {
-      // list-pack-details
-      const listdetails = document.querySelector('.detail-dropdown').children[1];
-      console.log(listdetails)
-      listdetails.classList.toggle('list-pack-details');
-    }
-
-
-
+  
+ 
+        // working on like and dislike
 
     if ($el.closest(".like-buttons-wrap").get(0)) {
       let wf_item_id = $el.closest(".like-buttons-wrap").get(0)
@@ -372,6 +365,7 @@ export default function Illustration(props) {
       }
     }
   }
+
 
   useEffect(() => {
 
