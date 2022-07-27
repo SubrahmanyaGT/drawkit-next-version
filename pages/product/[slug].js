@@ -227,7 +227,16 @@ export default function Illustration(props) {
 
   async function wrapClickHandler(event) {
     var $el = $(event.target);
-    // working on like and dislike
+  
+      if (!!$el.closest(".request").get(0)) {
+        console.log($el);
+        $(".request-popup").show();
+        setTimeout(function () {
+          $("#loader").hide();
+          $(".iframe-holder").show();
+        }, 3000);
+      }
+        // working on like and dislike
 
     if ($el.closest(".like-buttons-wrap").get(0)) {
       let wf_item_id = $el.closest(".like-buttons-wrap").get(0)
@@ -343,6 +352,7 @@ export default function Illustration(props) {
       }
     }
   }
+
 
   useEffect(() => {
     if (auth) {
