@@ -17,9 +17,13 @@ import Link from "next/link";
 LogRocket.init("p5qzuw/drawkit-test");
 
 function MyApp(props) {
+  const router = useRouter();
+
   const [loading, setLoading] = useState(true);
   const { Component, pageProps } = props;
   const [auth, setAuth] = useState(supabase.auth.session());
+  let [favourites, setFavraties] = useState([]);
+
 
 
   supabase.auth.onAuthStateChange((event, session) => {
@@ -515,7 +519,77 @@ function MyApp(props) {
   };
 
 
-  const router = useRouter();
+  useEffect(() => {
+
+    // const w_dropdown = document.querySelector('.w-dropdown');
+    // const detail_dropdown = document.querySelector('.w-dropdown-toggle');
+    // const detail_dropdown_list = document.querySelector('.w-dropdown-list');
+
+
+
+    if (auth) {
+      (async () => {
+        const { data, error } = await supabase
+          .from("user_profile")
+          .select()
+          .eq("user_id", auth.user.id);
+        if (data.length > 0 && data[0].liked_illustrations) {
+          setFavraties(data[0].liked_illustrations);
+        }
+      })();
+    }
+  }, [router]);
+
+  useEffect(() => {
+    console.log('checking useEffect');
+
+    //heighlight the liked_illustrations
+    let likeIcon = document.querySelectorAll(".like-buttons-wrap");
+    likeIcon.forEach((icon) => {
+      let wf_item_id = icon.children[0].innerText;
+      console.log(wf_item_id)
+      const like = icon.children[1];
+      icon.addEventListener('click', (e) => {
+        // console.log(e);
+        if (auth) {
+
+        } else {
+          const signinpopup = document.querySelector('.signup-popup');
+          signinpopup.style.display = "flex"
+        }
+      })
+      // console.log(like)
+      if (favourites.includes(wf_item_id)) {
+        // console.log(wf_item_id, icon);
+        icon.children[1].innerHTML = `<div><div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g filter="url(#filter0_i_81_74)">
+        <path d="M20.7601 4.8802C23.0001 7.1202 23.0001 10.6402 20.7601 12.7202L19.9601 13.5202L13.5601 19.7602C12.6001 20.5602 11.1601 20.7202 10.3601 19.7602L3.9601 13.5202L3.1601 12.7202C1.0801 10.6402 1.0801 7.1202 3.1601 4.8802C5.4001 2.6402 8.9201 2.6402 11.1601 4.8802L11.9601 5.6802L12.7601 4.8802C15.0001 2.8002 18.5201 2.8002 20.7601 4.8802Z" fill="#E62020"/>
+        </g>
+        <defs>
+        <filter id="filter0_i_81_74" x="1.6001" y="3.2002" width="20.8401" height="17.2212" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+        <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+        <feOffset/>
+        <feGaussianBlur stdDeviation="2"/>
+        <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+        <feBlend mode="normal" in2="shape" result="effect1_innerShadow_81_74"/>
+        </filter>
+        </defs>
+        </svg></div></div>`;
+      } else {
+        icon.children[1].innerHTML = `<div><img src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/62d14e0fd359cc7cd96e0e25_Like.svg" loading="lazy" alt=""/></div>`
+      }
+
+    });
+
+
+    console.log('dheeeeeeeeeeeeeeeeeeeeeeee')
+
+  }, [favourites]);
+
+  // const router = useRouter();
   useEffect(() => {
 
     console.log(router);
@@ -555,7 +629,135 @@ function MyApp(props) {
 
   }, [router.pathname, router.query]);
 
+  async function wrapClickHandler(event) {
+    var $el = $(event.target);
+    // document.querySelector('.signup-popup').style.display="none"
+    if ($el.closest(".signup-popup").get(0)) {
+      document.querySelector('.signup-popup').style.display = "none"
+    }
+    // detail-dropdown of pack hide and show
 
+    // if ($el.closest(".detail-dropdown").get(0)) {
+    //   console.log($el.closest(".detail-dropdown").get(0).innerHTML)
+    //   // $el.closest(".detail-dropdown").get(0).toggleClass('.detail-dropdown')
+    // }
+
+    // working on like and dislike
+
+    if ($el.closest(".like-buttons-wrap").get(0)) {
+      let wf_item_id = $el.closest(".like-buttons-wrap").get(0)
+        .children[0].innerText;
+      console.log(wf_item_id);
+      if (auth) {
+
+        if (favourites.length > 0) {
+
+          if (
+            favourites.length > 0 &&
+            favourites.includes(wf_item_id)
+          ) {
+            $el
+              .closest(".like-buttons-wrap")
+              .get(
+                0
+              ).children[1].innerHTML = `<div><img src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/62d14e0fd359cc7cd96e0e25_Like.svg" loading="lazy" alt=""/></div>`;
+            favourites.splice(
+              favourites.indexOf(wf_item_id),
+              1
+            );
+            console.log('favoirate', favourites)
+            const { data, error } = await supabase
+              .from("user_profile")
+              .update({ liked_illustrations: favourites })
+              .eq("user_id", auth.user.id);
+
+            setFavraties((f) => {
+              return [...f]
+            });
+
+          } else {
+
+
+            $el
+              .closest(".like-buttons-wrap")
+              .get(
+                0
+              ).children[1].innerHTML = `<div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g filter="url(#filter0_i_81_74)">
+          <path d="M20.7601 4.8802C23.0001 7.1202 23.0001 10.6402 20.7601 12.7202L19.9601 13.5202L13.5601 19.7602C12.6001 20.5602 11.1601 20.7202 10.3601 19.7602L3.9601 13.5202L3.1601 12.7202C1.0801 10.6402 1.0801 7.1202 3.1601 4.8802C5.4001 2.6402 8.9201 2.6402 11.1601 4.8802L11.9601 5.6802L12.7601 4.8802C15.0001 2.8002 18.5201 2.8002 20.7601 4.8802Z" fill="#E62020"></path>
+          </g>
+          <defs>
+          <filter id="filter0_i_81_74" x="1.6001" y="3.2002" width="20.8401" height="17.2212" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+          <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend>
+          <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix>
+          <feOffset></feOffset>
+          <feGaussianBlur stdDeviation="2"></feGaussianBlur>
+          <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"></feComposite>
+          <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"></feColorMatrix>
+          <feBlend mode="normal" in2="shape" result="effect1_innerShadow_81_74"></feBlend>
+          </filter>
+          </defs>
+          </svg></div>`;
+
+            favourites.push(wf_item_id);
+            const { data, error } = await supabase
+              .from("user_profile")
+              .update({ liked_illustrations: favourites })
+              .eq("user_id", auth.user.id);
+            setFavraties((f) => {
+              return [...f]
+            });
+          }
+        } else {
+          $el
+            .closest(".like-buttons-wrap")
+            .get(
+              0
+            ).children[1].innerHTML = `<div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g filter="url(#filter0_i_81_74)">
+        <path d="M20.7601 4.8802C23.0001 7.1202 23.0001 10.6402 20.7601 12.7202L19.9601 13.5202L13.5601 19.7602C12.6001 20.5602 11.1601 20.7202 10.3601 19.7602L3.9601 13.5202L3.1601 12.7202C1.0801 10.6402 1.0801 7.1202 3.1601 4.8802C5.4001 2.6402 8.9201 2.6402 11.1601 4.8802L11.9601 5.6802L12.7601 4.8802C15.0001 2.8002 18.5201 2.8002 20.7601 4.8802Z" fill="#E62020"></path>
+        </g>
+        <defs>
+        <filter id="filter0_i_81_74" x="1.6001" y="3.2002" width="20.8401" height="17.2212" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+        <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend>
+        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix>
+        <feOffset></feOffset>
+        <feGaussianBlur stdDeviation="2"></feGaussianBlur>
+        <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"></feComposite>
+        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"></feColorMatrix>
+        <feBlend mode="normal" in2="shape" result="effect1_innerShadow_81_74"></feBlend>
+        </filter>
+        </defs>
+        </svg></div>`;
+          favourites.push(wf_item_id);
+
+          const { data, error } = await supabase
+            .from("user_profile")
+            .update({ liked_illustrations: favourites })
+            .eq("user_id", auth.user.id);
+
+          setFavraties((f) => {
+            return [...f]
+          });
+        }
+
+
+
+
+      }
+      else {
+        const signinpopup = document.querySelector('.signup-popup');
+        signinpopup.style.display = "flex"
+      }
+
+    }
+
+
+
+
+  }
 
 
 
@@ -592,7 +794,9 @@ function MyApp(props) {
             </div>
           </div>
         ) : (
-          <>
+
+          <div onClick={wrapClickHandler}>
+
             {props.stars.supportScripts.map((m, i) => (
               <Script
                 key={i}
@@ -612,7 +816,7 @@ function MyApp(props) {
               {parseHtml(props.stars.footer, parseOptions)}
             </div>
             {parseHtml(props.stars.globalStyles, parseOptions)}
-          </>
+          </div>
         )}
       </UserProvider>
     </>

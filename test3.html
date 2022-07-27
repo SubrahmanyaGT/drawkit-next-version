@@ -1,5 +1,73 @@
-<!-- <object data="https://theuselessweb.com/" width="800" height="800" type="text/html">
-</object> -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    h1 {
+        font-size: 100px;
+        animation: cursormove linear 3s infinite;
+
+    }
+
+    h1::after {
+        content: "";
+        position: relative;
+        top: 45px !important;
+        left: -65px;
+        width: 25px;
+        height: 200px;
+        background: #ffffff;
+        display: inline-block;
+    }
+
+    .cursor {
+        position: relative;
+        margin-left: 2px;
+        top: -10px;
+        /* width: 100px; */
+        font-size: 48px;
+        width: 0px;
+        right: 54px;
+        padding: 30px 0px;
+        background-color: black;
+        color: #000;
+    }
+
+    @keyframes cursormove {
+        0% {
+            content: "";
 
 
-<embed type="text/html" src="https://theuselessweb.com/" width="800" height="500">
+        }
+
+        100% {
+            content: "&nbsp;";
+
+        }
+    }
+</style>
+
+<body>
+    <div class="container">
+        <h1>I a <span class="auto-type"></span> <span class="cursor">&nbsp;</span></h1>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+
+    <script>
+        var typed = new Typed(".auto-type", {
+            strings: ["dheeraj", "kumar", "sah"],
+            typeSpeed: 150,
+            backSpeed: 150,
+            loop: true
+        })
+    </script>
+</body>
+
+</html>

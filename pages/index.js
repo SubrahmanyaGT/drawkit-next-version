@@ -4,12 +4,13 @@ import Link from "next/link";
 import { supabase } from "../utils/supabaseClient";
 import NavbarContent from "./navbar";
 import Script from "next/script";
-import $ from "jquery";
+import $, { type } from "jquery";
 import Head from "next/head";
 import { useUser } from "../lib/authInfo";
 // import { replace } from "../utils/replace-node";
 import { useRouter } from "next/router";
 import { log } from "logrocket";
+import {} from './navbar'
 
 export default function Home(props) {
 
@@ -24,6 +25,7 @@ export default function Home(props) {
   let [hideLogin, setHideLogin] = useState(props.hideLogin);
   let [supportScripts, setsupportScripts] = useState(props.supportScripts);
   let [favourites, setFavraties] = useState([]);
+  const [types, setTypes] = useState([])
   const { user, setUser } = useUser();
   supabase.auth.onAuthStateChange((event, session) => {
     setAuth(supabase.auth.session());
@@ -283,11 +285,22 @@ export default function Home(props) {
       }
 
     }
+    // (async () => {
+    //   const { data, error } = await supabase
+    //     .from("illustration_type")
+    //     .select('name')
+    //   console.log('data1', data)
+    //   data.forEach((ele) => {
+    //     // console.log('typename', ele.name)
+    //     types.push(ele.name)
 
+    //   })
+    // })();
 
-  }, []);
+  }, [router]);
 
   useEffect(() => {
+    // console.log('allType', types)
     //heighlight the liked_illustrations
     let likeIcon = document.querySelectorAll(".like-buttons-wrap");
     likeIcon.forEach((icon) => {
@@ -315,8 +328,9 @@ export default function Home(props) {
         icon.children[1].innerHTML = `<div><img src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/62d14e0fd359cc7cd96e0e25_Like.svg" loading="lazy" alt=""/></div>`
       }
     });
+    console.log('useEffect testing')
+  }, [favourites, router]);
 
-  }, [favourites]);
 
   async function wrapClickHandler(event) {
     var $el = $(event.target);

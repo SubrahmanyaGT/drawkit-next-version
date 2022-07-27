@@ -9,13 +9,15 @@ import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { useUser } from "../../lib/authInfo";
 import Link from "next/link";
-
+const types = []
 export default function Illustration(props) {
   const { user, setUser } = useUser();
   let [auth, setAuth] = useState(supabase.auth.session());
   const [file, setFile] = useState([]);
   let [favourites, setFavraties] = useState([]);
-  const [incr, setIncr] = useState(1)
+  // let [types, settypes] = useState([]);
+
+  const [incr, setIncr] = useState(1);
 
   const router = useRouter();
   function replace(node) {
@@ -30,7 +32,7 @@ export default function Illustration(props) {
       const { ...props } = attribs;
       if (props.className) {
         if (props.className.includes("sb-function")) {
-          console.log(node.children[3].children[0].data);
+          // console.log(node.children[3].children[0].data);
           let pricing_type = node.children[3].children[0].data;
           if (
             (pricing_type == "Premium" &&
@@ -227,7 +229,16 @@ export default function Illustration(props) {
 
   async function wrapClickHandler(event) {
     var $el = $(event.target);
-    // working on like and dislike
+
+    if ($el.closest(".detail-dropdown").get(0)) {
+      // list-pack-details
+      const listdetails = document.querySelector('.detail-dropdown').children[1];
+      console.log(listdetails)
+      listdetails.classList.toggle('list-pack-details');
+    }
+
+
+
 
     if ($el.closest(".like-buttons-wrap").get(0)) {
       let wf_item_id = $el.closest(".like-buttons-wrap").get(0)
@@ -236,29 +247,33 @@ export default function Illustration(props) {
       if (auth) {
 
         if (favourites.length > 0) {
-          let liked_illustrations = favourites;
+
           if (
-            liked_illustrations.length > 0 &&
-            liked_illustrations.includes(wf_item_id)
+            favourites.length > 0 &&
+            favourites.includes(wf_item_id)
           ) {
             $el
               .closest(".like-buttons-wrap")
               .get(
                 0
               ).children[1].innerHTML = `<div><img src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/62d14e0fd359cc7cd96e0e25_Like.svg" loading="lazy" alt=""/></div>`;
-            liked_illustrations.splice(
-              liked_illustrations.indexOf(wf_item_id),
+            favourites.splice(
+              favourites.indexOf(wf_item_id),
               1
             );
-            
-            setFavraties(liked_illustrations);
+            console.log('favoirate', favourites)
             const { data, error } = await supabase
               .from("user_profile")
-              .update({ liked_illustrations: liked_illustrations })
+              .update({ liked_illustrations: favourites })
               .eq("user_id", auth.user.id);
+
+            setFavraties((f) => {
+              return [...f]
+            });
+
           } else {
 
-            setFavraties(liked_illustrations);
+
             $el
               .closest(".like-buttons-wrap")
               .get(
@@ -281,11 +296,14 @@ export default function Illustration(props) {
           </defs>
           </svg></div>`;
 
-            liked_illustrations.push(wf_item_id);
+            favourites.push(wf_item_id);
             const { data, error } = await supabase
               .from("user_profile")
-              .update({ liked_illustrations: liked_illustrations })
+              .update({ liked_illustrations: favourites })
               .eq("user_id", auth.user.id);
+            setFavraties((f) => {
+              return [...f]
+            });
           }
         } else {
           $el
@@ -316,13 +334,24 @@ export default function Illustration(props) {
             .update({ liked_illustrations: favourites })
             .eq("user_id", auth.user.id);
 
+          setFavraties((f) => {
+            return [...f]
+          });
         }
+
+
+
+
       }
       else {
         const signinpopup = document.querySelector('.signup-popup');
         signinpopup.style.display = "flex"
       }
+
     }
+
+    //dscvsadffddddddddddddddddddddddddddddddddd
+
 
 
     // upgrade plan
@@ -345,6 +374,9 @@ export default function Illustration(props) {
   }
 
   useEffect(() => {
+
+    console.log('useffect chacking2')
+
     if (auth) {
       (async () => {
         const { data, error } = await supabase
@@ -355,7 +387,17 @@ export default function Illustration(props) {
           setFavraties(data[0].liked_illustrations);
         }
       })();
+
     }
+    (async () => {
+      const { data, error } = await supabase
+        .from("illustration_type")
+        .select('name')
+      console.log(data)
+      data.forEach((ele) => {
+        types.push(ele.name)
+      })
+    })();
   }, [router]);
   // useEffect(()=>{
   //   const illustration_list=querySelector('.category-illustration-list');
@@ -363,9 +405,12 @@ export default function Illustration(props) {
   // },[])
 
   console.log(favourites);
+  console.log(types)
 
   useEffect(() => {
     console.log('checking useEffect');
+    console.log(types);
+
 
     //heighlight the liked_illustrations
     let likeIcon = document.querySelectorAll(".like-buttons-wrap");
@@ -374,7 +419,7 @@ export default function Illustration(props) {
       console.log(wf_item_id)
       const like = icon.children[1];
       icon.addEventListener('click', (e) => {
-        console.log(e);
+        // console.log(e);
         if (auth) {
 
         } else {
@@ -382,9 +427,9 @@ export default function Illustration(props) {
           signinpopup.style.display = "flex"
         }
       })
-      console.log(like)
+      // console.log(like)
       if (favourites.includes(wf_item_id)) {
-        console.log(wf_item_id, icon);
+        // console.log(wf_item_id, icon);
         icon.children[1].innerHTML = `<div><div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g filter="url(#filter0_i_81_74)">
         <path d="M20.7601 4.8802C23.0001 7.1202 23.0001 10.6402 20.7601 12.7202L19.9601 13.5202L13.5601 19.7602C12.6001 20.5602 11.1601 20.7202 10.3601 19.7602L3.9601 13.5202L3.1601 12.7202C1.0801 10.6402 1.0801 7.1202 3.1601 4.8802C5.4001 2.6402 8.9201 2.6402 11.1601 4.8802L11.9601 5.6802L12.7601 4.8802C15.0001 2.8002 18.5201 2.8002 20.7601 4.8802Z" fill="#E62020"/>
@@ -402,6 +447,8 @@ export default function Illustration(props) {
         </filter>
         </defs>
         </svg></div></div>`;
+      } else {
+        icon.children[1].innerHTML = `<div><img src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/62d14e0fd359cc7cd96e0e25_Like.svg" loading="lazy" alt=""/></div>`
       }
 
     });
@@ -411,7 +458,13 @@ export default function Illustration(props) {
     function hidefn() {
       hide.style.display = "none";
     }
+
+    console.log('types', types)
+
+
   }, [favourites]);
+
+
 
   return (
     <>
@@ -425,9 +478,14 @@ export default function Illustration(props) {
 }
 
 export const getServerSideProps = async (paths) => {
+
   const cheerio = await import(`cheerio`);
   const axios = (await import(`axios`)).default;
-  let illTypes = ["2d", "3d", "animations", "icons", "all", "mockups"];
+
+
+
+  const illTypes = ["2d", "3d", "animations", "icons", "all", "mockups"];
+
   let illCatg = [
     "work",
     "covid-19",

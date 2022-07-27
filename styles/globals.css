@@ -266,3 +266,8 @@
 .pack_id {
   display: none;
 }
+
+/* pack details */
+.list-pack-details {
+  display: block;
+}

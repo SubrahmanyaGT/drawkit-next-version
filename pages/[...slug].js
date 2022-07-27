@@ -27,9 +27,12 @@ export default function Slug(props) {
       $(".filter-all-button").removeClass("active-all");
     }
   }
-  useEffect(() => {
 
+  useEffect(() => {
+    // document.querySelector('.like-buttons-wrap').innerText;
     // const faq = document.querySelectorAll('.faq');
+
+
     const faq_answer = document.querySelectorAll('.faq-answer');
 
     const plus_icon_faq = document.querySelectorAll('.plus-icon-faq');
@@ -62,7 +65,6 @@ export default function Slug(props) {
         })
       })
     })
-
   }, [])
   return (
     <>
