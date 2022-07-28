@@ -153,7 +153,6 @@ export default function Signin(props) {
 Signin.getLayout = function PageLayout(page) {
   return (
     <>
-
       {page}
     </>
   )
