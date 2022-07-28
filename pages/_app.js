@@ -320,7 +320,7 @@ function MyApp(props) {
             ></div>
           );
         }
-        // state changes when the auth state changes
+        // state changes when the auth state changes  
         if (props.className.includes("navbar-button-wrap")) {
           if (auth != null) {
             return (

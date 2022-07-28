@@ -45,8 +45,8 @@ export default function NavbarContent(props) {
     }
      
     if (!!$el.closest("#search-close-mbl-signout").get(0)) {
-      $("nav-search-input-mbl-signout").val("");
-      $("#mobile-close-icon").hide();
+      $("#nav-search-input-mbl-signout").val("");
+      $("#search-close-mbl-signout").hide();
     }
     if (!!$el.closest("#search-submit-signout").get(0)) {
       let params = "/search-results?search=" + $("#nav-search-input-mbl-signout").val();

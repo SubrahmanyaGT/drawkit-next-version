@@ -14,7 +14,7 @@ export default function paymentSuccessful(props) {
       };
   return (
     <>
-      <Head>{parseHtml(props.headContent, parseOptions)}</Head>
+      {/* <Head>{parseHtml(props.headContent, parseOptions)}</Head> */}
       <div>{parseHtml(props.bodyContent, parseOptions)}</div>
       <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
     </>
