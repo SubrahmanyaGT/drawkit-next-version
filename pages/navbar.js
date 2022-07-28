@@ -43,10 +43,18 @@ export default function NavbarContent(props) {
       let params = "/search-results?search=" + $("#nav-search-input").val();
       router.push(params);
     }
+     
+    if (!!$el.closest("#search-close-mbl-signout").get(0)) {
+      $("nav-search-input-mbl-signout").val("");
+      $("#close").hide();
+    }
+    if (!!$el.closest("#search-submit-signout").get(0)) {
+      let params = "/search-results?search=" + $("#nav-search-input-mbl-signout").val();
+      router.push(params);
+    }
     if (!!$el.closest("#account").get(0)) {
       window.location.pathname = "/profile";
     }
-    //
     if (!!$el.closest("#user-name").get(0)) {
       $(".my-profile-wrap").show();
     } else {
@@ -82,8 +90,26 @@ export default function NavbarContent(props) {
         }
       }
     }
-  }
+       //Mobile Search
+    if (!!$el.closest("nav-search-input-mbl-signout").get(0)) {
+      if ($("nav-search-input-mbl-signout").val().length > 0) {
+        $("#close").show();
+      } else {
+        $("#close").hide();
+      }
+    }
+  
+    if (event.keyCode === 13) {
+      if (!!$el.closest("nav-search-input-mbl-signout").get(0)) {
+        if ($("nav-search-input-mbl-signout").val().length > 0) {
+          let params = "/search-results?search=" + $("nav-search-input-mbl-signout").val();
+          router.push(params);
+        }
+      }
+    }
 
+  }
+ 
   function wrapBlurHandler(event) {
     var $el = $(event.target);
     if (!$el.closest("#account-link-text").get(0)) $(".my-profile-wrap").hide();
