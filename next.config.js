@@ -39,11 +39,6 @@ module.exports = {
         destination: "/illustrations/:slug",
         permanent: true,
       },
-      {
-        source: "/choose-subscription",
-        destination: "/choose-subscription",
-        permanent: true,
-      },
     ];
   },
   eslint: {
