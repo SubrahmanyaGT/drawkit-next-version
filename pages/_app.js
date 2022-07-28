@@ -264,8 +264,7 @@ function MyApp(props) {
             <div
               {...props}
               dangerouslySetInnerHTML={{
-                __html: ` <form
-                 method="get"
+                __html: ` <div
                  name="email-form-3"
                  data-name="Email Form 3"
                  id="search-form"
@@ -316,7 +315,7 @@ function MyApp(props) {
                  <div id="search-submit-signout" class="search-button nav-search">
                    <div>Search</div>
                  </div>
-               </form>`,
+               </div>`,
               }}
             ></div>
           );

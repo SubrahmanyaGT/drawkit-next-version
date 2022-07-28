@@ -46,7 +46,7 @@ export default function NavbarContent(props) {
      
     if (!!$el.closest("#search-close-mbl-signout").get(0)) {
       $("nav-search-input-mbl-signout").val("");
-      $("#close").hide();
+      $("#mobile-close-icon").hide();
     }
     if (!!$el.closest("#search-submit-signout").get(0)) {
       let params = "/search-results?search=" + $("#nav-search-input-mbl-signout").val();
@@ -91,20 +91,25 @@ export default function NavbarContent(props) {
       }
     }
        //Mobile Search
-    if (!!$el.closest("nav-search-input-mbl-signout").get(0)) {
-      if ($("nav-search-input-mbl-signout").val().length > 0) {
-        $("#close").show();
-      } else {
-        $("#close").hide();
-      }
-    }
+    // if (!!$el.closest("nav-search-input-mbl-signout").get(0)) {
+      
+      
+    // }
   
     if (event.keyCode === 13) {
-      if (!!$el.closest("nav-search-input-mbl-signout").get(0)) {
-        if ($("nav-search-input-mbl-signout").val().length > 0) {
-          let params = "/search-results?search=" + $("nav-search-input-mbl-signout").val();
+      event.preventDefault()
+      if (!!$el.closest("#nav-search-input-mbl-signout").get(0)) {
+        if ($("#nav-search-input-mbl-signout").val().length > 0) {
+          let params = "/search-results?search=" + $("#nav-search-input-mbl-signout").val();
           router.push(params);
         }
+      }
+    }
+    else{
+      if ($("#nav-search-input-mbl-signout").val().length > 0) {
+        $("#search-close-mbl-signout").show();
+      } else {
+        $("#search-close-mbl-signout").hide();
       }
     }
 
