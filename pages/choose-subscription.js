@@ -18,7 +18,7 @@ export default function Signin(props) {
   };
   const router = useRouter();
 
-  
+
 
 
   async function wrapClickHandler(event) {
@@ -40,6 +40,9 @@ export default function Signin(props) {
       } else {
         router.push("/signup");
       }
+    }
+    if (!!$el.closest(".get-started").get(0)) {
+      router.push("/");
     }
   }
 
