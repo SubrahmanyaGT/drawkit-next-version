@@ -26,7 +26,6 @@ const changePassword = async (password) => {
 };
 
 export default function ChangePassword(props) {
-
   const parseOptions = {
     replace,
   };
@@ -76,9 +75,6 @@ export default function ChangePassword(props) {
       $("#confirm-pwd-hide").hide();
     }
 
-
-
-
     if (!!$el.closest("#reset").get(0)) {
       console.log(password)
       console.log(confpassword)
@@ -93,7 +89,7 @@ export default function ChangePassword(props) {
         }
       }
       else {
-        $(".validator-message").text("Please make sure your Passwords match");
+        $(".validator-message").text("Please make sure your Passwords match it should be minimum 8 Characters");
       }
       // router.push('/signin')
     }

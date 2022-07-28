@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { useRouter } from "next/router";
 import Script from "next/script";
+import { replace } from "../utils/replace-node";
 
 const resetPassword = async (email) => {
   const respons= await supabase.auth.api.resetPasswordForEmail(email, {
@@ -16,9 +17,14 @@ const resetPassword = async (email) => {
   
 };
 
+
 export default function ResetPassword(props) {
   const [email, setEmail] = useState("");
   const router = useRouter();
+
+  const parseOption={
+    replace
+  }
   async function wrapClickHandler(event) {
     var $el = $(event.target);
     if (!!$el.closest("#reset-email").get(0)) {
@@ -48,9 +54,7 @@ export default function ResetPassword(props) {
         {parseHtml(props.headContent)}
       </Head>
       <div onClick={wrapClickHandler} onChange={wrapChangeHandler}>
-        
-
-        {parseHtml(props.bodyContent)}
+        {parseHtml(props.bodyContent,parseOption)}
       </div>
  
       <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>

@@ -627,45 +627,43 @@ export function replace(node) {
         );
       }
 
-      // confirm form 
-      if (props.className.includes("change-pwd-form")) {
-        return (
-          <div
-            {...props}
-            dangerouslySetInnerHTML={{
-              __html: `
-              
-              <form id="email-form" name="email-form" data-name="Email Form" method="get" class="input-form" aria-label="Email Form">
+      // confirm Password form 
+      // if (props.className.includes("change-pwd-form")) {
+      //   return (
+      //     <div
+      //       {...props}
+      //       dangerouslySetInnerHTML={{
+      //         __html: `
+      //         <form id="email-form" name="email-form" data-name="Email Form" method="get" class="input-form" aria-label="Email Form">
+      //                   <div class="field signup">
+      //                       <img loading="lazy" src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/628b4ed0ac96440104be2d0d_Lock.svg" alt="Password">
+      //                       <input type="password" class="form-input-field w-input" maxlength="256" name="new-password" data-name="new-password" placeholder="Enter a new Password" id="new-password" required="">
+      //                       <img id="new-pwd-revel" loading="lazy" src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/628b4ed075f2ff3e4945af86_View.svg" alt="view Password" class="reveal-pw">
+      //                       <img id="hide-pwd-revel" src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/629e33ac7bb28319dc7cc9a8_eye-close.png" loading="eager" alt="hide password" class="hide-pw">
+      //                   </div>
+      //                   <div class="field signup">
+      //                     <img loading="lazy" src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/628b4ed0ac96440104be2d0d_Lock.svg" alt="Password">
+      //                     <input type="password" class="form-input-field w-input" maxlength="256" name="confirm-password" data-name="confirm-password" placeholder="Confirm Password" id="confirm-password" required="">
+      //                     <img id="revel-pwd-confirm" loading="lazy" src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/628b4ed075f2ff3e4945af86_View.svg" alt="view Password" class="reveal-pw">
+      //                     <img src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/629e33ac7bb28319dc7cc9a8_eye-close.png" loading="eager" id="confirm-pwd-hide" alt="hide password" class="hide-pw">
+      //                  </div>
+      //                  <div class="validator-message reset"></div>
+      //               <div id="reset" class="button-wrap signup">
+      //                   <div class="btn-primary">
+      //                   <div>Submit</div>
+      //                   </div>
+      //                <div class="btn-overlay">
 
-                  <div class="validator-message reset"></div>
-                        <div class="field signup">
-                            <img loading="lazy" src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/628b4ed0ac96440104be2d0d_Lock.svg" alt="Password">
-                            <input type="password" class="form-input-field w-input" maxlength="256" name="new-password" data-name="new-password" placeholder="Enter a new Password" id="new-password" required="">
-                            <img id="new-pwd-revel" loading="lazy" src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/628b4ed075f2ff3e4945af86_View.svg" alt="view Password" class="reveal-pw">
-                            <img id="hide-pwd-revel" src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/629e33ac7bb28319dc7cc9a8_eye-close.png" loading="eager" alt="hide password" class="hide-pw">
-                        </div>
-                        <div class="field signup">
-                          <img loading="lazy" src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/628b4ed0ac96440104be2d0d_Lock.svg" alt="Password">
-                          <input type="password" class="form-input-field w-input" maxlength="256" name="confirm-password" data-name="confirm-password" placeholder="Confirm Password" id="confirm-password" required="">
-                          <img id="revel-pwd-confirm" loading="lazy" src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/628b4ed075f2ff3e4945af86_View.svg" alt="view Password" class="reveal-pw">
-                          <img src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/629e33ac7bb28319dc7cc9a8_eye-close.png" loading="eager" id="confirm-pwd-hide" alt="hide password" class="hide-pw">
-                       </div>
-                    <div id="reset" class="button-wrap signup">
-                        <div class="btn-primary">
-                        <div>Submit</div>
-                        </div>
-                     <div class="btn-overlay">
+      //               </div>
+      //             </div>
 
-                    </div>
-                  </div>
+      //        </form>
 
-             </form>
-
-              `,
-            }}
-          ></div>
-        );
-      }
+      //         `,
+      //       }}
+      //     ></div>
+      //   );
+      // }
       if (props.className.includes("username-letters-big")) {
         if (supabase.auth.session()) {
           return (
