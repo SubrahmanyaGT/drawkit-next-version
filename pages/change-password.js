@@ -26,14 +26,28 @@ const changePassword = async (password) => {
 };
 
 export default function ChangePassword(props) {
-  const [password, setPassword] = useState("");
-  const [confpassword, setConfPassword] = useState("");
-  // constp[errorMsg, setErrorMsg] =useState("");
+
   const parseOptions = {
     replace,
   };
+  const [password, setPassword] = useState("");
+  const [confpassword, setConfPassword] = useState("");
+  // constp[errorMsg, setErrorMsg] =useState("");
+
 
   async function wrapClickHandler(event) {
+
+    
+    let pass = document.querySelector('#new-password');
+    pass.addEventListener('change', () => {
+      setPassword(pass.value)
+    })
+    let compass = document.querySelector('#confirm-password');
+    compass.addEventListener('change', () => {
+      setConfPassword(compass.value)
+    })
+
+
     var $el = $(event.target);
 
     if (!!$el.closest("#new-pwd-revel").get(0)) {
@@ -66,6 +80,8 @@ export default function ChangePassword(props) {
 
 
     if (!!$el.closest("#reset").get(0)) {
+      console.log(password)
+      console.log(confpassword)
       if (password === confpassword && password.length >= 8) {
         const resp = await changePassword(password)
         if (!resp.error) {
@@ -81,31 +97,16 @@ export default function ChangePassword(props) {
       }
       // router.push('/signin')
     }
-  }
-
-  function wrapChangeHandler(event) {
-    var $el = $(event.target);
-    if (!!$el.closest("#new-password").get(0)) {
-      setPassword($el.closest("#new-password").val());
-      $(".validator-message").text("");
-
-    }
-    if (!!$el.closest("#confirm-password").get(0)) {
-      setConfPassword($el.closest("#confirm-password").val());
-      $(".validator-message").text("");
-    }
-
-
-
-
 
   }
+
+
   return (
     <>
       <Head>
         {parseHtml(props.headContent, parseOptions)}
       </Head>
-      <div onClick={wrapClickHandler} onChange={wrapChangeHandler}>
+      <div onClick={wrapClickHandler}>
         {parseHtml(props.bodyContent, parseOptions)}
       </div>
       <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>

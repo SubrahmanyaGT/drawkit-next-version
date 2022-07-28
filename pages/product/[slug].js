@@ -233,7 +233,7 @@ export default function Illustration(props) {
     var $el = $(event.target);
     if ($el.closest(".detail-dropdown").get(0)) {
       const detail_dropdown = document.querySelector('.detail-dropdown');
-      // console.log(detail_dropdown.children[1])
+      console.log(detail_dropdown.children[1])
       detail_dropdown.children[1].classList.toggle('list-pack-details');
 
     }
