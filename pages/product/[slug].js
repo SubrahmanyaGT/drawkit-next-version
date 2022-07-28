@@ -231,7 +231,12 @@ export default function Illustration(props) {
 
   async function wrapClickHandler(event) {
     var $el = $(event.target);
+    if ($el.closest(".detail-dropdown").get(0)) {
+      const detail_dropdown = document.querySelector('.detail-dropdown');
+      // console.log(detail_dropdown.children[1])
+      detail_dropdown.children[1].classList.toggle('list-pack-details');
 
+    }
     // working on like and dislike
 
     if ($el.closest(".like-buttons-wrap").get(0)) {
