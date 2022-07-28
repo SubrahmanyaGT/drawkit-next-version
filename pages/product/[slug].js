@@ -9,7 +9,9 @@ import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { useUser } from "../../lib/authInfo";
 import Link from "next/link";
-const types = []
+import { log } from "logrocket";
+import { type } from "jquery";
+const types = [];
 export default function Illustration(props) {
   const { user, setUser } = useUser();
   let [auth, setAuth] = useState(supabase.auth.session());
@@ -229,44 +231,32 @@ export default function Illustration(props) {
 
   async function wrapClickHandler(event) {
     var $el = $(event.target);
-  
- 
-        // working on like and dislike
+
+    // working on like and dislike
 
     if ($el.closest(".like-buttons-wrap").get(0)) {
       let wf_item_id = $el.closest(".like-buttons-wrap").get(0)
         .children[0].innerText;
       console.log(wf_item_id);
       if (auth) {
-
         if (favourites.length > 0) {
-
-          if (
-            favourites.length > 0 &&
-            favourites.includes(wf_item_id)
-          ) {
+          if (favourites.length > 0 && favourites.includes(wf_item_id)) {
             $el
               .closest(".like-buttons-wrap")
               .get(
                 0
               ).children[1].innerHTML = `<div><img src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/62d14e0fd359cc7cd96e0e25_Like.svg" loading="lazy" alt=""/></div>`;
-            favourites.splice(
-              favourites.indexOf(wf_item_id),
-              1
-            );
-            console.log('favoirate', favourites)
+            favourites.splice(favourites.indexOf(wf_item_id), 1);
+            console.log("favoirate", favourites);
             const { data, error } = await supabase
               .from("user_profile")
               .update({ liked_illustrations: favourites })
               .eq("user_id", auth.user.id);
 
             setFavraties((f) => {
-              return [...f]
+              return [...f];
             });
-
           } else {
-
-
             $el
               .closest(".like-buttons-wrap")
               .get(
@@ -295,7 +285,7 @@ export default function Illustration(props) {
               .update({ liked_illustrations: favourites })
               .eq("user_id", auth.user.id);
             setFavraties((f) => {
-              return [...f]
+              return [...f];
             });
           }
         } else {
@@ -328,24 +318,16 @@ export default function Illustration(props) {
             .eq("user_id", auth.user.id);
 
           setFavraties((f) => {
-            return [...f]
+            return [...f];
           });
         }
-
-
-
-
+      } else {
+        const signinpopup = document.querySelector(".signup-popup");
+        signinpopup.style.display = "flex";
       }
-      else {
-        const signinpopup = document.querySelector('.signup-popup');
-        signinpopup.style.display = "flex"
-      }
-
     }
 
     //dscvsadffddddddddddddddddddddddddddddddddd
-
-
 
     // upgrade plan
 
@@ -366,10 +348,8 @@ export default function Illustration(props) {
     }
   }
 
-
   useEffect(() => {
-
-    console.log('useffect chacking2')
+    console.log("useffect chacking2");
 
     if (auth) {
       (async () => {
@@ -381,16 +361,15 @@ export default function Illustration(props) {
           setFavraties(data[0].liked_illustrations);
         }
       })();
-
     }
     (async () => {
       const { data, error } = await supabase
         .from("illustration_type")
-        .select('name')
-      console.log(data)
+        .select("name");
+      console.log(data);
       data.forEach((ele) => {
-        types.push(ele.name)
-      })
+        types.push(ele.name);
+      });
     })();
   }, [router]);
   // useEffect(()=>{
@@ -399,28 +378,26 @@ export default function Illustration(props) {
   // },[])
 
   console.log(favourites);
-  console.log(types)
+  console.log(types);
 
   useEffect(() => {
-    console.log('checking useEffect');
+    console.log("checking useEffect");
     console.log(types);
-
 
     //heighlight the liked_illustrations
     let likeIcon = document.querySelectorAll(".like-buttons-wrap");
     likeIcon.forEach((icon) => {
       let wf_item_id = icon.children[0].innerText;
-      console.log(wf_item_id)
+      console.log(wf_item_id);
       const like = icon.children[1];
-      icon.addEventListener('click', (e) => {
+      icon.addEventListener("click", (e) => {
         // console.log(e);
         if (auth) {
-
         } else {
-          const signinpopup = document.querySelector('.signup-popup');
-          signinpopup.style.display = "flex"
+          const signinpopup = document.querySelector(".signup-popup");
+          signinpopup.style.display = "flex";
         }
-      })
+      });
       // console.log(like)
       if (favourites.includes(wf_item_id)) {
         // console.log(wf_item_id, icon);
@@ -442,23 +419,18 @@ export default function Illustration(props) {
         </defs>
         </svg></div></div>`;
       } else {
-        icon.children[1].innerHTML = `<div><img src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/62d14e0fd359cc7cd96e0e25_Like.svg" loading="lazy" alt=""/></div>`
+        icon.children[1].innerHTML = `<div><img src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/62d14e0fd359cc7cd96e0e25_Like.svg" loading="lazy" alt=""/></div>`;
       }
-
     });
-    // hiding signup popup 
-    const hide = document.querySelector('.signup-popup');
-    hide.addEventListener('click', hidefn);
+    // hiding signup popup
+    const hide = document.querySelector(".signup-popup");
+    hide.addEventListener("click", hidefn);
     function hidefn() {
       hide.style.display = "none";
     }
 
-    console.log('types', types)
-
-
+    console.log("types", types);
   }, [favourites]);
-
-
 
   return (
     <>
@@ -472,22 +444,20 @@ export default function Illustration(props) {
 }
 
 export const getServerSideProps = async (paths) => {
-
   const cheerio = await import(`cheerio`);
   const axios = (await import(`axios`)).default;
+  let illTypes = [];
+  let illCatg = ["Education"];
+  const { data, error } = await supabase.from("illustration_type").select();
+  if (!error) {
+    illTypes = data.map((el) => el.wf_slug);
+  }
+  const categories = await supabase.from("illustration_category").select();
 
+  if (!categories.error) {
+    illCatg = categories.data.map((category) => category.wf_slug);
+  }
 
-
-  const illTypes = ["2d", "3d", "animations", "icons", "all", "mockups"];
-
-  let illCatg = [
-    "work",
-    "covid-19",
-    "e-commerce",
-    "media",
-    "connecting",
-    "video",
-  ];
   let res;
   if (illTypes.includes(paths.params.slug)) {
     res = await axios(
