@@ -9,6 +9,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { useRouter } from "next/router";
 import NavbarContent from "./navbar";
 import { replace } from "../utils/replace-node";
+import $, { type } from "jquery";
 
 export default function Plans(props) {
   const router = useRouter();
@@ -86,8 +87,6 @@ export default function Plans(props) {
     })
   }, [])
 
-
-
   useEffect(() => {
     if (supabase.auth.session()) {
       fetch("/api/check-active-status", {
@@ -123,9 +122,28 @@ export default function Plans(props) {
     }
   }, []);
 
+  useEffect(()=>{
+    if (typeof window !== "undefined") {
+        $(".cancel,.request-popup").click(function () {
+          $(".request-popup").hide();
+          $("#loader").show();
+          $(".iframe-holder").hide();
+      });
+    }
+  },[])
+
 
   function wrapClickHandler(event) {
     var $el = $(event.target);
+    if (!!$el.closest(".request").get(0)) {
+      //console.log($el);
+      $(".request-popup").show();
+      setTimeout(function () {
+        $("#loader").hide();
+        $(".iframe-holder").show();
+      }, 3000);
+    }
+
     if (!!$el.closest("#subscribe").get(0)) {
       if (auth != null) {
         //strip payment
@@ -145,8 +163,6 @@ export default function Plans(props) {
         router.push("/signup");
       }
     }
-
-
     // if (!!$el.closest("#search-close").get(0)) {
     //   $("#nav-search-input").val("");
     //   $("#close").hide();
@@ -157,22 +173,12 @@ export default function Plans(props) {
     // }
 
   }
-
-
-
   return (
     <>
-
       <div onClick={wrapClickHandler}>
-
         {parseHtml(props.bodyContent, parseOptions)}
       </div>
-
-
       <Script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></Script>
-
-
-
     </>
   );
 }
