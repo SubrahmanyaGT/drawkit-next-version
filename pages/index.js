@@ -457,8 +457,6 @@ export default function Home(props) {
 
   useEffect(() => {
 
-
-
     router.push("/")
 
   }, [router.asPath]);

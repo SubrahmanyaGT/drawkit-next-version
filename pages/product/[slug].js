@@ -237,6 +237,15 @@ export default function Illustration(props) {
       detail_dropdown.children[1].classList.toggle('list-pack-details');
 
     }
+
+    if (!!$el.closest(".request").get(0)) {
+      //console.log($el);
+      $(".request-popup").show();
+      setTimeout(function () {
+        $("#loader").hide();
+        $(".iframe-holder").show();
+      }, 3000);
+    }
     // working on like and dislike
 
     if ($el.closest(".like-buttons-wrap").get(0)) {
