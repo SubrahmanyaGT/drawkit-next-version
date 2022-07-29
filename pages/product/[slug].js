@@ -10,7 +10,7 @@ import { saveAs } from "file-saver";
 import { useUser } from "../../lib/authInfo";
 import Link from "next/link";
 import { log } from "logrocket";
-import { type } from "jquery";
+import $, { type } from "jquery";
 const types = [];
 export default function Illustration(props) {
   const { user, setUser } = useUser();
@@ -363,7 +363,6 @@ export default function Illustration(props) {
   }
 
   useEffect(() => {
-    //console.log("useffect chacking2");
 
     if (auth) {
       (async () => {
@@ -386,10 +385,14 @@ export default function Illustration(props) {
       });
     })();
   }, [router]);
-  // useEffect(()=>{
-  //   const illustration_list=querySelector('.category-illustration-list');
-  //   const illustration-item=qu
-  // },[])
+
+  useEffect(()=>{
+    $(".cancel,.request-popup").click(function () {
+      $(".request-popup").hide();
+      $("#loader").show();
+      $(".iframe-holder").hide();
+    });
+  },[])
 
   //console.log(favourites);
   //console.log(types);
