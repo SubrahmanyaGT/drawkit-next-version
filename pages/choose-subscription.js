@@ -19,8 +19,6 @@ export default function Signin(props) {
   const router = useRouter();
 
 
-
-
   async function wrapClickHandler(event) {
     var $el = $(event.target);
     if (!!$el.closest("#d-subscribe").get(0)) {
@@ -45,8 +43,6 @@ export default function Signin(props) {
       router.push("/");
     }
   }
-
-
 
 
   return (
@@ -78,9 +74,7 @@ export async function getStaticProps({ context }) {
     }
   );
   const html = res.data;
-
   const $ = cheerio.load(html);
-
   const bodyContent = $(`.main-wrapper`).html();
   const headContent = $(`head`).html();
 

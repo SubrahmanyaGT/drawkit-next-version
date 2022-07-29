@@ -16,9 +16,9 @@ export default function Plans(props) {
   const router = useRouter();
   const [premiumUser, setPremiumUser] = useState("inactive");
   let [auth, setAuth] = useState(supabase.auth.session());
-  console.log(router);
+  //console.log(router);
 
-  console.log(user);
+  //console.log(user);
   // useEffect(() => {
   //   if (supabase.auth.session()) {
   //     let uid = supabase.auth.session().user.id;

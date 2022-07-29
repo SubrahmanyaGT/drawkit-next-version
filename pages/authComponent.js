@@ -6,7 +6,7 @@ import { Router } from "next/router";
 export default function InitUser(props) {
   const { user, setUser } = useUser();
   const [userdata, setUserdata] = useState("");
-  console.log("props.auth", props.auth);
+  //console.log("props.auth", props.auth);
   const setAuthInfo = () => {
     if (props.auth) {
       let uid = props.auth.user.id;
@@ -16,7 +16,7 @@ export default function InitUser(props) {
         .select("stripe_user_id")
         .eq("user_id", uid)
         .then(async ({ data, error }) => {
-          console.log(data);
+          //console.log(data);
           if (data.length > 0) {
             fetch("api/check-active-status", {
               method: "POST",
@@ -52,7 +52,7 @@ export default function InitUser(props) {
             }).then(async (response) => {
               if (response.ok) {
                 const { data } = await response.json();
-                console.log(data);
+                //console.log(data);
                 if (data.customer) {
                   supabase
                     .from("stripe_users")
@@ -63,7 +63,7 @@ export default function InitUser(props) {
                         user_id: uid,
                       },
                     ]).then((data) => {
-                      console.log(data);
+                      //console.log(data);
                     });
 
                   supabase.from("user_profile").insert([
@@ -71,7 +71,7 @@ export default function InitUser(props) {
                       user_id: uid,
                     },
                   ]).then((data) => {
-                    console.log('user_profile', data);
+                    //console.log('user_profile', data);
                   });
                 }
               } else {
@@ -86,7 +86,7 @@ export default function InitUser(props) {
     }
   };
   useEffect(() => {
-    console.log("init");
+    //console.log("init");
     setAuthInfo();
   }, [props.auth]);
 

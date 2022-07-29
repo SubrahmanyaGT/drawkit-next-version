@@ -9,7 +9,7 @@ import Script from "next/script";
 import { replace } from "../utils/replace-node";
 
 const supabaseSignUp = async (email, password) => {
-  console.log(email, password);
+  // console.log(email, password);
 
   let Supabaseuser = await supabase.auth.signUp({
     email: email,
@@ -86,12 +86,12 @@ export default function Signup(props) {
 
     if (!!$el.closest("#signup").get(0)) {
       validateEmailPassword();
-      console.log(email, password);
+      // console.log(email, password);
 
       if (valEmail && valPassword) {
         if ($("#d-signup-checkbox").is(":checked")) {
           let Supabaseuser = await supabaseSignUp(email, password);
-          console.log("data", Supabaseuser);
+          // console.log("data", Supabaseuser);
 
           if (!Supabaseuser.error) {
             router.push({
@@ -139,16 +139,16 @@ export default function Signup(props) {
       }
       if (!!$el.closest("#d-signup-pass").get(0)) {
         validateEmailPassword();
-        console.log(email, password);
+        // console.log(email, password);
 
         if (valEmail && valPassword) {
           if ($(".w-checkbox-input").hasClass("w--redirected-checked")) {
             let data = await supabaseSignUp(email, password);
-            console.log("data", data);
+            // console.log("data", data);
             if (data) {
               router.push("/");
             } else {
-              console.log("asdfadf");
+              // console.log("asdfadf");
             }
           } else {
             $(".w-checkbox-input").css("border", "1px solid red");
@@ -214,7 +214,7 @@ export async function getServerSideProps({ context }) {
     .join("")
     .toString();
 
-  console.log($("#d-signup-button")[0]);
+  // console.log($("#d-signup-button")[0]);
   const bodyContent = $(`.page-wrapper`).html();
   const headContent = $(`head`).html();
   return {

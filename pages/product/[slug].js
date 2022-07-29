@@ -216,13 +216,13 @@ export default function Illustration(props) {
     ) {
       const file = path.data[0].downloadable_illustration;
       const fileName = file.substring(file.lastIndexOf("/") + 1, file.length);
-      console.log(fileName);
+      //console.log(fileName);
 
       const { data, error } = await supabase.storage
         .from("illustration-downloadable")
         .download(fileName);
       const strip = await supabase.from("stripe_users").select("*");
-      console.log(strip);
+      //console.log(strip);
       saveAs(data, fileName);
     } else {
       router.push("/plans");
@@ -233,7 +233,7 @@ export default function Illustration(props) {
     var $el = $(event.target);
     if ($el.closest(".detail-dropdown").get(0)) {
       const detail_dropdown = document.querySelector('.detail-dropdown');
-      console.log(detail_dropdown.children[1])
+      //console.log(detail_dropdown.children[1])
       detail_dropdown.children[1].classList.toggle('list-pack-details');
 
     }
@@ -242,7 +242,7 @@ export default function Illustration(props) {
     if ($el.closest(".like-buttons-wrap").get(0)) {
       let wf_item_id = $el.closest(".like-buttons-wrap").get(0)
         .children[0].innerText;
-      console.log(wf_item_id);
+      //console.log(wf_item_id);
       if (auth) {
         if (favourites.length > 0) {
           if (favourites.length > 0 && favourites.includes(wf_item_id)) {
@@ -252,7 +252,7 @@ export default function Illustration(props) {
                 0
               ).children[1].innerHTML = `<div><img src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/62d14e0fd359cc7cd96e0e25_Like.svg" loading="lazy" alt=""/></div>`;
             favourites.splice(favourites.indexOf(wf_item_id), 1);
-            console.log("favoirate", favourites);
+            //console.log("favoirate", favourites);
             const { data, error } = await supabase
               .from("user_profile")
               .update({ liked_illustrations: favourites })
@@ -354,7 +354,7 @@ export default function Illustration(props) {
   }
 
   useEffect(() => {
-    console.log("useffect chacking2");
+    //console.log("useffect chacking2");
 
     if (auth) {
       (async () => {
@@ -371,7 +371,7 @@ export default function Illustration(props) {
       const { data, error } = await supabase
         .from("illustration_type")
         .select("name");
-      console.log(data);
+      //console.log(data);
       data.forEach((ele) => {
         types.push(ele.name);
       });
@@ -382,18 +382,18 @@ export default function Illustration(props) {
   //   const illustration-item=qu
   // },[])
 
-  console.log(favourites);
-  console.log(types);
+  //console.log(favourites);
+  //console.log(types);
 
   useEffect(() => {
-    console.log("checking useEffect");
-    console.log(types);
+    //console.log("checking useEffect");
+    //console.log(types);
 
     //heighlight the liked_illustrations
     let likeIcon = document.querySelectorAll(".like-buttons-wrap");
     likeIcon.forEach((icon) => {
       let wf_item_id = icon.children[0].innerText;
-      console.log(wf_item_id);
+      //console.log(wf_item_id);
       const like = icon.children[1];
       icon.addEventListener("click", (e) => {
         // console.log(e);
@@ -434,7 +434,7 @@ export default function Illustration(props) {
       hide.style.display = "none";
     }
 
-    console.log("types", types);
+    //console.log("types", types);
   }, [favourites]);
 
   return (

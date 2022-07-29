@@ -31,7 +31,7 @@ export default function Illustration(props) {
         .select("stripe_user_id")
         .eq("user_id", uid)
         .then(async ({ data, error }) => {
-          console.log(data[0].stripe_user_id);
+          //console.log(data[0].stripe_user_id);
           if (data.length > 0) {
             fetch("api/cancel-subscriptions", {
               method: "POST",
@@ -45,7 +45,7 @@ export default function Illustration(props) {
               })
               .then(function (data) {
                 if (!data.error) {
-                  console.log(data);
+                  //console.log(data);
                   alert("successfully canceled your subscription");
                 } else {
                   alert("You Have no active subscriptions");
@@ -79,7 +79,7 @@ export default function Illustration(props) {
         .select("stripe_user_id")
         .eq("user_id", uid)
         .then(async ({ data, error }) => {
-          console.log(data);
+          //console.log(data);
           if (data.length > 0) {
             fetch("/api/payment-intents", {
               method: "POST",
@@ -189,17 +189,17 @@ export default function Illustration(props) {
         <div class="bill-date"><a href="${invoice.hosted_invoice_url
           }" target='_blank'><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download" style="&#10;    color: black;&#10;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a></div></div>
         `;
-        console.log(paymentDetails.invoices);
-        console.log(
-          (payment.amount_received / 100).toFixed(2) +
-          " " +
-          payment.currency.toUpperCase()
-        );
-        console.log(unixDateToLocalDate(payment.created));
+        //console.log(paymentDetails.invoices);
+        //console.log(
+          //(payment.amount_received / 100).toFixed(2) +
+          //" " +
+         // payment.currency.toUpperCase()
+        //);
+        //console.log(unixDateToLocalDate(payment.created));
 
-        console.log(invoice.hosted_invoice_url);
-        console.log(unixDateToLocalDate(invoice.lines.data[0].period.end));
-        console.log(unixDateToLocalDate(invoice.lines.data[0].period.start));
+        //console.log(invoice.hosted_invoice_url);
+        //console.log(unixDateToLocalDate(invoice.lines.data[0].period.end));
+        //console.log(unixDateToLocalDate(invoice.lines.data[0].period.start));
       });
       parentDiv.innerHTML = innerText;
     }
@@ -211,7 +211,7 @@ export default function Illustration(props) {
       document.getElementById("last-name").value = lastName;
     }
   }, [firstName, lastName]);
-  console.log(firstName, lastName);
+  //console.log(firstName, lastName);
   async function wrapClickHandler(event) {
     var $el = $(event.target);
 
@@ -265,11 +265,11 @@ export default function Illustration(props) {
 
     if (!!$el.closest("#first-name").get(0)) {
       setFirstName($el.closest("#first-name").val());
-      console.log(firstName);
+      //console.log(firstName);
     }
     if (!!$el.closest("#last-name").get(0)) {
       setLastName($el.closest("#last-name").val());
-      console.log(lastName);
+      //console.log(lastName);
     }
   }
 
@@ -277,7 +277,7 @@ export default function Illustration(props) {
 
     const closeButtons = document.querySelectorAll('.cancel-favourite-wrapper');
     const favourite_details = document.querySelectorAll('.favourite-details');
-    console.log('closeButtons', closeButtons)
+    //console.log('closeButtons', closeButtons)
     closeButtons.forEach((ele, index1) => {
       // console.log('ele', ele)
       ele.addEventListener('click', (e) => {
@@ -285,7 +285,7 @@ export default function Illustration(props) {
           if (index2 == index1) {
             let liked_illustrations = favraties;
             const wf_item_id = ele.children[0].children[0].innerText;
-            console.log(wf_item_id);
+            //console.log(wf_item_id);
             liked_illustrations.splice(
               liked_illustrations.indexOf(wf_item_id),
               1
@@ -295,7 +295,7 @@ export default function Illustration(props) {
               .update({ liked_illustrations: liked_illustrations })
               .eq("user_id", auth.user.id).then(() => {
                 ele.style.display = "none"
-                console.log("pack Dxelete Successfully")
+                //console.log("pack Dxelete Successfully")
               })
           }
         })

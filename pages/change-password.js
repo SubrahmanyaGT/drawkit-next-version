@@ -76,8 +76,8 @@ export default function ChangePassword(props) {
     }
 
     if (!!$el.closest("#reset").get(0)) {
-      console.log(password)
-      console.log(confpassword)
+      //console.log(password)
+      //console.log(confpassword)
       if (password === confpassword && password.length >= 8) {
         const resp = await changePassword(password)
         if (!resp.error) {

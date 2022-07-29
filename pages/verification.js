@@ -65,7 +65,7 @@ export default function Signin(props) {
     replace,
   };
   const router = useRouter();
-  console.log(router.query.email);
+  // console.log(router.query.email);
   useEffect(() => {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
       setValEmail(true);
@@ -79,7 +79,7 @@ export default function Signin(props) {
     }
   }, [email, password]);
 
-  console.log(supabase.auth);
+  // console.log(supabase.auth);
   async function wrapClickHandler(event) {
     var $el = $(event.target);
     if (!!$el.closest("#verify").get(0)) {
@@ -89,13 +89,13 @@ export default function Signin(props) {
       if (verificationResult.error) {
         $("#verify-error-msg").text(verificationResult.error.message);
       } else {
-        console.log(verificationResult);
-        console.log(
-          await createStripeUser(
-            verificationResult.user.email,
-            verificationResult.user.id
-          )
-        );
+        // console.log(verificationResult);
+        // console.log(
+        //   await createStripeUser(
+        //     verificationResult.user.email,
+        //     verificationResult.user.id
+        //   )
+        // );
         router.push('/choose-subscription')
       }
     }

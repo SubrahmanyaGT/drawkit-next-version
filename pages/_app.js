@@ -18,7 +18,6 @@ LogRocket.init("p5qzuw/drawkit-test");
 
 function MyApp(props) {
   const router = useRouter();
-
   const [loading, setLoading] = useState(true);
   const { Component, pageProps } = props;
   const [auth, setAuth] = useState(supabase.auth.session());
@@ -584,14 +583,14 @@ function MyApp(props) {
     });
 
 
-    console.log('dheeeeeeeeeeeeeeeeeeeeeeee')
+    //console.log('dheeeeeeeeeeeeeeeeeeeeeeee')
 
   }, [favourites]);
 
   // const router = useRouter();
   useEffect(() => {
 
-    console.log(router);
+   // console.log(router);
     if (typeof Jetboost !== "undefined") {
       Jetboost = null;
     }
@@ -646,7 +645,7 @@ function MyApp(props) {
     if ($el.closest(".like-buttons-wrap").get(0)) {
       let wf_item_id = $el.closest(".like-buttons-wrap").get(0)
         .children[0].innerText;
-      console.log(wf_item_id);
+      //console.log(wf_item_id);
       if (auth) {
 
         if (favourites.length > 0) {
@@ -664,7 +663,7 @@ function MyApp(props) {
               favourites.indexOf(wf_item_id),
               1
             );
-            console.log('favoirate', favourites)
+            //console.log('favoirate', favourites)
             const { data, error } = await supabase
               .from("user_profile")
               .update({ liked_illustrations: favourites })
@@ -771,7 +770,7 @@ function MyApp(props) {
   if (Component.getLayout) {
     navLayoutStyle = { display: "none" };
   }
-  console.log(props.stars.supportScripts);
+  //console.log(props.stars.supportScripts);
 
   return (
     <>
@@ -843,7 +842,7 @@ MyApp.getInitialProps = async (ctx) => {
       if (src) return src;
     });
   // .map((m) => `<Script strategy="afterInteractive" type="text/javascript" src="${m}"></Script>`)
-  console.log("supportScripts", $(`body script`));
+  //console.log("supportScripts", $(`body script`));
   return {
     stars: {
       headContent: headContent,

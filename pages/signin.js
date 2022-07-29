@@ -9,12 +9,12 @@ import Script from "next/script";
 import { replace } from "../utils/replace-node";
 
 const supabaseSignIn = async (email, password) => {
-  console.log(email, password);
+  // console.log(email, password);
   const { user, session, error } = await supabase.auth.signIn({
     email: email,
     password: password,
   });
-  console.log(user, session, error);
+  // console.log(user, session, error);
   if (!error) {
     await supabase
       .from('user_profile')
@@ -103,7 +103,7 @@ export default function Signin(props) {
           valEmail &&
           valPassword
         ) {
-          console.log(await supabaseSignIn(email, password));
+          // console.log(await supabaseSignIn(email, password));
           router.push("/");
         } else {
           $(".validator-message").text("Invalid Signin Attempt");
@@ -116,12 +116,12 @@ export default function Signin(props) {
 
     document.getElementById('signin-div').addEventListener('change', wrapChangeHandler)
     function wrapChangeHandler(event) {
-      console.log('change');
+      // console.log('change');
       var $el = $(event.target);
       if (!!$el.closest("#d-signin-email").get(0)) {
         setEmail($el.closest("#d-signin-email").val());
         $(".validator-message").text("");
-        console.log($el.closest("#d-signin-email").val());
+        // console.log($el.closest("#d-signin-email").val());
       }
       if (!!$el.closest("#d-signin-pass").get(0)) {
         setPassword($el.closest("#d-signin-pass").val());

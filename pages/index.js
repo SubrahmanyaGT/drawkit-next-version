@@ -30,7 +30,7 @@ export default function Home(props) {
   supabase.auth.onAuthStateChange((event, session) => {
     setAuth(supabase.auth.session());
   });
-  console.log(user);
+  //console.log(user);
   const router = useRouter();
 
   function replace(node) {
@@ -171,7 +171,7 @@ export default function Home(props) {
         }
         if (attribs.className) {
           if (props.className.includes("upgrade-plan-link ")) {
-            console.log(node.children[2].children[0].data);
+            //console.log(node.children[2].children[0].data);
 
             if (!supabase.auth.session()) {
               // not sigedin user
@@ -306,7 +306,7 @@ export default function Home(props) {
     likeIcon.forEach((icon) => {
       let wf_item_id = icon.children[0].innerText;
       if (favourites.includes(wf_item_id)) {
-        console.log(wf_item_id, icon);
+        //console.log(wf_item_id, icon);
         icon.children[1].innerHTML = `<div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g filter="url(#filter0_i_81_74)">
         <path d="M20.7601 4.8802C23.0001 7.1202 23.0001 10.6402 20.7601 12.7202L19.9601 13.5202L13.5601 19.7602C12.6001 20.5602 11.1601 20.7202 10.3601 19.7602L3.9601 13.5202L3.1601 12.7202C1.0801 10.6402 1.0801 7.1202 3.1601 4.8802C5.4001 2.6402 8.9201 2.6402 11.1601 4.8802L11.9601 5.6802L12.7601 4.8802C15.0001 2.8002 18.5201 2.8002 20.7601 4.8802Z" fill="#E62020"></path>
@@ -328,7 +328,7 @@ export default function Home(props) {
         icon.children[1].innerHTML = `<div><img src="https://assets.website-files.com/626f5d0ae6c15c780f2dd5c4/62d14e0fd359cc7cd96e0e25_Like.svg" loading="lazy" alt=""/></div>`
       }
     });
-    console.log('useEffect testing')
+    //console.log('useEffect testing')
   }, [favourites, router]);
 
 
@@ -336,7 +336,7 @@ export default function Home(props) {
     var $el = $(event.target);
 
     if (!!$el.closest(".request").get(0)) {
-      console.log($el);
+      //console.log($el);
       $(".request-popup").show();
       setTimeout(function () {
         $("#loader").hide();
@@ -347,7 +347,7 @@ export default function Home(props) {
     if ($el.closest(".like-buttons-wrap").get(0)) {
       let wf_item_id = $el.closest(".like-buttons-wrap").get(0)
         .children[0].innerText;
-      console.log(wf_item_id);
+      //console.log(wf_item_id);
       if (auth) {
 
         if (favourites.length > 0) {

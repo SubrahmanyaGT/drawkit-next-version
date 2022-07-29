@@ -30,7 +30,7 @@ let pcheck = () => {
   }
 };
 
-console.log(premiumUser, supabase.auth.session());
+// console.log(premiumUser, supabase.auth.session());
 // pcheck()
 function isUrlInternal(link) {
   if (
@@ -48,7 +48,7 @@ function isUrlInternal(link) {
 export function replace(node) {
   const attribs = node.attribs || {};
   if (attribs.hasOwnProperty("class")) {
-    console.log();
+    // console.log();
     attribs["className"] = attribs["class"].split(" ").filter(v => !v.match('w-form')).join(" ");
     delete attribs.class;
   }
@@ -723,7 +723,7 @@ export function replace(node) {
       // }
       if (props.className.includes("navbar-button-wrap")) {
         if (supabase.auth.session()) {
-          console.log(supabase.auth.session(), "supabase.auth.session()");
+          // console.log(supabase.auth.session(), "supabase.auth.session()");
           return (
             <div className="user-profile" id="user-name">
               <div className="user-name-wrap">

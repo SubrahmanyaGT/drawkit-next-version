@@ -31,13 +31,8 @@ export default function Slug(props) {
   useEffect(() => {
     // document.querySelector('.like-buttons-wrap').innerText;
     // const faq = document.querySelectorAll('.faq');
-
-
     const faq_answer = document.querySelectorAll('.faq-answer');
-
     const plus_icon_faq = document.querySelectorAll('.plus-icon-faq');
-
-
     const faq_question = document.querySelectorAll('.faq-question');
     faq_question.forEach((ele, index1) => {
 
@@ -92,7 +87,7 @@ export async function getServerSideProps(props) {
   res = await axios(
     `https://drawkit-v2.webflow.io/${props.query.slug.join("/")}`
   ).catch((err) => {
-    console.error(err);
+    //console.error(err);
   });
 
   if (res) {
