@@ -9,8 +9,10 @@ import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { useUser } from "../../lib/authInfo";
 import Link from "next/link";
-import { log } from "logrocket";
+import LogRocket from "logrocket";
 import $, { type } from "jquery";
+
+
 const types = [];
 export default function Illustration(props) {
   const { user, setUser } = useUser();
@@ -361,6 +363,13 @@ export default function Illustration(props) {
       }
     }
   }
+
+  useEffect(() => {
+    document.getElementById('all-home').classList.add('active-all-black')
+    $('.filter-all-button').click(function () {
+      document.getElementById('all-home').classList.remove('active-all-black')
+    })
+  }, [router])
 
   useEffect(() => {
 

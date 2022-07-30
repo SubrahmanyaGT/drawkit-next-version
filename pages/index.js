@@ -10,7 +10,7 @@ import { useUser } from "../lib/authInfo";
 // import { replace } from "../utils/replace-node";
 import { useRouter } from "next/router";
 import { log } from "logrocket";
-import {} from './navbar'
+import { } from './navbar'
 
 export default function Home(props) {
 
@@ -452,6 +452,8 @@ export default function Home(props) {
       //     // e.click()
       //   }
       // })
+
+
     }
   }, [])
 
@@ -460,6 +462,13 @@ export default function Home(props) {
     router.push("/")
 
   }, [router.asPath]);
+
+  useEffect(() => {
+    document.getElementById('all-home').classList.add('active-all-black')
+    $('.filter-all-button').click(function () {
+      document.getElementById('all-home').classList.remove('active-all-black')
+    })
+  }, [router])
 
 
   // if(!supabase.auth.session()){

@@ -271,3 +271,8 @@
 .list-pack-details {
   display: block;
 }
+
+.active-all-black{
+  background-color: black;
+  color: white;
+}

@@ -132,9 +132,9 @@ export default function Signin(props) {
 
   return (
     <>
-      <Head>
+      {/* <Head>
         {parseHtml(props.headContent, parseOptions)}
-      </Head>
+      </Head> */}
       <div
         id="signin-div"
         onClick={wrapClickHandler}

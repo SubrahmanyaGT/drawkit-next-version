@@ -498,14 +498,15 @@ function MyApp(props) {
         return (
           <Script
             {...attribs}
+            strategy="afterInteractive"
             dangerouslySetInnerHTML={{ __html: content }}
           ></Script>
         );
       } else {
         <Script
           {...attribs}
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: content }}
-          strategy="lazyOnload"
         ></Script>;
       }
     }
@@ -615,8 +616,6 @@ function MyApp(props) {
           document.querySelector('.menu-icon').click()
         }
       })(document);
-
-
 
     }
 
@@ -741,31 +740,14 @@ function MyApp(props) {
           });
         }
 
-
-
-
       }
       else {
         const signinpopup = document.querySelector('.signup-popup');
         signinpopup.style.display = "flex"
       }
-
     }
 
-
-
-
   }
-
-
-
-
-
-
-
-
-
-
   let navLayoutStyle = {};
   if (Component.getLayout) {
     navLayoutStyle = { display: "none" };
@@ -814,6 +796,8 @@ function MyApp(props) {
               {parseHtml(props.stars.footer, parseOptions)}
             </div>
             {parseHtml(props.stars.globalStyles, parseOptions)}
+
+            <Script id="cookieyes" strategy="afterInteractive" src="https://cdn-cookieyes.com/client_data/4224703389d78ef8db454853/script.js" />
           </div>
         )}
       </UserProvider>

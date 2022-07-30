@@ -65,6 +65,7 @@ export default function Slug(props) {
     <>
       <Script
         defer
+        
         src="https://cdn.jsdelivr.net/npm/@finsweet/attributes-selectcustom@1/selectcustom.js"
       ></Script>
       <div onClick={wrapClickHandler}>
@@ -110,7 +111,7 @@ export async function getServerSideProps(props) {
       .filter((src) => {
         if (src) return src;
       })
-      .map((m) => `<Script type="text/javascript" src="${m}"></Script>`)
+      .map((m) => `<Script type="text/javascript"  strategy="afterInteractive" src="${m}"></Script>`)
       .join("");
 
     return {
