@@ -364,12 +364,12 @@ export default function Illustration(props) {
     }
   }
 
-  useEffect(() => {
-    document.getElementById('all-home').classList.add('active-all-black')
-    $('.filter-all-button').click(function () {
-      document.getElementById('all-home').classList.remove('active-all-black')
-    })
-  }, [router])
+  // useEffect(() => {
+  //   document.getElementById('all-home').classList.add('active-all-black')
+  //   $('.filter-all-button').click(function () {
+  //     document.getElementById('all-home').classList.remove('active-all-black')
+  //   })
+  // }, [router])
 
   useEffect(() => {
 
