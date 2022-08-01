@@ -372,7 +372,6 @@ export default function Illustration(props) {
   // }, [router])
 
   useEffect(() => {
-
     if (auth) {
       (async () => {
         const { data, error } = await supabase

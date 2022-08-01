@@ -797,7 +797,7 @@ function MyApp(props) {
             </div>
             {parseHtml(props.stars.globalStyles, parseOptions)}
 
-            <Script id="cookieyes" strategy="afterInteractive" src="" />
+            <Script id="cookieyes" strategy="afterInteractive" src="https://cdn-cookieyes.com/client_data/4224703389d78ef8db454853/script.js" />
           </div>
         )}
       </UserProvider>
