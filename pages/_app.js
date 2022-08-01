@@ -797,7 +797,9 @@ function MyApp(props) {
             </div>
             {parseHtml(props.stars.globalStyles, parseOptions)}
 
-            <Script id="cookieyes" strategy="afterInteractive" src="https://cdn-cookieyes.com/client_data/31b4be05b2b0b55025b03191/script.js" />
+            
+          <Script id="cookieyes" strategy="afterInteractive" src="https://cdn-cookieyes.com/client_data/31b4be05b2b0b55025b03191/script.js" />   
+          <Script strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-S4VFVG86KB"></Script> 
           </div>
         )}
       </UserProvider>
