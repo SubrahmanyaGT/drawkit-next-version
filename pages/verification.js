@@ -87,7 +87,8 @@ export default function Signin(props) {
       const userEmail = router.query.email;
       const verificationResult = await verifyOTP(token, userEmail);
       if (verificationResult.error) {
-        $("#verify-error-msg").text(verificationResult.error.message);
+         document.querySelector('##verify-error-msg').innerText = "Invalid OTP"
+        //$("#verify-error-msg").text(verificationResult.error.message);
       } else {
         // console.log(verificationResult);
         // console.log(
