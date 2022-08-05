@@ -46,9 +46,9 @@ export default function Illustration(props) {
               .then(function (data) {
                 if (!data.error) {
                   //console.log(data);
-                  alert("successfully canceled your subscription");
+                  alert("successfully cancelled your subscription");
                 } else {
-                  alert("You Have no active subscriptions");
+                  alert("You have no active subscriptions");
                 }
               });
           }
@@ -213,31 +213,64 @@ export default function Illustration(props) {
     var $el = $(event.target);
 
     if (!!$el.closest("#save-changes").get(0)) {
-      if (
-        !!firstName &&
-        !!lastName &&
-        (firstName != savefName || lastName != savelName)
-      ) {
-        supabase
-          .from("user_profile")
-          .upsert(
-            {
-              first_name: firstName,
-              last_name: lastName,
-              user_id: supabase.auth.session().user.id,
-            },
-            { onConflict: "user_id" }
-          )
-          .then(({ data, error }) => {
-            if (error) {
-              alert(error.message);
-            } else {
-              setsavefName(firstName);
-              setsavelName(lastName);
-              alert("Changes has been successfully updated");
-            }
-          });
+      if (document.querySelector('#first-name').value == "") {
+        alert("Please enter your first and last name");
+      } else if (document.querySelector('#last-name').value == "") {
+        alert("Please enter your last name");
+      } else {
+
+        if (
+          !!firstName &&
+          !!lastName &&
+          (firstName != savefName || lastName != savelName)
+        ) {
+          supabase
+            .from("user_profile")
+            .upsert(
+              {
+                first_name: firstName,
+                last_name: lastName,
+                user_id: supabase.auth.session().user.id,
+              },
+              { onConflict: "user_id" }
+            )
+            .then(({ data, error }) => {
+              if (error) {
+                alert(error.message);
+              } else {
+                alert("Changes has been successfully updated");
+                setsavefName(firstName);
+                setsavelName(lastName);
+              }
+            });
+        }
       }
+      //Before update firstname 
+      // if (
+      //   !!firstName &&
+      //   !!lastName &&
+      //   (firstName != savefName || lastName != savelName)
+      // ) {
+      //   supabase
+      //     .from("user_profile")
+      //     .upsert(
+      //       {
+      //         first_name: firstName,
+      //         last_name: lastName,
+      //         user_id: supabase.auth.session().user.id,
+      //       },
+      //       { onConflict: "user_id" }
+      //     )
+      //     .then(({ data, error }) => {
+      //       if (error) {
+      //         alert(error.message);
+      //       } else {
+      //         setsavefName(firstName);
+      //         setsavelName(lastName);
+      //         alert("Changes has been successfully updated");
+      //       }
+      //     });
+      // }
     }
 
     if (!!$el.closest(".subscription-plan-button").get(0)) {

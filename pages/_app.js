@@ -598,8 +598,6 @@ function MyApp(props) {
     });
 
 
-    //console.log('dheeeeeeeeeeeeeeeeeeeeeeee')
-
   }, [favourites]);
 
   // const router = useRouter();
