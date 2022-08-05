@@ -22,9 +22,18 @@ function MyApp(props) {
   const { Component, pageProps } = props;
   const [auth, setAuth] = useState(supabase.auth.session());
   let [favourites, setFavraties] = useState([]);
-
-
-
+  const [firstName, setFirstName] = useState('')
+  useEffect(() => {
+    if (supabase.auth.session() != null) {
+      supabase
+        .from('user_profile')
+        .select('*')
+        .eq('user_id', auth.user.id)
+        .then((data) => {
+          setFirstName(data.data[0].first_name)
+        })
+    }
+  }, [router, firstName, auth])
   supabase.auth.onAuthStateChange((event, session) => {
     setAuth(supabase.auth.session());
   });
@@ -329,9 +338,14 @@ function MyApp(props) {
                     {auth.user.email.slice(0, 1)}
                   </div>
                   <div className="user-name">
-                    {supabase.auth
-                      .session()
-                      .user.email.slice(0, auth.user.email.indexOf("@"))}
+                  {
+                    (firstName == "EMPTY" || firstName == "NULL" || firstName == "") ? (
+                      supabase.auth
+                          .session()
+                          .user.email.slice(0, auth.user.email.indexOf("@"))
+                      ) :
+                        (firstName)
+                    }
                   </div>
                 </div>
                 <div className="my-profile-wrap">

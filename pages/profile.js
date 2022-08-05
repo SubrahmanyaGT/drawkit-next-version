@@ -155,13 +155,8 @@ export default function Illustration(props) {
       } else {
         document.querySelector(".favourite-content-wrapper").innerHTML = `
         <div class="w-layout-grid favourites-grid-profile"><div id="w-node-_1f6cf04d-131e-d345-fba9-91e37f091557-94a70818" class="no-favourite-text">No Illustrations has been Liked Yet...</div></div>
-        
         `
       }
-
-
-
-
     }
 
 
@@ -209,8 +204,10 @@ export default function Illustration(props) {
     if (supabase.auth.session() != null) {
       document.getElementById("first-name").value = firstName;
       document.getElementById("last-name").value = lastName;
+      document.querySelector(".user-name").innerText = savefName;
+      document.querySelector('.user').innerText = savefName;
     }
-  }, [firstName, lastName]);
+  }, [firstName, lastName, savefName]);
   //console.log(firstName, lastName);
   async function wrapClickHandler(event) {
     var $el = $(event.target);
