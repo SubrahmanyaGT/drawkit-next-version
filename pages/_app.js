@@ -335,12 +335,19 @@ function MyApp(props) {
               <div className="user-profile" id="user-name">
                 <div className="user-name-wrap">
                   <div className="letter-avatar">
-                    {auth.user.email.slice(0, 1)}
+                    {
+                      (firstName == "EMPTY" || firstName == "NULL" || firstName == "") ? (
+                        supabase.auth
+                          .session()
+                          .user.email.slice(0, 1)
+                      ) :
+                        (firstName.slice(0, 1))
+                    }
                   </div>
                   <div className="user-name">
-                  {
-                    (firstName == "EMPTY" || firstName == "NULL" || firstName == "") ? (
-                      supabase.auth
+                    {
+                      (firstName == "EMPTY" || firstName == "NULL" || firstName == "") ? (
+                        supabase.auth
                           .session()
                           .user.email.slice(0, auth.user.email.indexOf("@"))
                       ) :
@@ -603,7 +610,7 @@ function MyApp(props) {
   // const router = useRouter();
   useEffect(() => {
 
-   // console.log(router);
+    // console.log(router);
     if (typeof Jetboost !== "undefined") {
       Jetboost = null;
     }
@@ -809,9 +816,9 @@ function MyApp(props) {
             </div>
             {parseHtml(props.stars.globalStyles, parseOptions)}
 
-            
-          <Script id="cookieyes" strategy="afterInteractive" src="https://cdn-cookieyes.com/client_data/31b4be05b2b0b55025b03191/script.js" />   
-          <Script strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-S4VFVG86KB"></Script> 
+
+            <Script id="cookieyes" strategy="afterInteractive" src="https://cdn-cookieyes.com/client_data/31b4be05b2b0b55025b03191/script.js" />
+            <Script strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-S4VFVG86KB"></Script>
           </div>
         )}
       </UserProvider>

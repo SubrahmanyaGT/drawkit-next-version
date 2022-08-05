@@ -186,9 +186,9 @@ export default function Illustration(props) {
         `;
         //console.log(paymentDetails.invoices);
         //console.log(
-          //(payment.amount_received / 100).toFixed(2) +
-          //" " +
-         // payment.currency.toUpperCase()
+        //(payment.amount_received / 100).toFixed(2) +
+        //" " +
+        // payment.currency.toUpperCase()
         //);
         //console.log(unixDateToLocalDate(payment.created));
 
@@ -206,6 +206,9 @@ export default function Illustration(props) {
       document.getElementById("last-name").value = lastName;
       document.querySelector(".user-name").innerText = savefName;
       document.querySelector('.user').innerText = savefName;
+      document.querySelector('.letter-avatar').innerText = savefName.slice(0, 1)
+      document.querySelector('.username-letters-big').innerText = savefName.slice(0, 1)
+      document.querySelector('.username-letters').innerText = savefName.slice(0, 1);
     }
   }, [firstName, lastName, savefName]);
   //console.log(firstName, lastName);
