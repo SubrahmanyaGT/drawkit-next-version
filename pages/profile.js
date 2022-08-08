@@ -228,12 +228,12 @@ export default function Illustration(props) {
         document.querySelector(".user-name").innerText = nameChecker;
         // username-letters
         document.querySelector('.letter-avatar').innerText = nameChecker.slice(0, 1)
-        document.querySelector('.username-letters').innerText = nameChecker.slice(0, 1)
+        document.querySelector('.username-letters-small').innerText = nameChecker.slice(0, 1)
 
       } else {
         document.querySelector(".user-name").innerText = auth.user.email.split("@")[0];
         document.querySelector('.letter-avatar').innerText = auth.user.email.split("")[0]
-        document.querySelector('.username-letters').innerText = auth.user.email.split("")[0]
+        document.querySelector('.username-letters-small').innerText = auth.user.email.split("")[0]
       }
 
     }

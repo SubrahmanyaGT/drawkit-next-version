@@ -673,10 +673,10 @@ export function replace(node) {
           );
         }
       }
-      if (props.className.includes("username-letters")) {
+      if (props.className.includes("username-letters-small")) {
         if (supabase.auth.session()) {
           return (
-            <div className="username-letters small">
+            <div className="username-letters-small small">
               {supabase.auth.session().user.email.slice(0, 1).toUpperCase()}
             </div>
           );
