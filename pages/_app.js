@@ -52,7 +52,7 @@ function MyApp(props) {
       // }
 
     }
-  }, [savefName, savelName, router]);
+  }, [savefName, nameChecker, savelName, router]);
 
 
 
@@ -360,7 +360,7 @@ function MyApp(props) {
                   <div className="letter-avatar">
                     {
                       (nameChecker != null) ?
-                        savefName.slice(0, 1)
+                        nameChecker.slice(0, 1)
                         :
                         auth.user.email.split("")[0]
 
@@ -369,7 +369,7 @@ function MyApp(props) {
                   <div className="user-name">
                     {
                       (nameChecker != null) ?
-                        savefName
+                        nameChecker
                         :
                         auth.user.email.split("@")[0]
                     }
