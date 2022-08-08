@@ -22,12 +22,9 @@ function MyApp(props) {
   const { Component, pageProps } = props;
   const [auth, setAuth] = useState(supabase.auth.session());
   let [favourites, setFavraties] = useState([]);
-  const [firstName, setFirstName] = useState('')
-
-
-  const [lastName, setLastName] = useState("");
   const [savefName, setsavefName] = useState("");
   const [savelName, setsavelName] = useState("");
+  const [nameChecker, setNameCheckr] = useState(null)
 
   useEffect(() => {
     if (supabase.auth.session() != null) {
@@ -36,12 +33,14 @@ function MyApp(props) {
         .select()
         .eq("user_id", supabase.auth.session().user.id)
         .then((data) => {
-          console.log('Test', data)
-          setFirstName(data.data[0].first_name);
-          setLastName(data.data[0].last_name);
-          setsavefName(data.data[0].first_name);
-          setsavelName(data.data[0].last_name);
-
+          setNameCheckr(data.data[0].first_name)
+          if (data.data.first_name != null) {
+            console.log('Test', data)
+            setsavefName(data.data[0].first_name);
+            setsavelName(data.data[0].last_name);
+          } else {
+            console.log('no data')
+          }
         });
 
       // if (savefName != "") {
@@ -57,17 +56,7 @@ function MyApp(props) {
 
 
 
-  useEffect(() => {
-    if (supabase.auth.session() != null) {
-      supabase
-        .from('user_profile')
-        .select('*')
-        .eq('user_id', auth.user.id)
-        .then((data) => {
-          setFirstName(data.data[0].first_name)
-        })
-    }
-  }, [router, firstName, auth])
+
   supabase.auth.onAuthStateChange((event, session) => {
     setAuth(supabase.auth.session());
   });
@@ -370,7 +359,7 @@ function MyApp(props) {
                 <div className="user-name-wrap">
                   <div className="letter-avatar">
                     {
-                      (savefName != "") ?
+                      (nameChecker != null) ?
                         savefName.slice(0, 1)
                         :
                         auth.user.email.split("")[0]
@@ -379,7 +368,7 @@ function MyApp(props) {
                   </div>
                   <div className="user-name">
                     {
-                      (savefName != "") ?
+                      (nameChecker != null) ?
                         savefName
                         :
                         auth.user.email.split("@")[0]
