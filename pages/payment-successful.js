@@ -21,10 +21,6 @@ export default function paymentSuccessful(props) {
   );
 };
 
-paymentSuccessful.getLayout = function PageLayout(page) {
-  return <>{page}</>;
-};
-
 export async function getStaticProps({ context }) {
   // console.log(context,'ctx');
   const cheerio = await import(`cheerio`);
