@@ -833,7 +833,7 @@ MyApp.getInitialProps = async (ctx) => {
   const cheerio = require("cheerio");
   const axios = require("axios");
 
-  //const webUrl = "https://drawkit-v2.webflow.io/new-test";
+  const webUrl = "https://drawkit-v2.webflow.io/new-test";
   const res = await axios(webUrl);
   const html = res.data;
   const $ = cheerio.load(html);
