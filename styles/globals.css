@@ -276,3 +276,13 @@
   background-color: black;
   color: white;
 }
+
+.pack-image-wrapper {
+  pointer-events: none;
+}
+.banner-image-detail-page{
+  pointer-events: none; 
+}
+.illustration-det-image-wrapper{
+  pointer-events: none; 
+}

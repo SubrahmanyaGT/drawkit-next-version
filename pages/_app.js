@@ -24,16 +24,19 @@ function MyApp(props) {
   let [favourites, setFavraties] = useState([]);
   const [firstName, setFirstName] = useState('')
   useEffect(() => {
-    if (supabase.auth.session() != null) {
+    if (supabase.auth.session() != null && firstName != "") {
       supabase
         .from('user_profile')
         .select('*')
-        .eq('user_id', auth.user.id)
+        .eq('user_id', supabase.auth.session().user.id)
         .then((data) => {
+
+
+          console.log('Test',data.data)
           setFirstName(data.data[0].first_name)
         })
     }
-  }, [router, firstName, auth])
+  }, [router, firstName])
   supabase.auth.onAuthStateChange((event, session) => {
     setAuth(supabase.auth.session());
   });
