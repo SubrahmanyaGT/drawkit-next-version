@@ -56,20 +56,20 @@ export default function Illustration(props) {
     }
   }
   useEffect(() => {
-    if (supabase.auth.session() != null) {
-      supabase
-        .from("user_profile")
-        .select()
-        .eq("user_id", supabase.auth.session().user.id)
-        .then(({ data, error }) => {
-          if (data.length > 0) {
-            setFirstName(data[0].first_name);
-            setLastName(data[0].last_name);
-            setsavefName(data[0].first_name);
-            setsavelName(data[0].last_name);
-          }
-        });
-    }
+    // if (supabase.auth.session() != null) {
+    //   supabase
+    //     .from("user_profile")
+    //     .select()
+    //     .eq("user_id", supabase.auth.session().user.id)
+    //     .then(({ data, error }) => {
+    //       if (data.length > 0) {
+    //         setFirstName(data[0].first_name);
+    //         setLastName(data[0].last_name);
+    //         setsavefName(data[0].first_name);
+    //         setsavelName(data[0].last_name);
+    //       }
+    //     });
+    // }
 
     if (supabase.auth.session() != null) {
       let uid = supabase.auth.session().user.id;
@@ -202,15 +202,30 @@ export default function Illustration(props) {
 
   useEffect(() => {
     if (supabase.auth.session() != null) {
+      supabase
+        .from("user_profile")
+        .select()
+        .eq("user_id", supabase.auth.session().user.id)
+        .then((data) => {
+          console.log('Test', data)
+          setFirstName(data.data[0].first_name);
+          setLastName(data.data[0].last_name);
+          setsavefName(data.data[0].first_name);
+          setsavelName(data.data[0].last_name);
+
+        });
       document.getElementById("first-name").value = firstName;
       document.getElementById("last-name").value = lastName;
-      document.querySelector(".user-name").innerText = savefName;
-      document.querySelector('.user').innerText = savefName;
-      document.querySelector('.letter-avatar').innerText = savefName.slice(0, 1)
-      document.querySelector('.username-letters-big').innerText = savefName.slice(0, 1)
-      document.querySelector('.username-letters').innerText = savefName.slice(0, 1);
+      if (savefName != "" || savefName != null) {
+        document.querySelector(".user-name").innerText = savefName;
+        document.querySelector('.letter-avatar').innerText = savefName.slice(0, 1)
+      } else {
+        document.querySelector(".user-name").innerText = auth.user.email.split("@")[0];
+        document.querySelector('.letter-avatar').innerText = auth.user.email.split("")[0]
+      }
+
     }
-  }, [firstName, lastName, savefName]);
+  }, [savefName, savelName]);
   //console.log(firstName, lastName);
   async function wrapClickHandler(event) {
     var $el = $(event.target);

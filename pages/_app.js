@@ -23,6 +23,40 @@ function MyApp(props) {
   const [auth, setAuth] = useState(supabase.auth.session());
   let [favourites, setFavraties] = useState([]);
   const [firstName, setFirstName] = useState('')
+
+
+  const [lastName, setLastName] = useState("");
+  const [savefName, setsavefName] = useState("");
+  const [savelName, setsavelName] = useState("");
+
+  useEffect(() => {
+    if (supabase.auth.session() != null) {
+      supabase
+        .from("user_profile")
+        .select()
+        .eq("user_id", supabase.auth.session().user.id)
+        .then((data) => {
+          console.log('Test', data)
+          setFirstName(data.data[0].first_name);
+          setLastName(data.data[0].last_name);
+          setsavefName(data.data[0].first_name);
+          setsavelName(data.data[0].last_name);
+
+        });
+
+      // if (savefName != "") {
+      //   document.querySelector(".user-name").innerText = savefName;
+      //   document.querySelector('.letter-avatar').innerText = savefName.slice(0, 1)
+      // } else {
+      //   document.querySelector(".user-name").innerText = auth.user.email.split("@")[0];
+      //   document.querySelector('.letter-avatar').innerText = auth.user.email.split("")[0]
+      // }
+
+    }
+  }, [savefName, savelName, router]);
+
+
+
   useEffect(() => {
     if (supabase.auth.session() != null) {
       supabase
@@ -336,22 +370,19 @@ function MyApp(props) {
                 <div className="user-name-wrap">
                   <div className="letter-avatar">
                     {
-                      (firstName == "EMPTY" || firstName == "NULL" || firstName == "") ? (
-                        supabase.auth
-                          .session()
-                          .user.email.slice(0, 1)
-                      ) :
-                        (firstName.slice(0, 1))
+                      (savefName != "") ?
+                        savefName.slice(0, 1)
+                        :
+                        auth.user.email.split("")[0]
+
                     }
                   </div>
                   <div className="user-name">
                     {
-                      (firstName == "EMPTY" || firstName == "NULL" || firstName == "") ? (
-                        supabase.auth
-                          .session()
-                          .user.email.slice(0, auth.user.email.indexOf("@"))
-                      ) :
-                        (firstName)
+                      (savefName != "") ?
+                        savefName
+                        :
+                        auth.user.email.split("@")[0]
                     }
                   </div>
                 </div>
