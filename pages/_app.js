@@ -58,19 +58,16 @@ function MyApp(props) {
 
 
   useEffect(() => {
-    if (supabase.auth.session() != null && firstName != "") {
+    if (supabase.auth.session() != null) {
       supabase
         .from('user_profile')
         .select('*')
-        .eq('user_id', supabase.auth.session().user.id)
+        .eq('user_id', auth.user.id)
         .then((data) => {
-
-
-          console.log('Test',data.data)
           setFirstName(data.data[0].first_name)
         })
     }
-  }, [router, firstName])
+  }, [router, firstName, auth])
   supabase.auth.onAuthStateChange((event, session) => {
     setAuth(supabase.auth.session());
   });
@@ -892,4 +889,4 @@ MyApp.getInitialProps = async (ctx) => {
     },
   };
 };
-export default MyApp;
+export default MyApp
