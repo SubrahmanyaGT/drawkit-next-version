@@ -16,7 +16,7 @@ const supabaseSignUp = async (email, password) => {
     password: password,
   });
 
-  
+
 
   return Supabaseuser;
 
@@ -38,11 +38,25 @@ export default function Signup(props) {
   const [password, setPassword] = useState("");
   const [valEmail, setValEmail] = useState(false);
   const [valPassword, setValPassword] = useState(false);
+  const [loader, setLoader] = useState(false);
   const router = useRouter();
 
   const parseOptions = {
     replace,
   };
+  useEffect(() => {
+    if (loader)
+      document.getElementById('loaderWrapper').innerHTML = `<div class="button-wrap signup">
+      <div class="btn-primary align-bottom"><div>Loading... <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+      </div></div>
+      <div class="btn-overlay"></div>
+    </div>`
+    else
+      document.getElementById('loaderWrapper').innerHTML = `<div id="signup" class="button-wrap signup">
+    <div class="btn-primary"><div>Sign Up</div></div>
+    <div class="btn-overlay"></div>
+  </div>`
+  }, [loader])
   useEffect(() => {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
       setValEmail(true);
@@ -90,16 +104,22 @@ export default function Signup(props) {
 
       if (valEmail && valPassword) {
         if ($("#d-signup-checkbox").is(":checked")) {
+          //make loader true
+          setLoader(true);
           let Supabaseuser = await supabaseSignUp(email, password);
           // console.log("data", Supabaseuser);
 
           if (!Supabaseuser.error) {
+            //make loader false or at page load
+            // setLoader(false)
             router.push({
               pathname: "/verification",
               query: { email: email },
             });
           } else {
             $(".validator-message").text(Supabaseuser.error.message);
+            //make loader false
+            setLoader(false)
           }
         } else {
           $(".w-checkbox-input").css("box-shadow", "0 0 3px 1px red");
@@ -107,7 +127,7 @@ export default function Signup(props) {
       }
     }
     if (!!$el.closest("#d-signup-google").get(0)) {
-       await signInWithGoogle();
+      await signInWithGoogle();
     }
 
     if (!!$el.closest(".w-checkbox").get(0)) {

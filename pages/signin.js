@@ -42,10 +42,24 @@ export default function Signin(props) {
   const [password, setPassword] = useState("");
   const [valEmail, setValEmail] = useState(false);
   const [valPassword, setValPassword] = useState(false);
+  const [loader, setLoader] = useState(false);
   const parseOptions = {
     replace,
   };
   const router = useRouter();
+  useEffect(() => {
+    if (loader)
+      document.getElementById('signinloaderWrapper').innerHTML = `<div class="button-wrap signin">
+      <div class="btn-primary align-bottom"><div>Loading... <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+      </div></div>
+      <div class="btn-overlay"></div>
+    </div>`
+    else
+      document.getElementById('signinloaderWrapper').innerHTML = `<div id="signin" class="button-wrap signin">
+    <div class="btn-primary"><div>Sign in</div></div>
+    <div class="btn-overlay"></div>
+  </div>`
+  }, [loader])
 
   useEffect(() => {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
@@ -68,10 +82,14 @@ export default function Signin(props) {
     if (!!$el.closest("#signin").get(0)) {
       event.preventDefault();
       // validateEmailPassword();
+      //true
+      setLoader(true);
       if ((await supabaseSignIn(email, password)) && valEmail && valPassword) {
         router.push("/");
       } else {
         $(".validator-message").text("Invalid Signin Attempt");
+        //false
+        setLoader(false)
       }
     }
 
