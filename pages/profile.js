@@ -133,9 +133,8 @@ export default function Illustration(props) {
                       <img src="${pack.thumbnail_img}" loading="lazy" alt="" class="favourites-image">
                   </div>
                   <div class="liked-content">
-                      <div class="favourite-title">${pack.name}
+                      <div class="favourite-title text-style-1lines ">${pack.name}
                       </div>
-                      <div class="favourite-description text-style-2lines">${pack.quantity_details}</div>
                   </div>
               </a>
       
@@ -145,7 +144,6 @@ export default function Illustration(props) {
                           loading="lazy" alt="donts">
                   </div>
               </div>
-      
           </div>
               `;
             });

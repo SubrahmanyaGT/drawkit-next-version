@@ -256,7 +256,7 @@
 
 .favourite-details {
   border-radius: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 }
 
 .cancel-favourite-wrapper {
@@ -287,6 +287,13 @@
   pointer-events: none; 
 }
 
+.text-style-1lines {
+  display: -webkit-box;
+	overflow: hidden;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+
+}
 
 /* buttonn loader */
 .lds-ring {

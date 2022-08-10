@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import NavbarContent from "./navbar";
 import { replace } from "../utils/replace-node";
 import { useUser } from "../lib/authInfo";
+import $ from "jquery";
 
 export default function Plans(props) {
   const { user, setUser } = useUser();
@@ -68,9 +69,6 @@ export default function Plans(props) {
   function wrapClickHandler(event) {
     // console.log('dheeraj')
     var $el = $(event.target);
-    
-
-
     if (!!$el.closest("#subscribe").get(0))
      {
       if (auth != null) {
