@@ -308,13 +308,20 @@ export default function Home(props) {
       if (favourites.includes(wf_item_id)) {
         //console.log(wf_item_id, icon);
         icon.children[1].innerHTML = `<div><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g clip-path="url(#clip0_5323_37723)">
-        <path d="M22.096 3.85599C22.708 4.45229 23.1945 5.1651 23.5266 5.95239C23.8587 6.73968 24.0298 7.58551 24.0298 8.43999C24.0298 9.29447 23.8587 10.1403 23.5266 10.9276C23.1945 11.7149 22.708 12.4277 22.096 13.024L21.168 13.952L13.856 21.28C13.6137 21.5233 13.3257 21.7164 13.0086 21.8482C12.6915 21.9799 12.3514 22.0477 12.008 22.0477C11.6646 22.0477 11.3246 21.9799 11.0074 21.8482C10.6903 21.7164 10.4023 21.5233 10.16 21.28L2.84801 13.968L1.90401 13.024C1.29199 12.4277 0.805576 11.7149 0.47345 10.9276C0.141324 10.1403 -0.0297852 9.29447 -0.0297852 8.43999C-0.0297852 7.58551 0.141324 6.73968 0.47345 5.95239C0.805576 5.1651 1.29199 4.45229 1.90401 3.85599C3.12148 2.64348 4.76975 1.96271 6.48801 1.96271C8.20628 1.96271 9.85455 2.64348 11.072 3.85599L12 4.79999L12.944 3.85599C13.5401 3.24642 14.2519 2.76207 15.0377 2.4314C15.8235 2.10073 16.6675 1.93039 17.52 1.93039C18.3726 1.93039 19.2165 2.10073 20.0023 2.4314C20.7882 2.76207 21.5 3.24642 22.096 3.85599Z" fill="#F075C6"/>
+        <g filter="url(#filter0_i_81_74)">
+        <path d="M20.7601 4.8802C23.0001 7.1202 23.0001 10.6402 20.7601 12.7202L19.9601 13.5202L13.5601 19.7602C12.6001 20.5602 11.1601 20.7202 10.3601 19.7602L3.9601 13.5202L3.1601 12.7202C1.0801 10.6402 1.0801 7.1202 3.1601 4.8802C5.4001 2.6402 8.9201 2.6402 11.1601 4.8802L11.9601 5.6802L12.7601 4.8802C15.0001 2.8002 18.5201 2.8002 20.7601 4.8802Z" fill="#E62020"></path>
         </g>
         <defs>
-        <clipPath id="clip0_5323_37723">
-        <rect width="24" height="24" fill="white"/>
-        </clipPath>
+        <filter id="filter0_i_81_74" x="1.6001" y="3.2002" width="20.8401" height="17.2212" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+        <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+        <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend>
+        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix>
+        <feOffset></feOffset>
+        <feGaussianBlur stdDeviation="2"></feGaussianBlur>
+        <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"></feComposite>
+        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"></feColorMatrix>
+        <feBlend mode="normal" in2="shape" result="effect1_innerShadow_81_74"></feBlend>
+        </filter>
         </defs>
         </svg></div>`;
       } else {
